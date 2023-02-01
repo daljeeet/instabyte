@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signOut, sendPasswordResetEmail, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signOut, sendPasswordResetEmail, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 const  apiKey =  process.env.NEXT_PUBLIC_API_KEY
 const  authDomain =  process.env.NEXT_PUBLIC_AUTHdOMAIN
@@ -10,18 +10,19 @@ const  appId =  process.env.NEXT_PUBLIC_APP_ID
 const  measurementId =  process.env.NEXT_PUBLIC_MEASUREMENT_ID
 
 const firebaseConfig = {
-  apiKey,
-  authDomain,
-  projectId,
-  storageBucket,
-  messagingSenderId,
-  appId,
-  measurementId,
+  apiKey:apiKey,
+  authDomain:authDomain,
+  projectId:projectId,
+  storageBucket:storageBucket,
+  messagingSenderId:messagingSenderId,
+  appId:appId,
+  measurementId:measurementId,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
-const provider = new GoogleAuthProvider();
+const google = new GoogleAuthProvider();
+const github = new GithubAuthProvider();
 
-export {auth, provider, signOut, sendPasswordResetEmail}
+export {auth, google,github, signOut, sendPasswordResetEmail}

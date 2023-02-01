@@ -5,15 +5,11 @@ import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
 import CardSwiper from './CardSwiper'
 const Card = (props: any) => {
 const [comment,setComment] = useState("")
-useEffect(() => {
-}, [])
-
 
 const handleComment = (e: { target: { value: React.SetStateAction<string> } })=>{
 setComment(e.target.value)
 }
-
-    return (
+return (
         <div className='mt-10 border-[1px] border-gray-600 rounded-md' >
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12' >

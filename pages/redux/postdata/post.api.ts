@@ -1,7 +1,7 @@
 import { postDataType } from "@/pages/Components/CreateModal" 
 import axios from "axios";
 
-const posts:string|undefined = process.env.NEXT_PUBLIC_POSTS;
+const posts:any = process.env.NEXT_PUBLIC_POSTS;
 export const postDetailsApi = async(data:postDataType)=>{
     const res = await axios.post(posts,data)
     return res.data

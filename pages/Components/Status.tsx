@@ -2,19 +2,24 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useEffect, useState } from "react";
 
+import { Autoplay } from "swiper";
 const Status = () => {
-    const data = [1,2,3,4,2,3,1,122,2,3,23,4,3,42,]
 
+    const data = ["🆆","🅴","🅻","🅲","🅾","🅼","🅴"," 🆃","🅾"," 🅸","🅽","🆂","🆃","🅰","🅱","🆈","🆃","🅴"]
   return (
-    <div className="hidden md:block mt-5 h-20 w-full">
+    <div className="md:block mt-2 h-20 w-full">
     <Swiper
-      slidesPerView={6}
-      spaceBetween={18}
-      className="md:h-[80%] h-full"
+      slidesPerView={7}
+      autoplay={{
+        delay: 1000,
+        disableOnInteraction: false,
+      }}
+      spaceBetween={5}
+      className="md:h-[50%] h-full"
+      modules={[Autoplay]}
     >
-      {data.map((el,id)=><SwiperSlide key={id} className='border-2 rounded-full flex justify-center items-center'>slide {el}</SwiperSlide>)}
+      {data.map((el,id)=><SwiperSlide key={id} className='rounded-full flex justify-center items-center text-3xl'>{el}</SwiperSlide>)}
     </Swiper>
   </div>
   )

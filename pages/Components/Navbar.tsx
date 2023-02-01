@@ -1,14 +1,30 @@
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { Dispatch, useState,useEffect } from 'react'
 import {AiOutlineSearch,AiOutlineHome,AiOutlineHeart,AiOutlineFileAdd} from 'react-icons/ai'
 import {MdOutlineExplore} from 'react-icons/md';
 import {CgProfile} from 'react-icons/cg'
-import {GiHamburgerMenu} from 'react-icons/gi'
 import {FiSend} from 'react-icons/fi'
+import {BiMessageSquareAdd} from 'react-icons/bi'
 import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
 import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
+import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
+import Router from 'next/router';
 const Navbar = () => {
+    const {loading,error, user} = useSelector((val:any)=>val?.user)
+    const dispatch:Dispatch<any> = useDispatch()
+    useEffect(() => {
+      dispatch(isUserLogin())
+    }, [dispatch])
+    useEffect(()=>{
+        if(loading===false){
+            if(user==null){
+               Router.push('/login')
+            }
+        }
+    },[loading, user])
+
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(true)
     const handleSearch = ()=>{
@@ -19,6 +35,9 @@ const Navbar = () => {
     }
     const handleModal = ()=>{
         setCreateModal(!createModal)
+    }
+    const handleLogout = ()=>{
+        dispatch(signoutUser())
     }
     return (
         <>
@@ -43,7 +62,7 @@ const Navbar = () => {
                     <AiOutlineHeart className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
                 </Link>
                 <Link onClick={handleNewPost} href={'/'} className='flex items-center' >
-                    <AiOutlineFileAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
+                    <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
                 </Link>
                 <Link href={'/'} className='flex items-center' >
                     <CgProfile className='mr-2 text-2xl' /> <p className='hidden md:block' >Profile</p>
@@ -54,7 +73,7 @@ const Navbar = () => {
         </div>
                 <CreateModal handleModal={handleModal} createModal={createModal} />
         {/* mobile nav  */}
-                <div className='md:hidden flex flex-row items-center z-10 bg-black/50 fixed top-0 left-0 right-0 h-14  ' >
+                <div onClick={handleLogout} className='md:hidden flex flex-row items-center z-10 bg-black/50 fixed top-0 left-0 right-0 h-14  ' >
                 <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>

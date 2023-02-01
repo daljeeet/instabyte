@@ -21,6 +21,7 @@ export type postDataType={
 }
 
 const CreateModal = (props: createmodalTypes) => {
+    const {loading,error, user} = useSelector((val:any)=>val?.user)
     const {isloading,img,iserror,isdone} = useSelector((val:any)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
     const [caption, setCaption]  = useState("Caption...")
@@ -44,9 +45,9 @@ const handlePost = ()=>{
     const postData:postDataType = {
         caption: caption,
         imgUrl:[img],
-        owner: "",
+        owner: user.name,
         likes: [],
-        id: "",
+        id: user.id,
         posted_on:datestr,
         comments:[
           {
