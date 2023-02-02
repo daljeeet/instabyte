@@ -15,6 +15,7 @@ export type postDataType={
         caption: string,
         imgUrl: string[],
         owner: string,
+        owner_profile:string,
         posted_on:string,
         likes: string[],
         id: string | number,
@@ -22,7 +23,7 @@ export type postDataType={
 }
 
 const CreateModal = (props: createmodalTypes) => {
-    const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
+    const user = useSelector((val:rootReducertype)=>val?.user.user)
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
     const [caption, setCaption]  = useState("Caption...")
@@ -42,13 +43,14 @@ const handleClose = ()=>{
     props.handleModal()
 }
 const handlePost = ()=>{
-    let datestr = new Date().toLocaleDateString()
+    let datestr = new Date().toLocaleDateString("en-US",{day:"numeric",month:"short"})
     const postData:postDataType = {
         caption: caption,
         imgUrl:[img],
         owner: user.name,
+        owner_profile:user.profile,
         likes: [],
-        id: user.id,
+        id:'',
         posted_on:datestr,
         comments:[
           {
@@ -59,13 +61,12 @@ const handlePost = ()=>{
       }
       dispatch(postDetails(postData))
       props.handleModal()
-      dispatch(getAllPosts())
 }
    return (<>
-        {props.createModal||<div className={`fixed top-0 left-0 bg-black/60 right-0 w-full h-screen flex items-center justify-center z-10`} >
+        {props.createModal||<div className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-10`} >
             {
                 iserror?<div> Image Upload Failed ☹️ <span onClick={handleClose} className='underline font-bold text-sm'>close</span> </div>:                
-                <div className='m-auto h-fit w-11/12 md:w-96 bg-gray-700 text-center text-white rounded-lg'>
+                <div className='m-auto w-5/6 md:w-96 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto'>
                 <div className='w-full relative'>
                {isloading?<h3 className='text-2xl'>Please Wait...</h3> :<h3 className='text-2xl'>Create a Post </h3> }
                 <AiOutlineClose onClick={handleClose} className='absolute right-0 top-0 text-xl mt-2 mr-2 font-bold cursor-pointer'/>

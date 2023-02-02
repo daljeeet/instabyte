@@ -7,7 +7,7 @@ import {GET_LOADING,
     POST_LOADING,
     POST_ERROR,
     POST_SUCCESS} from './actions.types'
-import { postDataType } from "@/pages/Components/CreateModal" 
+import { postDataType } from "../../Components/CreateModal" 
 import {getAllPostsApi, postDetailsApi} from './post.api'
 
 
@@ -21,11 +21,11 @@ try{
 }
 }
 
-export const postDetails = (data:postDataType)=>(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
+export const postDetails = (data:postDataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:POST_LOADING})
 try{
-    let res = postDetailsApi(data)
-    dispatch({type:POST_SUCCESS,payload:res})
+    let res = await postDetailsApi(data)
+    dispatch({type:POST_SUCCESS,payload:data})
 }catch(err){
     dispatch({type:POST_ERROR})
 }

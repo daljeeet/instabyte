@@ -7,9 +7,10 @@ export type imgInitype = {
     iserror:boolean,
     isdone:boolean
 }
+let defaultImg = "https://cdn.iconscout.com/icon/premium/png-128-thumb/photo-122-88145.png"
 const initialState:imgInitype={
     isloading:false,
-    img:"https://cdn.iconscout.com/icon/premium/png-128-thumb/photo-122-88145.png",
+    img:defaultImg,
     iserror:false,
     isdone:false
 }
@@ -20,12 +21,15 @@ export const imgPostReducer = (state=initialState,action:any)=>{
         case LOADING:{
             return {...state, isloading:true,isdone:false}
         }case SUCCESS:{
-            return {...state, isloading:false, img:payload,isdone:true}
+            return {...state, isloading:false, img:payload, isdone:true}
         }case ERROR:{
             return {...state, isloading:false,iserror:true}
         }
         case RESET:{
-            return {...state,img:"https://cdn.iconscout.com/icon/premium/png-128-thumb/photo-122-88145.png",isloading:false,iserror:false,isdone:false}
+            return {...state, isloading:false,
+                img:defaultImg,
+                iserror:false,
+                isdone:false}
         }
         default:{
             return {...state}

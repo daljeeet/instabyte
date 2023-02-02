@@ -33,6 +33,17 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
         case GET_SUCCESS:{
             return {...state, postData:payload}
         }
+        case POST_SUCCESS:{
+             state.postData.push(payload)
+            console.log(state.postData)
+            return {...state,postData:state.postData}
+        }
+        case POST_LOADING:{
+            return {...state,loading_post:true}
+        }
+        case POST_ERROR:{
+            return {...state,loading_post:false,error_post:true}
+        }
         default:{
             return {...state}
         }

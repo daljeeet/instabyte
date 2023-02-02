@@ -26,7 +26,8 @@
     "react-redux": "^8.0.5",
     "redux-thunk": "^2.4.2",
     "swiper": "^8.4.7",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "vercel": "^28.15.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

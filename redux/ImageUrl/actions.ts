@@ -3,14 +3,13 @@ import { postUrlApi } from "./postImgApi";
 
 type reducerAction ={
     type:string,
-    payload?:any
+    payload?:string
 }
 export const postUrl = (data:{})=>async(dispatch: ({ type, payload}:reducerAction) => void)=>{
     dispatch({type:LOADING})
     try{
         let res = await postUrlApi(data);
         if(res){
-            console.log(res)
             dispatch({type:SUCCESS,payload:res})
         }else{
         dispatch({type:ERROR})    
