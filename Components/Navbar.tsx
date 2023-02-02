@@ -11,19 +11,20 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
 import Router from 'next/router';
+import { rootReducertype } from '@/redux/store';
 const Navbar = () => {
-    const {loading,error, user} = useSelector((val:any)=>val?.user)
+    const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
     const dispatch:Dispatch<any> = useDispatch()
     useEffect(() => {
       dispatch(isUserLogin())
     }, [dispatch])
     useEffect(()=>{
-        if(loading===false){
+        if(login_loading===false){
             if(user==null){
                Router.push('/login')
             }
         }
-    },[loading, user])
+    },[login_loading, user])
 
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(true)
@@ -73,7 +74,7 @@ const Navbar = () => {
         </div>
                 <CreateModal handleModal={handleModal} createModal={createModal} />
         {/* mobile nav  */}
-                <div onClick={handleLogout} className='md:hidden flex flex-row items-center z-10 bg-black/50 fixed top-0 left-0 right-0 h-14  ' >
+                <div onClick={handleLogout} className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
                 <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>

@@ -3,9 +3,15 @@ import { FiMoreHorizontal, FiBookmark, FiSend } from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
 import CardSwiper from './CardSwiper'
-const Card = (props: any) => {
+import { useSelector } from 'react-redux'
+import { postDataType } from './CreateModal'
+import { rootReducertype } from '@/redux/store'
+type cartDataType ={
+    elem:postDataType
+}
+const Card = (props:cartDataType) => {
+    const user = useSelector((val:rootReducertype)=>val?.user.user)
 const [comment,setComment] = useState("")
-
 const handleComment = (e: { target: { value: React.SetStateAction<string> } })=>{
 setComment(e.target.value)
 }
@@ -13,9 +19,12 @@ return (
         <div className='mt-10 border-[1px] border-gray-600 rounded-md' >
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12' >
-                    <div className='border-2 md:w-10 md:h-10 rounded-full mx-2'></div>
-                    <div className='mx-2 font-semibold'>{props.elem.owner}</div>
-                    <div className='text-sm text-gray-400'> {props.elem.posted_on} </div>
+                    <div className='md:w-8 md:h-8 overflow-hidden h-10 w-10 rounded-full mx-2'>
+                         {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={user?.profile} alt="asdfsdaf" />
+                    </div>
+                    <div className='mx-2 font-semibold'>{props?.elem?.owner}</div>
+                    <div className='text-sm text-gray-400'> {props?.elem?.posted_on} </div>
                 </div>
                 <div className='mr-2' >
                     <FiMoreHorizontal className='font-bold text-xl cursor-pointer' />
@@ -38,11 +47,11 @@ return (
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
                 <p>
-                {props.elem?.likes?.length} likes
+                {props?.elem?.likes?.length} likes
                 </p>
                 <p>
-                    <span className='font-semibold mx-2'>{props.elem.owner}</span>
-                    {props.elem.caption.split(' ').slice(0,8).join(' ')}... <span className='text-sm text-gray-500 cursor-pointer'> more</span>
+                    <span className='font-semibold mx-2'>{props?.elem?.owner}</span>
+                    {props?.elem?.caption.split(' ').slice(0,8).join(' ')}... <span className='text-sm text-gray-500 cursor-pointer'> more</span>
                 </p>
                 {/* {props.elem.comments.map((el: { user: string, comment: string }, id: number) => <p key={id}>{el.comment}</p>)} */}
                 <p className='cursor-pointer underline ' >

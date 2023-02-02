@@ -1,5 +1,6 @@
+import { rootReducertype } from '@/redux/store'
 import axios from 'axios'
-import React,{useState,Dispatch,useEffect} from 'react'
+import React,{useState,Dispatch,useEffect, ChangeEventHandler} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
@@ -21,8 +22,8 @@ export type postDataType={
 }
 
 const CreateModal = (props: createmodalTypes) => {
-    const {loading,error, user} = useSelector((val:any)=>val?.user)
-    const {isloading,img,iserror,isdone} = useSelector((val:any)=>val?.imgUrl)
+    const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
+    const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
     const [caption, setCaption]  = useState("Caption...")
     useEffect(() => {
@@ -31,7 +32,7 @@ const CreateModal = (props: createmodalTypes) => {
     const handleCaption = (e: { target: { value: React.SetStateAction<string> } })=>{
         setCaption(e.target.value)
     }
-    const handleImage = (e: { target: any })=>{
+    const handleImage = (e:any)=>{
     let form = new FormData()
     form.append("image",e.target.files[0])
     dispatch(postUrl(form))

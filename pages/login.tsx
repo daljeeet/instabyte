@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image';
-import Login from './Components/Login';
+import Login from '../Components/Login';
 
 const login = () => {
 const handleSubmit = (e: { preventDefault: () => void; })=>{

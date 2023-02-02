@@ -1,3 +1,4 @@
+import { postDataType } from '@/Components/CreateModal'
 import {GET_LOADING,
     GET_ERROR,
     GET_SUCCESS,
@@ -8,9 +9,13 @@ import {GET_LOADING,
     POST_ERROR,
     POST_SUCCESS} from './actions.types'
 
+export type allPostType ={
+    loading_post:boolean,
+    error_post:boolean,
+    postData:postDataType[]
+}
 
-
-const initialState = {
+const initialState:allPostType = {
     loading_post:false,
     error_post:false,
     postData:[]

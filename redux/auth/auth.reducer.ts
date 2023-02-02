@@ -1,3 +1,4 @@
+import { userdataType } from './auth.actions'
 import {
     AUTH_LOADING,
     AUTH_ERROR,
@@ -5,9 +6,13 @@ import {
     AUTH_RESET,
     AUTH_CHECK
 } from './auth.actions.types'
+export type authDataType = {
+    login_loading:boolean,
+    login_error:boolean,
+    user:userdataType|null
+}
 
-
-const iniitailState = {
+const iniitailState:authDataType = {
     login_loading: false,
     login_error: false,
     user: null,

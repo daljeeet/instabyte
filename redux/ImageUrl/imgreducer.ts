@@ -1,13 +1,13 @@
 
 import { LOADING,ERROR, SUCCESS, RESET } from "./action.type";
 
-type initype = {
+export type imgInitype = {
     isloading:boolean,
     img:string,
     iserror:boolean,
     isdone:boolean
 }
-const initialState:initype={
+const initialState:imgInitype={
     isloading:false,
     img:"https://cdn.iconscout.com/icon/premium/png-128-thumb/photo-122-88145.png",
     iserror:false,

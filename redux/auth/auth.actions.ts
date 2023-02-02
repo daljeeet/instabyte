@@ -13,13 +13,17 @@ AUTH_CHECK,
   }from './auth.actions.types'
   
 import {auth,google,github} from '../../config'
-
-
+export type userdataType = {
+    name:string|null,
+    email:string|null,
+    id:string|null,
+    profile:string|null
+}
 export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
     try{
        let user = await signInWithPopup(auth,google)
-       const userData = {
+       const userData:userdataType = {
         name:user?.user?.displayName,
         email:user?.user?.email,
         id:user?.user?.uid,
