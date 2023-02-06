@@ -25,7 +25,7 @@ const Navbar = () => {
             }
         }
     },[login_loading, user])
-
+    console.log(login_loading,user)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(true)
     const handleSearch = ()=>{

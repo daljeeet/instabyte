@@ -10,7 +10,7 @@ import {GET_LOADING,
 import { postDataType } from "../../Components/CreateModal" 
 import {getAllPostsApi, postDetailsApi} from './post.api'
 
-
+ 
 export const getAllPosts = ()=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
 dispatch({type:GET_LOADING})
 try{

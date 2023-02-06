@@ -20,6 +20,7 @@ export type postDataType={
         likes: string[],
         id: string | number,
         comments:commontsType[],
+        show_Caption:boolean
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -57,7 +58,8 @@ const handlePost = ()=>{
             user:"",
             comment:""
           }
-        ]
+        ],
+        show_Caption:false
       }
       dispatch(postDetails(postData))
       props.handleModal()
