@@ -13,6 +13,7 @@ import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 const Navbar = () => {
+    // =========================== All Hooks at the top ====================================
     const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
     const dispatch:Dispatch<any> = useDispatch()
     useEffect(() => {
@@ -25,9 +26,12 @@ const Navbar = () => {
             }
         }
     },[login_loading, user])
-    console.log(login_loading,user)
+
+    const [profileDtl,setProfileDtl] = useState(true)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(true)
+
+    // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
         setSrchModal(!srchModal)
     }
@@ -39,6 +43,9 @@ const Navbar = () => {
     }
     const handleLogout = ()=>{
         dispatch(signoutUser())
+    }
+    const handleProfileModal = ()=>{    
+        setProfileDtl(!profileDtl)
     }
     return (
         <>
@@ -65,16 +72,22 @@ const Navbar = () => {
                 <Link onClick={handleNewPost} href={'/'} className='flex items-center' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
                 </Link>
-                <Link href={'/'} className='flex items-center' >
-                    <CgProfile className='mr-2 text-2xl' /> <p className='hidden md:block' >Profile</p>
-                </Link>
+                <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
+                    {
+                        user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2 ' ><Image src={user.profile} width={30} height={30} alt='profile Pic' /> </div> :
+                        <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{user?.name||"Profile"}</p>
+                </div>
             </div>
+                        {/* =============================Profile Click List ============================== */}
+                {profileDtl||<div className='absolute right-0 bottom-12 md:relative mx-4 bg-black text-thin text-center pb-3'>
+                        <p onClick={handleLogout} className='border-b-2 border-gray-600 mx-2 text-sm cursor-pointer'>Log-out</p>
+                        {/* <p className='cursor-pointer border-b-2 border-gray-600 mx-2 text-sm mt-2'>Settings</p> */}
+                </div>}
                 <SrchModal srchModal={srchModal} />
-
         </div>
                 <CreateModal handleModal={handleModal} createModal={createModal} />
         {/* mobile nav  */}
-                <div onClick={handleLogout} className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
+                <div  className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
                 <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>

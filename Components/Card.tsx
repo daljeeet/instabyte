@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,Dispatch} from 'react'
 import { FiMoreHorizontal, FiBookmark, FiSend } from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
@@ -9,9 +9,15 @@ import { rootReducertype } from '@/redux/store'
 import Image from 'next/image'
 import Loader from './Loader'
 import PostDetails from './PostDetails'
+import ModalEdit from './ModalEdit'
+import DeleteModal from './DeleteModal'
+import AlertModal from './AlertModal'
+import AddMorePhotos from './AddMorePhotos'
 
 const Card = () => {
-const {loading_post, error_post,postData}=useSelector((val:rootReducertype)=>val?.allPosts)
+    // =========================Hooks at Top ============================
+const {del_error, del_loading, loading_post, error_post,postData}=useSelector((val:rootReducertype)=>val?.allPosts)
+const user = useSelector((val:rootReducertype)=>val?.user?.user)
 const [comment,setComment] = useState("")
 const handleComment = (e: { target: { value: React.SetStateAction<string> } })=>{
 setComment(e.target.value)
@@ -20,10 +26,16 @@ const [expended,setExpended] = useState(true)
 const [post,setPost] = useState([])
 const [postObj, setPostObj] = useState(postData[0])
 const [modal, setModal] =useState(false)
-
+const [modalEdit, setModalEdit] =useState(false)
+const [postEdit, setPostEdit] = useState(true)
+const [delModal, setDelModal] = useState(false)
+const [addImgModal,setAddImgModal] = useState(false)
 useEffect(()=>{
-setPost(postData)
+setPost(postData.reverse())
 },[postData])
+
+// =============================Various Functions & Onclick Events=================================
+
 const toggleCaption = (id:number|string)=>{
     setExpended(!expended)
   let showCaption = postData.map((el: { id: string | number })=>{
@@ -40,9 +52,47 @@ const handlePostDetails = (el:postDataType)=>{
     setModal(true)
 setPostObj(el)
 }
-const closeModal = ()=>{
+const closePostDtlModal = ()=>{
     setModal(false)
 }
+const handlePostEdit = (el:postDataType)=>{
+    setModalEdit(true);
+    handleEditPost(el.id)
+    setPostObj(el)
+}
+const closePostEditModal = ()=>{
+    setModalEdit(false)
+}
+const handleEditPost = (id:number|string)=>{
+    setPostEdit(!postEdit)
+   let showpostData = postData.map((e: { id: string | number })=>{
+        if(e.id===id){
+            let newData = {...e,edit_post:postEdit}
+            return newData
+        }else{
+            return e
+        }
+    })
+    setPost(showpostData)
+}
+
+const handleDelModal = (el:postDataType)=>{
+    setDelModal(true)
+    handleEditPost(el.id)
+    setPostObj(el)
+}
+const closeDelModal = ()=>{
+    setDelModal(false);
+}
+const openAddImgModal = (el:postDataType)=>{
+    setAddImgModal(true)
+    handleEditPost(el.id)
+    setPostObj(el)
+}
+const closeAddImgModal = ()=>{
+    setAddImgModal(false)
+}
+
 
 if(loading_post){
     return <Loader text="loading..." />
@@ -50,12 +100,11 @@ if(loading_post){
 if(error_post){
     return <div>Something Went Wrong.....</div>
 }
-
 return (
         <>
         { loading_post||
         post.map((el:postDataType)=>
-        <div key={el.id} className='mt-10 border-[1px] border-gray-600 rounded-md' >
+        <div key={el.id} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12' >
                     <div className='md:w-8 md:h-8 overflow-hidden h-10 w-10 rounded-full mx-2'>
@@ -64,9 +113,9 @@ return (
                     <div className='mx-2 font-semibold'>{el?.owner}</div>
                     <div className='text-sm text-gray-400'> {el?.posted_on} </div>
                 </div>
-                <div className='mr-2' >
-                    <FiMoreHorizontal className='font-bold text-xl cursor-pointer' />
-                </div>
+               {el.owner===user?.name? <div className='mr-2' >
+                    <FiMoreHorizontal onClick={()=>handleEditPost(el.id)} className='font-bold text-xl cursor-pointer' />
+                </div>:''}
             </div>
             <div className='h-fit my-2' >
                 <CardSwiper data={el?.imgUrl} />
@@ -105,9 +154,18 @@ return (
                 <button disabled={comment==''} className='font-bold bg-black/60 px-3 rounded-md'>post</button>
                 </div>
             </div>
+          {(el?.edit_post)?<div className='px-4 h-24 w-40  absolute top-10 right-0 z-10 bg-black/70 text-sm font-bold'>
+            <p onClick={()=>handlePostEdit(el)} className='border-b-2 border-gray-500 text-lime-400 cursor-pointer'>Edit Post</p>
+            <p onClick={()=>openAddImgModal(el)} className='border-b-2 border-gray-500 text-lime-400 cursor-pointer'>Add photos</p>
+            <p onClick={()=>handleDelModal(el)} className='border-b-2 border-gray-500 text-red-500 cursor-pointer'>Delete Post</p>
+          </div>:""}
         </div>
         )}
-        {modal&&<PostDetails data={postObj} closeModal={closeModal}  />}
+        {modal&&<PostDetails data={postObj} closeModal={closePostDtlModal}  />}
+        {modalEdit&&<ModalEdit data={postObj} closeModal={closePostEditModal}  />}
+        {delModal&&<DeleteModal id={postObj.id} closeModal={closeDelModal}  />}
+        {del_error&&<AlertModal color="bg-red-600" text='Error in Deleting the post. Try again' />}
+        {addImgModal&&<AddMorePhotos closeAddMorePhotos={closeAddImgModal} data={postObj} />}
         </>
     )
 }

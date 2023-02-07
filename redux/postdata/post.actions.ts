@@ -6,9 +6,12 @@ import {GET_LOADING,
     PATCH_SUCCESS,
     POST_LOADING,
     POST_ERROR,
+    DEL_LOADING,
+    DEL_SUCCESS,
+    DEL_ERROR,
     POST_SUCCESS} from './actions.types'
 import { postDataType } from "../../Components/CreateModal" 
-import {getAllPostsApi, postDetailsApi} from './post.api'
+import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
 
  
 export const getAllPosts = ()=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
@@ -29,4 +32,30 @@ try{
 }catch(err){
     dispatch({type:POST_ERROR})
 }
+}
+
+export const deletePostt = (id:number|string,postData:postDataType[])=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
+    dispatch({type:DEL_LOADING})
+    try{
+        let res = await deletePostApi(id);
+        if(res?.status==200){
+            dispatch({type:DEL_SUCCESS,payload:postData})
+        }else{
+            dispatch({type:DEL_ERROR})
+        }
+    }catch(err){
+        dispatch({type:DEL_ERROR})
+    }
+}
+
+
+export const editPost = (post:postDataType)=>async(dispatch: (arg0: { type: string; payload?: postDataType[]; }) => void)=>{
+    dispatch({type:PATCH_LOADING})
+    try{
+        let res = await editPostApi(post)
+        // dispatch({type:PATCH_SUCCESS})
+
+    }catch(err){
+        dispatch({type:PATCH_ERROR})
+    }
 }

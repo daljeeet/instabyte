@@ -13,7 +13,7 @@ export type authDataType = {
 }
 
 const iniitailState:authDataType = {
-    login_loading: false,
+    login_loading: true,
     login_error: false,
     user: null,
 }

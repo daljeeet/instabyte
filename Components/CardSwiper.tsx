@@ -11,7 +11,7 @@ export default function CardSwiper(props:cardSwiperType) {
   let images = props?.data
   return (
     <>
-      <Swiper pagination={true} modules={[Pagination]} className="h-full">
+      <Swiper  autoHeight={true} pagination={true} modules={[Pagination]} className="h-full">
       { images?.map((el:string,id:number)=><SwiperSlide key={id}>
         {el?<Image src={el} alt="Post Image" width={1000} height={800}/>:<Image src="/emgerror.png" alt="error Image" width={1000} height={800} />  
       }
