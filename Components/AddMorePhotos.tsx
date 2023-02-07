@@ -8,6 +8,7 @@ import { BiImageAdd} from 'react-icons/bi'
 import Image from 'next/image'
 import { postDataType } from './CreateModal'
 import { editPost } from '@/redux/postdata/post.actions'
+import Loader from './Loader'
 
 type addType = {
   closeAddMorePhotos:()=>void
@@ -38,7 +39,7 @@ const AddMorePhotos = (props:addType) => {
     <div className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-10`} >
     {iserror?<div> Image Upload Failed ☹️ <span onClick={handleClose} className='underline font-bold text-sm'>close</span> </div>:<div className='m-auto w-5/6 md:w-96 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto'>
                 <div className='w-full relative my-4'>
-               {isloading?<h3 className='text-2xl'>Please Wait...</h3> :<h3 className='text-xl'>Add Photo </h3> }
+               {isloading?<div><Loader text="Please Wait..." /> </div> :<h3 className='text-xl'>Add Photo </h3> }
                 <AiOutlineClose onClick={handleClose} className='absolute right-0 top-0 text-xl mt-2 mr-2 font-bold cursor-pointer'/>
                 </div>
                 <div className='m-auto w-1/2 flex items-center justify-center'>
