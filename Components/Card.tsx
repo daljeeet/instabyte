@@ -3,7 +3,7 @@ import { FiMoreHorizontal, FiBookmark, FiSend } from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
 import CardSwiper from './CardSwiper'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import { postDataType } from './CreateModal'
 import { rootReducertype } from '@/redux/store'
 import Image from 'next/image'
@@ -13,15 +13,13 @@ import ModalEdit from './ModalEdit'
 import DeleteModal from './DeleteModal'
 import AlertModal from './AlertModal'
 import AddMorePhotos from './AddMorePhotos'
-
+import { editPost } from '@/redux/postdata/post.actions'
 const Card = () => {
     // =========================Hooks at Top ============================
 const {del_error, del_loading, loading_post, error_post,postData}=useSelector((val:rootReducertype)=>val?.allPosts)
 const user = useSelector((val:rootReducertype)=>val?.user?.user)
 const [comment,setComment] = useState("")
-const handleComment = (e: { target: { value: React.SetStateAction<string> } })=>{
-setComment(e.target.value)
-}
+const dispatch:Dispatch<any>= useDispatch();
 const [expended,setExpended] = useState(true)
 const [post,setPost] = useState([])
 const [postObj, setPostObj] = useState(postData[0])
@@ -30,6 +28,7 @@ const [modalEdit, setModalEdit] =useState(false)
 const [postEdit, setPostEdit] = useState(true)
 const [delModal, setDelModal] = useState(false)
 const [addImgModal,setAddImgModal] = useState(false)
+const [addComment,setAddComment]=useState(false)
 useEffect(()=>{
 setPost(postData.reverse())
 },[postData])
@@ -93,6 +92,19 @@ const closeAddImgModal = ()=>{
     setAddImgModal(false)
 }
 
+const handleComment=(el:postDataType)=>{
+   
+
+var newComment={
+    user:user.name,
+    comment:comment
+}
+el.comments.push(newComment)
+dispatch(editPost(el))
+setAddComment(true)
+setComment("")
+}
+
 
 if(loading_post){
     return <Loader text="loading..." />
@@ -150,8 +162,10 @@ return (
                 </div>
                 <div className='flex items-center justify-around'>
                     <BiCommentAdd/>
-                <input type="text" placeholder='add a comment...' onChange={handleComment} className='outline-none bg-transparent my-3 w-3/5' />
-                <button disabled={comment==''} className='font-bold bg-black/60 px-3 rounded-md'>post</button>
+                <input value={comment} type="text" placeholder='add a comment...' onChange={(e)=>{setComment(e.target.value)
+                setAddComment(false)
+                }} className='outline-none bg-transparent my-3 w-3/5' />
+                <button onClick={()=>handleComment(el)} disabled={comment==''} className='font-bold bg-black/60 px-3 rounded-md'>post</button>
                 </div>
             </div>
           {(el?.edit_post)?<div className='px-4 h-24 w-40  absolute top-10 right-0 z-10 bg-black/70 text-sm font-bold'>
@@ -166,6 +180,7 @@ return (
         {delModal&&<DeleteModal id={postObj.id} closeModal={closeDelModal}  />}
         {del_error&&<AlertModal color="bg-red-600" text='Error in Deleting the post. Try again' />}
         {addImgModal&&<AddMorePhotos closeAddMorePhotos={closeAddImgModal} data={postObj} />}
+        {addComment&&<AlertModal text='Comment Added'  color="bg-green-500"/>}
         </>
     )
 }
