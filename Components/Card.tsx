@@ -123,8 +123,8 @@ return (
             <div className='p-2' >
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
-                        <AiOutlineHeart className='text-2xl cursor-pointer' />
-                        {/* <AiFillHeart className='text-2xl cursor-pointer text-red-500' /> */}
+                        {/* <AiOutlineHeart className='text-2xl cursor-pointer' /> */}
+                        <AiFillHeart className='text-2xl cursor-pointer text-red-500' />
                         <BiMessageRounded onClick={()=>handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiSend className='text-2xl cursor-pointer' />
                     </div>
