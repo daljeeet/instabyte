@@ -7,10 +7,9 @@ export type imgInitype = {
     iserror:boolean,
     isdone:boolean
 }
-let defaultImg = "https://cdn.iconscout.com/icon/premium/png-128-thumb/photo-122-88145.png"
 const initialState:imgInitype={
     isloading:false,
-    img:defaultImg,
+    img:"",
     iserror:false,
     isdone:false
 }
@@ -27,7 +26,7 @@ export const imgPostReducer = (state=initialState,action:any)=>{
         }
         case RESET:{
             return {...state, isloading:false,
-                img:defaultImg,
+                img:"",
                 iserror:false,
                 isdone:false}
         }

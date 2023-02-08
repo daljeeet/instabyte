@@ -13,7 +13,7 @@ export type authDataType = {
 }
 
 const iniitailState:authDataType = {
-    login_loading: false,
+    login_loading: true,
     login_error: false,
     user: null,
 }
@@ -22,19 +22,19 @@ export const authUserReducer = (state = iniitailState, actions: { type: any; pay
     let { type, payload } = actions
     switch (type) {
         case AUTH_LOADING: {
-            return { ...state, loading: true }
+            return { ...state, login_loading: true }
         }
         case AUTH_ERROR: {
-            return { ...state, loading: false, error: true, }
+            return { ...state, login_loading: false, error: true, }
         }
         case AUTH_SUCCESS: {
-            return { ...state, loading: false, error: false, user:payload}
+            return { ...state, login_loading: false, error: false, user:payload}
         }
         case AUTH_CHECK: {
             if(payload.id===undefined){
                 payload = null;
             }
-            return { ...state, loading: false, error: false, user:payload}
+            return { ...state, login_loading: false, error: false, user:payload}
         }
         case AUTH_RESET: {
             return { ...state}

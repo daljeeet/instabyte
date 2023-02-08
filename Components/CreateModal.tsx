@@ -1,7 +1,9 @@
 import { rootReducertype } from '@/redux/store'
 import axios from 'axios'
+import Image from 'next/image'
 import React,{useState,Dispatch,useEffect, ChangeEventHandler} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
+import { BsFillImageFill } from 'react-icons/bs'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { getAllPosts, postDetails } from '../redux/postdata/post.actions'
@@ -12,6 +14,7 @@ type createmodalTypes = {
 }
 export type commontsType = {user:string,comment:string}
 export type postDataType={
+        [x: string]: any
         caption: string,
         imgUrl: string[],
         owner: string,
@@ -20,6 +23,8 @@ export type postDataType={
         likes: string[],
         id: string | number,
         comments:commontsType[],
+        show_Caption:boolean,
+        edit_post:boolean
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -57,9 +62,12 @@ const handlePost = ()=>{
             user:"",
             comment:""
           }
-        ]
+        ],
+        show_Caption:false,
+        edit_post:false
       }
       dispatch(postDetails(postData))
+      handleClose()
       props.handleModal()
 }
    return (<>
@@ -73,9 +81,7 @@ const handlePost = ()=>{
                 </div>
                 {
                     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:
-                    //  eslint-disable-next-line @next/next/no-img-element
-                    <img className='w-5/6 m-auto bg-black/80 my-4' src={img} alt="" />
+                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} alt="" />:<BsFillImageFill className='text-8xl m-auto my-4' />
                 }
                 {isdone?<div className='flex w-11/12 m-auto justify-around py-1 mb-4' > 
                     <input type="text" placeholder='Post Caption here' className='bg-gray-600 rounded-lg pl-2  outline-none' value={caption} onChange={handleCaption} />

@@ -2,12 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'i.ibb.co',
-      },
-    ],
+    domains:["i.ibb.co","lh3.googleusercontent.com"]
   },
 }
 
