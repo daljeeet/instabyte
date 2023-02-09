@@ -1,7 +1,8 @@
 import React,{useState,useEffect,Dispatch} from 'react'
-import { FiMoreHorizontal, FiBookmark, FiSend } from 'react-icons/fi'
+import { FiMoreHorizontal, FiBookmark, FiSend} from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
+import { BiCommentAdd, BiMessageRounded} from 'react-icons/bi'
+import {HiDotsVertical} from 'react-icons/hi'
 import CardSwiper from './CardSwiper'
 import { useSelector,useDispatch } from 'react-redux'
 import { postDataType } from './CreateModal'
@@ -19,6 +20,7 @@ const Card = () => {
 const {del_error, del_loading, loading_post, error_post,postData}=useSelector((val:rootReducertype)=>val?.allPosts)
 const user = useSelector((val:rootReducertype)=>val?.user?.user)
 const [comment,setComment] = useState("")
+const [like,setLike]= useState(false)
 const dispatch:Dispatch<any>= useDispatch();
 const [expended,setExpended] = useState(true)
 const [post,setPost] = useState([])
@@ -92,6 +94,7 @@ const closeAddImgModal = ()=>{
     setAddImgModal(false)
 }
 
+// comments
 const handleComment=(el:postDataType)=>{
    
 
@@ -105,7 +108,28 @@ setAddComment(true)
 setComment("")
 }
 
+// likes
 
+const handleLike=(state:boolean,el:postDataType)=>{
+setLike(state)
+if(state){
+    el.likes.push(user.name)
+    dispatch(editPost(el))
+}
+else{
+let newLikedel=  el.likes.filter((el)=>{
+return el!==user.name
+  })
+  el.likes= newLikedel
+  dispatch(editPost(el))
+
+}
+}
+
+      
+
+
+console.log(post)
 if(loading_post){
     return <Loader text="loading..." />
 }
@@ -135,8 +159,33 @@ return (
             <div className='p-2' >
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
-                        {/* <AiOutlineHeart className='text-2xl cursor-pointer' /> */}
-                        <AiFillHeart className='text-2xl cursor-pointer text-red-500' />
+                        {/* {
+                            like ?   <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  /> :
+                            <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+                        } */}
+              {/* {
+                el.likes.map((el)=>{
+              
+                    if(el===user.name){
+
+                      return  <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
+                    }
+               
+
+
+                
+                })
+             
+              
+              
+              }
+              {
+                 !like ? <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> :""
+              } */}
+               {
+                el.likes.includes(user.name) ? <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
+                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+               }
                         <BiMessageRounded onClick={()=>handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiSend className='text-2xl cursor-pointer' />
                     </div>
@@ -145,9 +194,16 @@ return (
                     </div>
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
+              <div style={{display:"flex"}}>
                 <p>
                 {el?.likes?.length} likes
                 </p>
+                <HiDotsVertical style={{ marginTop:"5px" }}/>
+            
+                <p>
+                {el?.comments?.length-1} Comments
+                </p>
+                </div>
                 <p >
                     <span className='font-semibold mx-2'>{el?.owner}</span>
                     {
@@ -161,7 +217,7 @@ return (
                 </p>
                 </div>
                 <div className='flex items-center justify-around'>
-                    <BiCommentAdd/>
+                    <BiCommentAdd />
                 <input value={comment} type="text" placeholder='add a comment...' onChange={(e)=>{setComment(e.target.value)
                 setAddComment(false)
                 }} className='outline-none bg-transparent my-3 w-3/5' />
