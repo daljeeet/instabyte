@@ -1,7 +1,6 @@
 import { rootReducertype } from '@/redux/store'
-import axios from 'axios'
 import Image from 'next/image'
-import React,{useState,Dispatch,useEffect, ChangeEventHandler} from 'react'
+import React,{useState,Dispatch,useEffect, ChangeEventHandler, useId} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BsFillImageFill } from 'react-icons/bs'
 import {useDispatch, useSelector} from 'react-redux'
@@ -21,10 +20,10 @@ export type postDataType={
         owner_profile:string,
         posted_on:string,
         likes: string[],
-        id: string | number,
         comments:commontsType[],
         show_Caption:boolean,
-        edit_post:boolean
+        edit_post:boolean,
+        _id?:string
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -55,7 +54,6 @@ const handlePost = ()=>{
         owner: user.name,
         owner_profile:user.profile,
         likes: [],
-        id:'',
         posted_on:datestr,
         comments:[
           {
@@ -81,7 +79,7 @@ const handlePost = ()=>{
                 </div>
                 {
                     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} alt="" />:<BsFillImageFill className='text-8xl m-auto my-4' />
+                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} width={200} height={200} alt="" />:<BsFillImageFill className='text-8xl m-auto my-4' />
                 }
                 {isdone?<div className='flex w-11/12 m-auto justify-around py-1 mb-4' > 
                     <input type="text" placeholder='Post Caption here' className='bg-gray-600 rounded-lg pl-2  outline-none' value={caption} onChange={handleCaption} />

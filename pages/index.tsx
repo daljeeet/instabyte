@@ -1,7 +1,6 @@
 import Card from "../Components/Card";
 import Status from "../Components/Status";
 import Navbar from "../Components/Navbar";
-import axios from "axios";
 export default function home() {
   return (
     <>

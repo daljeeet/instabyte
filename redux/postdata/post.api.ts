@@ -2,7 +2,7 @@ import { postDataType } from "../../Components/CreateModal"
 import axios from "axios";
 export const postDetailsApi = async(data:postDataType)=>{
     try{
-        const res = await axios.post("https://instabyte.glitch.me/posts",data)
+        const res = await axios.post("/api/insta",data)
         return res.data
     }catch(err){
         console.log(err)
@@ -11,8 +11,8 @@ export const postDetailsApi = async(data:postDataType)=>{
 
 export const getAllPostsApi = async()=>{
     try{
-        const res = await axios.get("https://instabyte.glitch.me/posts")
-        return res.data
+        const res = await axios.get("/api/insta")
+        return res.data.data
     }catch(err){
         console.log(err)
     }
@@ -20,7 +20,7 @@ export const getAllPostsApi = async()=>{
 
 export const deletePostApi = async(id:number|string)=>{
     try{
-        const res = await axios.delete(`https://instabyte.glitch.me/posts/${id}`)
+        const res = await axios.delete(`/api/insta/${id}`)
         return res;
     }catch(err){
         console.log(err)
@@ -29,9 +29,8 @@ export const deletePostApi = async(id:number|string)=>{
 
 export const editPostApi = async(data:postDataType)=>{
     try{
-        const res = await axios.patch(`https://instabyte.glitch.me/posts/${data.id}`,data)
-        // return res
-        console.log(res)
+        const res = await axios.patch(`/api/insta/${data._id}`,data)
+        return res
     }catch(err){
         console.log(err)
     }
