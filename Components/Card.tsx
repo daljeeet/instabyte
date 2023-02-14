@@ -26,7 +26,8 @@ posted_on:"",
 comments:[
   {
     user:"",
-    comment:""
+    comment:"",
+    time:""
   }
 ],
 show_Caption:false,
@@ -147,8 +148,10 @@ const handleComment=(el:postDataType)=>{
     if(user){
 var newComment={
     user:user.name,
-    comment:comment
+    comment:comment,
+    time:new Date().toDateString()
 }
+console.log(newComment)
 el.comments.push(newComment)
 dispatch(editPost(el))
 setAddComment(true)

@@ -11,7 +11,7 @@ type createmodalTypes = {
     createModal: boolean,
     handleModal: ()=>void
 }
-export type commontsType = {user:string,comment:string}
+export type commontsType = {user:string,comment:string,time:string}
 export type postDataType={
         [x: string]: any
         caption: string,
@@ -55,7 +55,8 @@ const handlePost = ()=>{
         comments:[
           {
             user:"",
-            comment:""
+            comment:"",
+            time:""
           }
         ],
         show_Caption:false,
