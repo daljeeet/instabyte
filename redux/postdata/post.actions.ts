@@ -14,10 +14,10 @@ import { postDataType } from "../../Components/CreateModal"
 import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
 
  
-export const getAllPosts = ()=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
+export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
 dispatch({type:GET_LOADING})
 try{
-    let res = await getAllPostsApi()
+    let res = await getAllPostsApi(page)
     dispatch({type:GET_SUCCESS,payload:res})
 }catch(err){
     dispatch({type:GET_ERROR})

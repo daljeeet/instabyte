@@ -9,9 +9,9 @@ export const postDetailsApi = async(data:postDataType)=>{
     }
 }
 
-export const getAllPostsApi = async()=>{
+export const getAllPostsApi = async(page:number)=>{
     try{
-        const res = await axios.get("/api/insta")
+        const res = await axios.get(`/api/insta?page=${page}`)
         return res.data.data
     }catch(err){
         console.log(err)

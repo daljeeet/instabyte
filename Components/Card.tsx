@@ -1,7 +1,8 @@
 import React,{useState,useEffect,Dispatch} from 'react'
 import { FiMoreHorizontal, FiBookmark, FiSend} from 'react-icons/fi'
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import { BiCommentAdd, BiMessageRounded} from 'react-icons/bi'
+import { AiFillHeart, AiOutlineDelete, AiOutlineEdit, AiOutlineHeart } from 'react-icons/ai'
+import { BiCommentAdd, BiMessageRounded, BiMessageSquareAdd} from 'react-icons/bi'
+import {GrFormAdd} from 'react-icons/gr'
 import {HiDotsVertical} from 'react-icons/hi'
 import CardSwiper from './CardSwiper'
 import { useSelector,useDispatch } from 'react-redux'
@@ -14,7 +15,8 @@ import ModalEdit from './ModalEdit'
 import DeleteModal from './DeleteModal'
 import AlertModal from './AlertModal'
 import AddMorePhotos from './AddMorePhotos'
-import { editPost } from '@/redux/postdata/post.actions'
+import { editPost, getAllPosts } from '@/redux/postdata/post.actions'
+import Router  from 'next/router'
 const elem:postDataType = {caption:"",
 imgUrl:[""],
 owner: "",
@@ -31,11 +33,11 @@ show_Caption:false,
 edit_post:false,
 _id:""
 }
+type objData = {value:any}
 const Card = () => {
     // =========================Hooks at Top ============================
 const {del_error, del_loading, loading_post, error_post,postData}=useSelector((val:rootReducertype)=>val?.allPosts)
 const user = useSelector((val:rootReducertype)=>val?.user?.user)
-const [comment,setComment] = useState("")
 const dispatch:Dispatch<any>= useDispatch();
 const [expended,setExpended] = useState(true)
 const [post,setPost] = useState([])
@@ -46,9 +48,26 @@ const [postEdit, setPostEdit] = useState(true)
 const [delModal, setDelModal] = useState(false)
 const [addImgModal,setAddImgModal] = useState(false)
 const [addComment,setAddComment]=useState(false)
+const [comment,setComment] = useState('')
+const [page,setPage] = useState(1)
+
 useEffect(()=>{
-setPost(postData?.reverse())
-console.log(postData)
+    dispatch(getAllPosts(page))
+
+    // const observer = new IntersectionObserver(handleIntersection, {
+    //     root: null,
+    //     rootMargin: "0px",
+    //     threshold: 1.0
+    //   });
+    //   const handleIntersection = (entries) => {
+    //     if (entries[0].isIntersecting) {
+    //         dispatch(getAllPosts(page))
+    //     }
+        // observer.observe(document.querySelector("#observer"));
+},[dispatch, page])
+
+useEffect(()=>{
+setPost(postData)
 },[postData])
 // =============================Various Functions & Onclick Events=================================
 
@@ -57,7 +76,6 @@ const toggleCaption = (id: string | undefined)=>{
   let showCaption = postData.map((el: { _id: string | undefined })=>{
         if(el._id==id){
             let updatedData = {...el,show_Caption:expended}
-            console.log(el)
             return updatedData;
         }else{
             return el
@@ -66,16 +84,24 @@ const toggleCaption = (id: string | undefined)=>{
     setPost(showCaption)
 }
 const handlePostDetails = (el:postDataType)=>{
+    if(user){
     setModal(true)
-setPostObj(el)
+setPostObj(el)       
+}else{
+    Router.push("/login")
+}
 }
 const closePostDtlModal = ()=>{
     setModal(false)
 }
 const handlePostEdit = (el:postDataType)=>{
-    setModalEdit(true);
-    handleEditPost(el._id)
-    setPostObj(el)
+    if(user){
+        setModalEdit(true);
+        handleEditPost(el._id)
+        setPostObj(el)
+    }else{
+        Router.push("/login")
+    }
 }
 const closePostEditModal = ()=>{
     setModalEdit(false)
@@ -116,7 +142,9 @@ const handleCommentChange = (e: { target: { value: React.SetStateAction<string> 
 
 
 // comments
+
 const handleComment=(el:postDataType)=>{
+    if(user){
 var newComment={
     user:user.name,
     comment:comment
@@ -125,11 +153,16 @@ el.comments.push(newComment)
 dispatch(editPost(el))
 setAddComment(true)
 setComment("")
+el.comment=""
+}else{
+    Router.push("/login")
+}
 }
 
 // likes
 
 const handleLike=(state:boolean,el:postDataType)=>{
+if(user){
 if(state){
     el.likes.push(user.name)
     dispatch(editPost(el))
@@ -141,7 +174,12 @@ return el!==user.name
   el.likes= newLikedel
   dispatch(editPost(el))
 }
+}else{
+    Router.push("/login")
 }
+}
+
+
 if(loading_post){
     return <Loader text="Loading..." />
 }
@@ -158,8 +196,9 @@ return (
                     <div className='md:w-8 md:h-8 overflow-hidden h-10 w-10 rounded-full mx-2'>
                         <Image src={el?.owner_profile} alt="User's Photo" width={200} height={200} />
                     </div>
-                    <div className='mx-2 font-semibold'>{el?.owner}</div>
-                    <div className='text-sm text-gray-400'> {el?.posted_on} </div>
+                    <div className='mx-2 font-semibold'> <p>{el?.owner}</p>
+                    <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
+                    </div>
                 </div>
                {el.owner===user?.name? <div className='mr-2' >
                     <FiMoreHorizontal onClick={()=>handleEditPost(el._id)} className='font-bold text-xl cursor-pointer' />
@@ -172,25 +211,26 @@ return (
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                {
-                el.likes.includes(user?.name) ? <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
-                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+                el.likes.includes(user?.name) ? <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500 animate-in zoom-in'  />
+                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer animate-in zoom-in' /> 
                }
                         <BiMessageRounded onClick={()=>handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
-                        <FiSend className='text-2xl cursor-pointer' />
-                    </div>
-                    <div className='pr-4'>
                         <FiBookmark className='text-2xl cursor-pointer' />
+                        {/* <FiSend className='text-2xl cursor-pointer' /> */}
                     </div>
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
-              <div style={{display:"flex"}}>
+              <div className='flex items-center' >
                 <p>
-                {el?.likes?.length} likes
-                </p>
-                <HiDotsVertical style={{ marginTop:"5px" }}/>
-            
+                {
+                 el?.likes.length==0?"No Likes":el.likes.length==1?`1 Like `:` ${el.likes.length} Likes`
+                }
+                </p>  
+                <HiDotsVertical className=''/>          
                 <p>
-                {el?.comments?.length-1} Comments
+                {
+                el?.comments?.length==1?`No Comments`:el.comments.length===2?"1 Comment":  `${el.comments.length} Comments`
+                }
                 </p>
                 </div>
                 <p >
@@ -206,15 +246,15 @@ return (
                 </div>
                 <div className='flex items-center justify-around'>
                     <BiCommentAdd />
-                <input value={comment} type="text" placeholder='add a comment...' onChange={handleCommentChange} className='outline-none bg-transparent my-3 w-3/5' />
+                <input value={el.comment} type="text" placeholder='add a comment...' onChange={(e)=>handleCommentChange(e)} className='outline-none bg-transparent my-3 w-3/5' />
                 <button onClick={()=>handleComment(el)} disabled={comment.length<6} className={`font-bold bg-black/60 px-3 rounded-md ${comment.length<6?"text-gray-500":""}`}>post</button>
                 </div>
             </div>
-          {(el?.edit_post)?<div className='px-4 h-24 w-40  absolute top-10 right-0 z-10 bg-black/70 text-sm font-bold'>
-            <p onClick={()=>handlePostEdit(el)} className='border-b-2 border-gray-500 text-lime-400 cursor-pointer'>Edit Post</p>
-            <p onClick={()=>openAddImgModal(el)} className='border-b-2 border-gray-500 text-lime-400 cursor-pointer'>Add photos</p>
-            <p onClick={()=>handleDelModal(el)} className='border-b-2 border-gray-500 text-red-500 cursor-pointer'>Delete Post</p>
-          </div>:""}
+          {(el?.edit_post)?<div onClick={()=>handleEditPost(el.id)} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e)=>{e.stopPropagation()}} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
+            <p onClick={()=>handlePostEdit(el)} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'><AiOutlineEdit className='mr-2' /> Edit Post</p>
+            <p onClick={()=>openAddImgModal(el)} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'> <BiMessageSquareAdd className='mr-2' /> Add photos</p>
+            <p onClick={()=>handleDelModal(el)} className='border-b-2 border-gray-500 my-4 text-red-300 cursor-pointer flex items-center'> <AiOutlineDelete className='mr-2' /> Delete Post</p>
+          </div> </div> :""}
         </div>
         )}
         {modal&&<PostDetails data={postObj} closeModal={closePostDtlModal}  />}

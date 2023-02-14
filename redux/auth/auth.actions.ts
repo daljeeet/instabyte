@@ -47,10 +47,8 @@ export const  loginwithGithub = ()=> async(dispatch: (arg0: { type: string; payl
 }
 
 export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-    console.log('signout request')
     try{
-        const res = await signOut(auth)
-        console.log('after signout',res)
+        await signOut(auth)
         dispatch({type:AUTH_RESET})
     }catch(err){
         console.log(err)
@@ -65,8 +63,9 @@ export type userDetails ={
 
 export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
+    console.log(getAuth())
     try{
-        auth.onAuthStateChanged((user)=>{
+        await auth.onAuthStateChanged((user)=>{
             const userData = {
                 name:user?.displayName,
                 email:user?.email,
