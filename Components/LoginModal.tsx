@@ -6,7 +6,7 @@ type postDataAll = {
     id: string|undefined,
     closeModal: () => void
 }
-const DeleteModal = (props: postDataAll) => {
+const LoginModal = (props: postDataAll) => {
     const postData=useSelector((val:rootReducertype)=>val?.allPosts?.postData)
     const dispatch:Dispatch<any> = useDispatch();
     const { id, closeModal } = props;
@@ -36,4 +36,4 @@ const DeleteModal = (props: postDataAll) => {
   )
 }
 
-export default DeleteModal
+export default LoginModal

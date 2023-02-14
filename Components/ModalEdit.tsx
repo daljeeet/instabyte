@@ -40,14 +40,14 @@ const ModalEdit = (props: postDataAll) => {
     }
 
     return (
-        <div className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-10' >
+        <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-10' >
             <div onClick={() => closeModal()} className='fixed md:top-2 top-0 right-0 z-10 md:right-2 m-4 cursor-pointer'><AiOutlineClose className='text-3xl' /></div>
-            <div className='bg-darkbg flex md:flex-row flex-col h-[90%] md:w-[80%] relative overflow-y-auto'>
+            <div onClick={(e)=>{e.stopPropagation()}} className='bg-darkbg flex md:flex-row flex-col h-[90%] md:w-[80%] relative overflow-y-auto animate-in zoom-in'>
 
                 {/* ===================post Image ===================== */}
 
                 <div className='md:w-1/2 w-full justify-center items-center flex'>
-                    <div className="h-full overflow-y-auto m-auto justify-center items-center flex scrollbar-hide" >
+                    <div className="h-full overflow-y-auto m-auto justify-center items-center flex scrollbar-hide p-4 " >
                         {/* <Image src={el} width={400} height={1600} className='rounded-2xl' alt='Post Image' /> */}
                         <CardSwiper data={data?.imgUrl} />
                     </div>

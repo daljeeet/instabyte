@@ -1,7 +1,6 @@
 import { rootReducertype } from '@/redux/store'
-import axios from 'axios'
 import Image from 'next/image'
-import React,{useState,Dispatch,useEffect, ChangeEventHandler} from 'react'
+import React,{useState,Dispatch,useEffect, ChangeEventHandler, useId} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BsFillImageFill } from 'react-icons/bs'
 import {useDispatch, useSelector} from 'react-redux'
@@ -21,10 +20,10 @@ export type postDataType={
         owner_profile:string,
         posted_on:string,
         likes: string[],
-        id: string | number,
         comments:commontsType[],
         show_Caption:boolean,
-        edit_post:boolean
+        edit_post:boolean,
+        _id?:string
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -32,9 +31,6 @@ const CreateModal = (props: createmodalTypes) => {
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
     const [caption, setCaption]  = useState("Caption...")
-    useEffect(() => {
-      dispatch(getAllPosts())
-    }, [dispatch])
     const handleCaption = (e: { target: { value: React.SetStateAction<string> } })=>{
         setCaption(e.target.value)
     }
@@ -55,7 +51,6 @@ const handlePost = ()=>{
         owner: user.name,
         owner_profile:user.profile,
         likes: [],
-        id:'',
         posted_on:datestr,
         comments:[
           {
@@ -71,17 +66,17 @@ const handlePost = ()=>{
       props.handleModal()
 }
    return (<>
-        {props.createModal||<div className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-10`} >
+        {props.createModal||<div onClick={handleClose} className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-10`} >
             {
                 iserror?<div> Image Upload Failed ☹️ <span onClick={handleClose} className='underline font-bold text-sm'>close</span> </div>:                
-                <div className='m-auto w-5/6 md:w-96 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto'>
+                <div onClick={(e)=>{e.stopPropagation()}} className='m-auto w-5/6 md:w-96 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto animate-in zoom-in'>
                 <div className='w-full relative'>
                {isloading?<h3 className='text-2xl'>Please Wait...</h3> :<h3 className='text-2xl'>Create a Post </h3> }
                 <AiOutlineClose onClick={handleClose} className='absolute right-0 top-0 text-xl mt-2 mr-2 font-bold cursor-pointer'/>
                 </div>
                 {
                     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} alt="" />:<BsFillImageFill className='text-8xl m-auto my-4' />
+                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} width={200} height={200} alt="" />:<BsFillImageFill className='text-8xl m-auto my-4' />
                 }
                 {isdone?<div className='flex w-11/12 m-auto justify-around py-1 mb-4' > 
                     <input type="text" placeholder='Post Caption here' className='bg-gray-600 rounded-lg pl-2  outline-none' value={caption} onChange={handleCaption} />

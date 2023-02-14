@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       animation: {
         width: 'width 0.2s ease-in-out',
-        loader: 'loader 1s ease-in-out infinite',
+        loader: 'loader 1.2s ease-in-out infinite',
       },
       keyframes: {
         width: {
@@ -33,7 +33,8 @@ module.exports = {
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide')
+    require('tailwind-scrollbar-hide'),
+    require("tailwindcss-animate"),
     // ...
   ]
 }

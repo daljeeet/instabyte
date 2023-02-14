@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import React, { Dispatch, useState,useEffect } from 'react'
-import {AiOutlineSearch,AiOutlineHome,AiOutlineHeart,AiOutlineFileAdd} from 'react-icons/ai'
+import {AiOutlineSearch,AiOutlineHome} from 'react-icons/ai'
+import {IoMdNotificationsOutline} from 'react-icons/io'
+
 import {MdOutlineExplore} from 'react-icons/md';
 import {CgProfile} from 'react-icons/cg'
-import {FiSend} from 'react-icons/fi'
+import {FiBookmark, FiSend} from 'react-icons/fi'
 import {BiMessageSquareAdd} from 'react-icons/bi'
 import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
@@ -14,60 +16,67 @@ import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
-    const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
     const dispatch:Dispatch<any> = useDispatch()
-    useEffect(() => {
-      dispatch(isUserLogin())
-    }, [dispatch])
-    useEffect(()=>{
-        if(login_loading===false){
-            if(user==null){
-               Router.push('/login')
-            }
-        }
-    },[login_loading, user])
-
+    const user = useSelector((val:rootReducertype)=>val?.user?.user)
     const [profileDtl,setProfileDtl] = useState(true)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(true)
 
+        useEffect(()=>{
+            dispatch(isUserLogin())
+        },[dispatch])
     // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
-        setSrchModal(!srchModal)
+        if(user){
+            setSrchModal(!srchModal)
+        }else{
+            Router.push("/login")
+        }
+    }
+    const closeSrchModal = ()=>{
+        setSrchModal(false)
     }
     const handleNewPost = ()=>{
-        setCreateModal(!createModal)
+        if(user){
+            setCreateModal(!createModal)
+        }else{
+            Router.push("/login")
+        }
     }
     const handleModal = ()=>{
-        setCreateModal(!createModal)
+           setCreateModal(!createModal)
     }
     const handleLogout = ()=>{
         dispatch(signoutUser())
     }
-    const handleProfileModal = ()=>{    
-        setProfileDtl(!profileDtl)
+    const handleProfileModal = ()=>{ 
+        if(user){
+            setProfileDtl(!profileDtl)
+        }else{
+            Router.push("/login")
+        }   
     }
     return (
         <>
-        <div className='flex md:flex-col bg-black/50 md:w-48 w-screen h-14 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
+        <div className='flex md:flex-col bg-black/50 md:w-48 w-screen h-10 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
                 <Link href='/' className='hidden md:block w-fit pl-4 pt-2'>
                 {<Image src="/logod.png" alt="Tattoo fonts" width={100} height={50}/>}
                 </Link>
             <div className='flex md:flex-col w-full md:w-40 md:h-[70vh] justify-around font-semibold px-4 '>
-                <Link href={'/'} className='flex items-center' >
-                    <AiOutlineHome className='mr-2 text-2xl' /> <p className='hidden md:block' >Home</p>
+                <Link href={'/'} onClick={closeSrchModal} className='flex items-center' >
+                    <AiOutlineHome  className='mr-2 text-2xl' /> <p className='hidden md:block' >Home</p>
                 </Link>
                 <button onClick={handleSearch} className='items-center hidden md:flex' >
                     <AiOutlineSearch className='mr-2 text-2xl' /> <p className='' >Search</p>
                 </button>
-                <Link href={'/'} className='flex items-center' >
+                <Link href={'/explore'} className='flex items-center' >
                     <MdOutlineExplore className='mr-2 text-2xl' /> <p className='hidden md:block' >Explore</p>
                 </Link>
                 <Link href={'/'} className='flex items-center' >
-                    <FiSend className='mr-2 text-2xl' /> <p className='hidden md:block' >Message</p>
+                    <FiBookmark className='mr-2 text-2xl' /> <p className='hidden md:block' >Bookmarks</p>
                 </Link>
                 <Link href={'/'} className='items-center hidden md:flex' >
-                    <AiOutlineHeart className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
+                    <IoMdNotificationsOutline className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
                 </Link>
                 <Link onClick={handleNewPost} href={'/'} className='flex items-center' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
@@ -83,7 +92,7 @@ const Navbar = () => {
                         <p onClick={handleLogout} className='border-b-2 border-gray-600 mx-2 text-sm cursor-pointer'>Log-out</p>
                         {/* <p className='cursor-pointer border-b-2 border-gray-600 mx-2 text-sm mt-2'>Settings</p> */}
                 </div>}
-                <SrchModal srchModal={srchModal} />
+                <SrchModal srchModal={srchModal} closeSrchModal={closeSrchModal} />
         </div>
                 <CreateModal handleModal={handleModal} createModal={createModal} />
         {/* mobile nav  */}
