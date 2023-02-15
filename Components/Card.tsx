@@ -2,7 +2,6 @@ import React,{useState,useEffect,Dispatch} from 'react'
 import { FiMoreHorizontal, FiBookmark, FiSend} from 'react-icons/fi'
 import { AiFillHeart, AiOutlineDelete, AiOutlineEdit, AiOutlineHeart } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded, BiMessageSquareAdd} from 'react-icons/bi'
-import {GrFormAdd} from 'react-icons/gr'
 import {HiDotsVertical} from 'react-icons/hi'
 import CardSwiper from './CardSwiper'
 import { useSelector,useDispatch } from 'react-redux'
@@ -17,7 +16,7 @@ import AlertModal from './AlertModal'
 import AddMorePhotos from './AddMorePhotos'
 import { editPost, getAllPosts } from '@/redux/postdata/post.actions'
 import Router  from 'next/router'
-const elem:postDataType = {caption:"",
+export const elem:postDataType = {caption:"",
 imgUrl:[""],
 owner: "",
 owner_profile:"",
@@ -54,19 +53,8 @@ const [page,setPage] = useState(1)
 
 useEffect(()=>{
     dispatch(getAllPosts(page))
-
-    // const observer = new IntersectionObserver(handleIntersection, {
-    //     root: null,
-    //     rootMargin: "0px",
-    //     threshold: 1.0
-    //   });
-    //   const handleIntersection = (entries) => {
-    //     if (entries[0].isIntersecting) {
-    //         dispatch(getAllPosts(page))
-    //     }
-        // observer.observe(document.querySelector("#observer"));
 },[dispatch, page])
-
+console.log(user)
 useEffect(()=>{
 setPost(postData)
 },[postData])

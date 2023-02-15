@@ -78,9 +78,9 @@ const Navbar = () => {
                 <Link href={'/'} className='items-center hidden md:flex' >
                     <IoMdNotificationsOutline className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
                 </Link>
-                <Link onClick={handleNewPost} href={'/'} className='flex items-center' >
+                <div onClick={handleNewPost}  className='flex items-center cursor-pointer' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
-                </Link>
+                </div>
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
                         user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2 ' ><Image src={user.profile} width={30} height={30} alt='profile Pic' /> </div> :

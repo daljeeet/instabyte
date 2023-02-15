@@ -11,5 +11,5 @@ const PostSchema = new mongoose.Schema({
     show_Caption:{type:Boolean,required:true},
     edit_post:{type:Boolean,required:true}
 })
-
-module.exports = mongoose.models.Post || mongoose.model("Post", PostSchema);
+ const Post = mongoose.models.Post || mongoose.model("Post", PostSchema);
+module.exports = Post
