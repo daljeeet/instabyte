@@ -18,6 +18,9 @@ const PostDetails = (props: postDataAll) => {
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const { data, closeModal } = props
     const [comment, setComment] = useState("")
+    const [currentDate,setCurrentDate]= useState(new Date().toDateString())
+
+ console.log(currentDate)
     const handleLike = (state: boolean, el: postDataType) => {
         if (state) {
             el.likes.push(user.name)
@@ -38,7 +41,8 @@ const PostDetails = (props: postDataAll) => {
     const handleComment = (el: postDataType) => {
         var newComment = {
             user: user?.name,
-            comment: comment
+            comment: comment,
+            time:new Date().toDateString()
         }
         el.comments.push(newComment)
         dispatch(editPost(el))
@@ -75,10 +79,20 @@ const PostDetails = (props: postDataAll) => {
                                     const colors = ["bg-black", "bg-violet-900", "bg-blue-800", "bg-sky-900", "bg-emerald-800", "bg-yellow-900", "bg-teal-700", "bg-cyan-700", "bg-blue-500", "bg-pink-900"]
                                     const random = Math.floor(Math.random() * colors.length)
                                     return (<div key={id}>
-                                        {el.user == '' ? "" : <div className='flex m-3 items-center'>
+                                        {el.user == '' ? "" : <div className='  flex m-3 items-center justify-between'>
                                             <div className={`h-8 w-8 rounded-full mr-2 flex justify-center items-center text-xl ${colors[random]}`}>{el.user.split('').slice(0, 1).join("").toUpperCase()}</div>
-                                            <p className='mr-2 font-semibold text-sm' >{el.user}</p>
-                                            <p className='w-2/3' >{el.comment}</p>
+                                            <p className='mr-2 font-semibold text-sm w-1/3' >{el.user}</p>
+                                       
+                                       <div className=' w-1/2'>
+                                            <p  className='text-sm' >{el.comment}</p>
+                                        
+                                           {
+                                         Date.parse(el.time)-Date.parse(new Date().toDateString())  <=86400000 ?  <p className='text-sm text-gray-500' >Today</p>:  Date.parse(el.time)-Date.parse(new Date().toDateString())  <=172800000 ? <p className='text-sm text-gray-500' >yesterday</p>: <p className='text-sm text-gray-500' >{el.time}</p>
+                                        
+                                           }
+                                           </div>
+                                           
+                                       
                                         </div>}
                                     </div>
                                     )
