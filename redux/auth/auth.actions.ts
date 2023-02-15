@@ -58,7 +58,7 @@ export type userDetails ={
     name:string,
     email:string,
     id:string,
-    profile:string
+    profile:string,
 }
 
 export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
