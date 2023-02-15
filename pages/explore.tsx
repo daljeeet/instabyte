@@ -6,6 +6,7 @@ import { postDataType } from '@/Components/CreateModal.jsx';
 import Image from 'next/image';
 import PostDetails from '@/Components/PostDetails';
 import {elem} from '../Components/Card'
+import BlurImage from '@/Components/BlurImage';
 type dataTypes = {
   data:postDataType
 }
@@ -47,7 +48,7 @@ const closePostDtlModal = ()=>{
      <Navbar/>
     <div className='md:ml-52 pt-14 h-fit' >
       <div className='grid gap-4 p-4 md:grid-cols-3 grid-cols-1 sm:grid-cols-2 grid-rows-auto'>
-       {images?.map((el:string,id:number)=><Image key={id} onClick={()=>handleImagePost(el)} src={el} alt='allpics' width={400} height={800} onLoad={(e:any)=>{e.target.naturalHeight>550?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} />
+       {images?.map((el:string,id:number)=><Image key={id} placeholder='blur' blurDataURL={BlurImage} onClick={()=>handleImagePost(el)} src={el} alt='allpics' width={400} height={800} onLoad={(e:any)=>{e.target.naturalHeight>550?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} />
         )}
     </div>
     </div>

@@ -1,6 +1,6 @@
 import { postUrl, resetPost } from '@/redux/ImageUrl/actions'
 import { rootReducertype } from '@/redux/store'
-import React,{Dispatch} from 'react'
+import React,{Dispatch, useEffect} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsFillImageFill} from 'react-icons/bs'
@@ -18,6 +18,12 @@ const AddMorePhotos = (props:addType) => {
   const {closeAddMorePhotos,data} = props;
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
+    useEffect(() => {
+      document.body.className="overflow-y-hidden";
+      return ()=>{
+      document.body.className="overflow-y-auto";
+      }
+  }, [])
     const handleClose = ()=>{
       closeAddMorePhotos()
     }

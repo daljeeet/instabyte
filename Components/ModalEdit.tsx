@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { postDataType } from './CreateModal'
 import { AiFillEdit, AiOutlineClose} from 'react-icons/ai'
 import { MdAddCircle } from 'react-icons/md'
@@ -22,6 +22,14 @@ const ModalEdit = (props: postDataAll) => {
     const [changeCaption, setChangeCaption] = useState(data?.caption)
     const [alert,setAlert] = useState(false)
     const [addphoto, setAddPhoto] = useState(false)
+
+    useEffect(() => {
+        document.body.className="overflow-y-hidden";
+        return ()=>{
+        document.body.className="overflow-y-auto";
+        }
+    }, [])
+
     const handleChange = (e:any)=>{
         setChangeCaption(e.target.value)
     }
