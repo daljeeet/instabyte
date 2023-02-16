@@ -20,7 +20,7 @@ const Navbar = () => {
     const user = useSelector((val:rootReducertype)=>val?.user?.user)
     const [profileDtl,setProfileDtl] = useState(true)
     const [srchModal, setSrchModal] = useState(false)
-    const [createModal, setCreateModal] = useState(true)
+    const [createModal, setCreateModal] = useState(false)
 
         useEffect(()=>{
             dispatch(isUserLogin())
@@ -38,13 +38,13 @@ const Navbar = () => {
     }
     const handleNewPost = ()=>{
         if(user){
-            setCreateModal(!createModal)
+            setCreateModal(true)
         }else{
             Router.push("/login")
         }
     }
     const handleModal = ()=>{
-           setCreateModal(!createModal)
+           setCreateModal(false)
     }
     const handleLogout = ()=>{
         dispatch(signoutUser())
@@ -58,7 +58,7 @@ const Navbar = () => {
     }
     return (
         <>
-        <div className='flex md:flex-col bg-black/50 md:w-48 w-screen h-10 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
+        <div className='flex md:flex-col bg-black/80 md:w-48 w-screen h-10 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
                 <Link href='/' className='hidden md:block w-fit pl-4 pt-2'>
                 {<Image src="/logod.png" alt="Tattoo fonts" width={100} height={50}/>}
                 </Link>
@@ -94,9 +94,9 @@ const Navbar = () => {
                 </div>}
                 <SrchModal srchModal={srchModal} closeSrchModal={closeSrchModal} />
         </div>
-                <CreateModal handleModal={handleModal} createModal={createModal} />
+               {createModal&&<CreateModal handleModal={handleModal} />}
         {/* mobile nav  */}
-                <div  className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
+                <div className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
                 <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>

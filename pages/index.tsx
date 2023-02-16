@@ -11,9 +11,7 @@ export default function Home() {
       <div >
       <Status/>
       </div>
-      <div className="pb-12">
       <Card/>
-      </div>
     </div>
     </>
   )

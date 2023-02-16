@@ -42,11 +42,10 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state, error_post:true,loading_post:false}
         }
         case GET_SUCCESS:{
-            return {...state, postData:payload,loading_post:false}
+            return {...state,postData:payload,loading_post:false}
         }
         case POST_SUCCESS:{
              state.postData.unshift(payload)
-            console.log(state.postData)
             return {...state,postData:state.postData,loading_post:false}
         }
         case POST_LOADING:{
