@@ -29,7 +29,7 @@ export const elem: postDataType = {
     edit_post: false,
     _id: ""
 }
-const Card = () => {
+const ProfileCard = () => {
     // =========================Hooks at Top ============================
     const { del_error, error_post, postData } = useSelector((val: rootReducertype) => val?.allPosts)
     const user = useSelector((val: rootReducertype) => val?.user?.user)
@@ -139,19 +139,23 @@ const Card = () => {
     }
     return (
         <div className='pb-12'>
-            {post?.map((el: postDataType, id: number) =>
-                    <PostCard
-                        key={id}
-                        el={el}
-                        handleLike={handleLike}
-                        handlePostDetails={handlePostDetails}
-                        handlePostEdit={handlePostEdit}
-                        openAddImgModal={openAddImgModal}
-                        handleDelModal={handleDelModal} 
-                        handleEditPost={handleEditPost} 
-                        isLast={id === post.length - 1}
-                        newLimit={() => setPage(page + 1)}
-                />)}
+            {post?.map((el: postDataType, id: number) =>{
+                console.log(el)
+                if(el.owner==user?.name){
+                return    <PostCard
+                    key={id}
+                    el={el}
+                    handleLike={handleLike}
+                    handlePostDetails={handlePostDetails}
+                    handlePostEdit={handlePostEdit}
+                    openAddImgModal={openAddImgModal}
+                    handleDelModal={handleDelModal} 
+                    handleEditPost={handleEditPost} 
+                    isLast={id === post.length - 1}
+                    newLimit={() => setPage(page + 1)}
+            />
+                }
+                 })}
             {/* {loginModal && <LoginModal handleLoginModal={handleLoginModal} />} */}
             {modal && <PostDetails data={postObj} closeModal={closePostDtlModal} />}
             {modalEdit && <ModalEdit data={postObj} closeModal={closePostEditModal} />}
@@ -166,4 +170,4 @@ const Card = () => {
     )
 }
 
-export default Card
+export default ProfileCard

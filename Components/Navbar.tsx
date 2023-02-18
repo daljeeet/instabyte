@@ -18,7 +18,7 @@ const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
     const user = useSelector((val:rootReducertype)=>val?.user?.user)
-    const [profileDtl,setProfileDtl] = useState(true)
+   
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
 
@@ -51,7 +51,8 @@ const Navbar = () => {
     }
     const handleProfileModal = ()=>{ 
         if(user){
-            setProfileDtl(!profileDtl)
+Router.push("/profile")
+         
         }else{
             Router.push("/login")
         }   
@@ -88,10 +89,7 @@ const Navbar = () => {
                 </div>
             </div>
                         {/* =============================Profile Click List ============================== */}
-                {profileDtl||<div className='absolute right-0 bottom-12 md:relative mx-4 bg-black text-thin text-center pb-3'>
-                        <p onClick={handleLogout} className='border-b-2 border-gray-600 mx-2 text-sm cursor-pointer'>Log-out</p>
-                        {/* <p className='cursor-pointer border-b-2 border-gray-600 mx-2 text-sm mt-2'>Settings</p> */}
-                </div>}
+            
                 <SrchModal srchModal={srchModal} closeSrchModal={closeSrchModal} />
         </div>
                {createModal&&<CreateModal handleModal={handleModal} />}
