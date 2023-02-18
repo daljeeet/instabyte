@@ -11,7 +11,6 @@ import { editPost, getAllPosts } from '@/redux/postdata/post.actions'
 import Router from 'next/router'
 import PostCard from './PostCard'
 import LoginModal from './LoginModal'
-import Loader from './Loader'
 export const elem: postDataType = {
     caption: "",
     imgUrl: [""],
@@ -30,9 +29,9 @@ export const elem: postDataType = {
     edit_post: false,
     _id: ""
 }
-const Card = () => {
+const ProfileCard = () => {
     // =========================Hooks at Top ============================
-    const { del_error,loading_post, error_post, postData } = useSelector((val: rootReducertype) => val?.allPosts)
+    const { del_error, error_post, postData } = useSelector((val: rootReducertype) => val?.allPosts)
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     
     const dispatch: Dispatch<any> = useDispatch();
@@ -45,6 +44,7 @@ const Card = () => {
     const [delModal, setDelModal] = useState(false)
     const [addImgModal, setAddImgModal] = useState(false)
     const [page, setPage] = useState(1)
+   
     useEffect(() => {
         dispatch(getAllPosts(page))
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,6 +58,7 @@ const Card = () => {
         setPost(alldta) 
     }
     // ======================Various Functions & Onclick Events============================
+    
     const handlePostDetails = (el: postDataType) => {
         if (user) {
             setModal(true)
@@ -136,27 +137,25 @@ const Card = () => {
     if (error_post) {
         return <div>Something Went Wrong.....</div>
     }
-    if(page==1){
-        if(loading_post){
-            return <Loader text='Loading' />
-        }
-    }
-
     return (
         <div className='pb-12'>
-            {post?.map((el: postDataType, id: number) =>
-                    <PostCard
-                        key={id}
-                        el={el}
-                        handleLike={handleLike}
-                        handlePostDetails={handlePostDetails}
-                        handlePostEdit={handlePostEdit}
-                        openAddImgModal={openAddImgModal}
-                        handleDelModal={handleDelModal} 
-                        handleEditPost={handleEditPost} 
-                        isLast={id === post.length - 1}
-                        newLimit={() => setPage(page + 1)}
-                />)}
+            {post?.map((el: postDataType, id: number) =>{
+                console.log(el)
+                if(el.owner==user?.name){
+                return    <PostCard
+                    key={id}
+                    el={el}
+                    handleLike={handleLike}
+                    handlePostDetails={handlePostDetails}
+                    handlePostEdit={handlePostEdit}
+                    openAddImgModal={openAddImgModal}
+                    handleDelModal={handleDelModal} 
+                    handleEditPost={handleEditPost} 
+                    isLast={id === post.length - 1}
+                    newLimit={() => setPage(page + 1)}
+            />
+                }
+                 })}
             {/* {loginModal && <LoginModal handleLoginModal={handleLoginModal} />} */}
             {modal && <PostDetails data={postObj} closeModal={closePostDtlModal} />}
             {modalEdit && <ModalEdit data={postObj} closeModal={closePostEditModal} />}
@@ -171,4 +170,4 @@ const Card = () => {
     )
 }
 
-export default Card
+export default ProfileCard
