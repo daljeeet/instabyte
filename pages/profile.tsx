@@ -19,7 +19,7 @@ useEffect(()=>{
 
 return <>
 <Navbar />
-<div className=' pt-14 h-fit flex lg:w-1/3 md:w-1/2 sm:w4/5 m-auto justify-between  '>
+<div className='md:ml-100 sm:ml-150 lg:ml-100 pt-14 h-fit flex lg:w-1/3 md:w-1/2 sm:w4/5 m-auto justify-between  '>
     <Image  className="rounded-full" src={user?.profile}  width={200} height={200} alt="user.name" />
     <p className='text-2xl font-bold mt-10'>{user?.name}</p>
     
