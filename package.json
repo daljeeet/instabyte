@@ -23,6 +23,7 @@
     "mongoose": "^6.9.1",
     "next": "13.1.6",
     "nodemon": "^2.0.20",
+    "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
@@ -36,6 +37,7 @@
     "vercel": "^28.15.0"
   },
   "devDependencies": {
+    "@types/nprogress": "^0.2.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4",

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import React, { Dispatch, useState,useEffect } from 'react'
 import {AiOutlineSearch,AiOutlineHome} from 'react-icons/ai'
 import {IoMdNotificationsOutline} from 'react-icons/io'
-
 import {MdOutlineExplore} from 'react-icons/md';
 import {CgProfile} from 'react-icons/cg'
 import {FiBookmark, FiSend} from 'react-icons/fi'
@@ -30,7 +29,7 @@ const Navbar = () => {
         if(user){
             setSrchModal(!srchModal)
         }else{
-            Router.push("/login")
+            Router.push("/login",undefined,{shallow:true})
         }
     }
     const closeSrchModal = ()=>{

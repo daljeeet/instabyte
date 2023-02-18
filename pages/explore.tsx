@@ -38,7 +38,7 @@ const Explore = (data:dataTypes) => {
     setModal(true)
     setPostObj(viewPost[0])
   }
-
+ 
 const closePostDtlModal = ()=>{
   setModal(false)
 }
