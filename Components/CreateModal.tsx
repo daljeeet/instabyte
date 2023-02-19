@@ -12,16 +12,14 @@ type createmodalTypes = {
 }
 export type commontsType = {user:string,comment:string,time:string}
 export type postDataType={
-        [x: string]: any
         caption: string,
         imgUrl: string[],
         owner: string,
+        owner_id:string,
         owner_profile:string,
         posted_on:string,
         likes: string[],
         comments:commontsType[],
-        show_Caption:boolean,
-        edit_post:boolean,
         _id?:string
 }
 
@@ -54,6 +52,7 @@ const handlePost = ()=>{
         caption: caption,
         imgUrl:[img],
         owner: user.name,
+        owner_id:user.id,
         owner_profile:user.profile,
         likes: [],
         posted_on:datestr,
@@ -64,8 +63,7 @@ const handlePost = ()=>{
             time:""
           }
         ],
-        show_Caption:false,
-        edit_post:false
+        
       }
       dispatch(postDetails(postData))
       handleClose()

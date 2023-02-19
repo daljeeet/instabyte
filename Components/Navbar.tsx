@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import jwt from 'jsonwebtoken'
 import React, { Dispatch, useState,useEffect } from 'react'
 import {AiOutlineSearch,AiOutlineHome} from 'react-icons/ai'
 import {IoMdNotificationsOutline} from 'react-icons/io'
@@ -44,9 +45,6 @@ const Navbar = () => {
     }
     const handleModal = ()=>{
            setCreateModal(false)
-    }
-    const handleLogout = ()=>{
-        dispatch(signoutUser())
     }
     const handleProfileModal = ()=>{ 
         if(user){

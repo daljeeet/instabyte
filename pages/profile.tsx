@@ -1,32 +1,59 @@
 import Navbar from '@/Components/Navbar'
-
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Dispatch } from 'react'
 import { postDataType } from '@/Components/CreateModal.jsx';
 import Image from 'next/image';
-
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import ProfileCard from '../Components/ProfileCard';
+import { AiOutlineSetting } from 'react-icons/ai';
+import { signoutUser } from '@/redux/auth/auth.actions';
+import PostCard from '@/Components/PostCard';
+import { getOneUserPost } from '@/redux/users_post/uesr.action';
 type dataTypes = {
-    data:postDataType
+    data:postDataType[]
   }
-const Profile=(data:dataTypes)=>{
+const Profile=(props:dataTypes)=>{
+    // const {data} = props;
     const user = useSelector((val: rootReducertype) => val?.user?.user)
-console.log(data)
+    const dispatch:Dispatch<any> = useDispatch()
+    const [showPosts,setShowPosts] = useState(true)
+    const [allPosts,setAllPosta] = useState([])
 useEffect(()=>{
-    console.log(user)
-},[user])
-
+    dispatch(getOneUserPost(user?.name))
+    // dispatch(signoutUser())
+},[dispatch, user])
 return <>
 <Navbar />
-<div className='md:ml-100 sm:ml-150 lg:ml-100 pt-14 h-fit flex lg:w-1/3 md:w-1/2 sm:w4/5 m-auto justify-between  '>
-    <Image  className="rounded-full" src={user?.profile}  width={200} height={200} alt="user.name" />
-    <p className='text-2xl font-bold mt-10'>{user?.name}</p>
-    
+<div className=' px-1 md:m-auto py-16' >
+<div className='flex items-center justify-around md:w-[40%] m-auto'>
+    <div className='border-2 rounded-full relative border-blue-300'>
+    <Image  className="rounded-full" src={user?.profile}  width={80} height={80} alt="user.name"/>
+    <div className='w-4 h-4 absolute bottom-2 right-0 rounded-full bg-green-500' ></div>
+    </div>
+    <div className='flex flex-col items-end' >
+    <p className='text-xl border-b-2 border-blue-300 px-2 mb-2'>{user?.name}</p>
+    <div className='flex items-center cursor-pointer'>
+    <p className='text-gray-200 hover:underline'>username</p>
+    <AiOutlineSetting className='mx-2'/>
+    </div>
+    </div>
 </div>
-<div className='md:w-1/2 lg:w-1/3 sm:w-4/5 m-auto  md:ml-100 sm:ml-150 lg:ml-100 pt-14  '>
+<div className='md:ml-52' >
+<div className='flex justify-evenly mt-4'>
+    <p onClick={()=>setShowPosts(true)} className='font-semibold border-b-2 cursor-pointer px-2'>All Posts</p>
+    <p onClick={()=>setShowPosts(false)} className='font-semibold border-b-2 cursor-pointer px-2'>Bookmarks</p>
+</div>
+{
+    showPosts ?<ProfileCard />:<div> Bookmarks will be shown here </div>
+}
+</div>
+{/* <div className=''>
     <ProfileCard />
+</div> */}
 </div>
 </>
-}
-export default Profile
+  }
+
+
+
+export default Profile;

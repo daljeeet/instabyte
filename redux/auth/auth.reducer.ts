@@ -19,7 +19,6 @@ const iniitailState:authDataType = {
     user: null,
     isAuth:false
 }
-
 export const authUserReducer = (state = iniitailState, actions: { type: any; payload: any }) => {
     let { type, payload } = actions
     switch (type) {

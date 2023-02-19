@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
+import Comment from './Comment'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
@@ -79,29 +80,8 @@ const PostDetails = (props: postDataAll) => {
                     {/* ===================profile image and name ===================== */}
                     <div className='w-11/12 h-2/3 overflow-y-auto py-2 scrollbar-hide border-t-2 mt-2 border-gray-600'>
                         {
-                            data.comments.length === 1 ? <div className='text-gray-500'>No Comments Yet....</div> :
-                                data.comments?.map((el, id) => {
-                                    const colors = ["bg-black", "bg-violet-900", "bg-blue-800", "bg-sky-900", "bg-emerald-800", "bg-yellow-900", "bg-teal-700", "bg-cyan-700", "bg-blue-500", "bg-pink-900"]
-                                    const random = Math.floor(Math.random() * colors.length)
-                                    return (<div key={id}>
-                                        {el.user == '' ? "" : <div className='  flex m-3 items-center justify-between'>
-                                            <div className={`h-8 w-8 rounded-full mr-2 flex justify-center items-center text-xl ${colors[random]}`}>{el.user.split('').slice(0, 1).join("").toUpperCase()}</div>
-                                            <p className='mr-2 font-semibold text-sm w-1/3' >{el.user}</p>
-
-                                            <div className=' w-1/2'>
-                                                <p className='text-sm' >{el.comment}</p>
-
-                                                {
-                                                    Date.parse(el.time) - Date.parse(new Date().toDateString()) <= 86400000 ? <p className='text-sm text-gray-500' >Today</p> : Date.parse(el.time) - Date.parse(new Date().toDateString()) <= 172800000 ? <p className='text-sm text-gray-500' >yesterday</p> : <p className='text-sm text-gray-500' >{el.time}</p>
-
-                                                }
-                                            </div>
-
-
-                                        </div>}
-                                    </div>
-                                    )
-                                })}
+                            data.comments.length === 1 ? <div className='text-gray-500'>No Comments Yet....</div> : data.comments?.map((el, id) =><Comment key={id} el={el} />)
+                        }
                     </div>
 
                     {/* ===================Like, comment Buttons===================== */}

@@ -10,7 +10,8 @@ AUTH_ERROR,
 AUTH_SUCCESS,
 AUTH_RESET,
 AUTH_CHECK,
-  }from './auth.actions.types'
+  }from './auth.actions.types';
+  import Cookies from 'js-cookie'
   
 import {auth,google,github} from '../../config'
 export type userdataType = {
@@ -28,8 +29,9 @@ export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payloa
         email:user?.user?.email,
         id:user?.user?.uid,
         profile:user?.user.photoURL,
-    }   
-        dispatch({type:AUTH_SUCCESS,payload:userData})
+    }  
+    Cookies.set("token",user.user.uid) 
+    dispatch({type:AUTH_SUCCESS,payload:userData})
     }catch(err){
         dispatch({type:AUTH_ERROR})
     }
@@ -50,6 +52,7 @@ export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:a
     try{
         await signOut(auth)
         dispatch({type:AUTH_RESET})
+        Cookies.remove("token")
     }catch(err){
         console.log(err)
     }
