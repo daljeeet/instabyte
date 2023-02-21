@@ -11,21 +11,19 @@ import PostCard from '@/Components/PostCard';
 import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import { GetServerSideProps } from 'next';
 import { verifyAuth } from '@/lib/auth';
-import { Router } from 'next/router';
+import Router from 'next/router';
 import Link from 'next/link';
 type dataTypes = {
     data:postDataType[]
   }
 const Profile=()=>{
     const [logoutMenu, setLogoutMenu] = useState(false)
-    
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const dispatch:Dispatch<any> = useDispatch()
     const [showPosts,setShowPosts] = useState(true)
     const [allPosts,setAllPosta] = useState([])
 useEffect(()=>{
     // dispatch(getOneUserPost(user.id))
-    console.log(user.id)
 },[dispatch, user])
 const handleLogoutMenu = (e: { stopPropagation: () => void; })=>{
     e.stopPropagation()
@@ -33,7 +31,7 @@ const handleLogoutMenu = (e: { stopPropagation: () => void; })=>{
 }
 const handleLogout = ()=>{
     dispatch(signoutUser())
-   return <Link href='/'></Link>
+   Router.push("/login")
 }
 return <>
 <Navbar />

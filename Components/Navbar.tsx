@@ -18,11 +18,10 @@ const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
     const user = useSelector((val:rootReducertype)=>val?.user?.user)
-   
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
-
-        useEffect(()=>{
+    
+    useEffect(()=>{
             dispatch(isUserLogin())
         },[dispatch])
     // =====================All The funcitons for Various tasks========================
@@ -44,12 +43,12 @@ const Navbar = () => {
         }
     }
     const handleModal = ()=>{
-           setCreateModal(false)
+        setCreateModal(false)
     }
     const handleProfileModal = ()=>{ 
         if(user){
-Router.push("/profile")
-         
+            Router.push("/profile")
+            
         }else{
             Router.push("/login")
         }   
