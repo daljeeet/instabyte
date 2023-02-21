@@ -11,11 +11,12 @@ AUTH_SUCCESS,
 AUTH_RESET,
 AUTH_CHECK,
   }from './auth.actions.types';
-  import Cookies from 'js-cookie'
   
 import {auth,google,github} from '../../config'
+import { addUserApi, updateUserDataApi, userLogoutApi } from "./auth.api";
 export type userdataType = {
     name:string|null,
+    username?:string|null;
     email:string|null,
     id:string|null,
     profile:string|null
@@ -27,10 +28,10 @@ export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payloa
        const userData:userdataType = {
         name:user?.user?.displayName,
         email:user?.user?.email,
+        username:user?.user?.displayName,
         id:user?.user?.uid,
-        profile:user?.user.photoURL,
-    }  
-    Cookies.set("token",user.user.uid) 
+        profile:user?.user.photoURL,}  
+        addUserApi(userData);
     dispatch({type:AUTH_SUCCESS,payload:userData})
     }catch(err){
         dispatch({type:AUTH_ERROR})
@@ -41,7 +42,6 @@ export const  loginwithGithub = ()=> async(dispatch: (arg0: { type: string; payl
     dispatch({type:AUTH_LOADING})
     try{
         let res = await signInWithPopup(auth,github)
-        console.log("firebase Auth", res)
         dispatch({type:AUTH_SUCCESS,payload:res})
     }catch(er){
         dispatch({type:AUTH_ERROR})
@@ -51,8 +51,8 @@ export const  loginwithGithub = ()=> async(dispatch: (arg0: { type: string; payl
 export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     try{
         await signOut(auth)
+        await userLogoutApi()
         dispatch({type:AUTH_RESET})
-        Cookies.remove("token")
     }catch(err){
         console.log(err)
     }
@@ -66,7 +66,6 @@ export type userDetails ={
 
 export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
-    console.log(getAuth())
     try{
         await auth.onAuthStateChanged((user)=>{
             const userData = {
@@ -74,10 +73,20 @@ export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:
                 email:user?.email,
                 id:user?.uid,
                 profile:user?.photoURL,
-            }           
+            }
             dispatch({type:AUTH_CHECK,payload:userData})
            })
     }catch(err){
         dispatch({type:AUTH_ERROR})
     }
+}
+
+export const updateUserdata =  (data:userdataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
+    try{
+     let res = await updateUserDataApi(data)
+     console.log(res)
+    }catch(err){
+        console.log(err)
+    }
+
 }

@@ -27,7 +27,7 @@ export const userPostreducer = (state=initialState,actions: { type: string; payl
             return{ ...state,uesrPosts_loading:false,userPost_error:true  }
         }
         default:
-            break;
+            return{...state}
     }
     
 }

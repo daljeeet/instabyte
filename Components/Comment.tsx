@@ -1,8 +1,9 @@
 import React from 'react'
 type commentType={
-    user:string,
+    author:string,
     comment:string,
-    time?:string|undefined
+    time:string,
+    parentId:string
 }
 type commentTypes = {
     el:commentType;
@@ -13,9 +14,9 @@ const Comment = (props:commentTypes) => {
     const {el} = props
   return (
     <div>
-            {el.user == '' ? "" : <div className='  flex m-3 items-center justify-between'>
-                <div className={`h-8 w-8 rounded-full mr-2 flex justify-center items-center text-xl ${colors[random]}`}>{el.user.split('').slice(0, 1).join("").toUpperCase()}</div>
-                <p className='mr-2 font-semibold text-sm w-1/3' >{el.user}</p>
+            {el.author == '' ? "" : <div className='  flex m-3 items-center justify-between'>
+                <div className={`h-8 w-8 rounded-full mr-2 flex justify-center items-center text-xl ${colors[random]}`}>{el.author.split('').slice(0, 1).join("").toUpperCase()}</div>
+                <p className='mr-2 font-semibold text-sm w-1/3' >{el.author}</p>
 
                 <div className=' w-1/2'>
                     <p className='text-sm' >{el.comment}</p>

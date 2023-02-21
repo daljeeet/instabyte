@@ -12,7 +12,6 @@ export type authDataType = {
     user:userdataType|null,
     isAuth:boolean
 }
-
 const iniitailState:authDataType = {
     login_loading: false,
     login_error: false,

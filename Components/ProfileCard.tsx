@@ -2,8 +2,8 @@ import React from 'react'
 
 const ProfileCard = () => {
   return (
-    <div>
-        
+    <div className='border-2' >
+        allposts will be shown here
     </div>
   )
 }

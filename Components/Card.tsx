@@ -15,26 +15,16 @@ import Loader from './Loader'
 export const elem: postDataType = {
     caption: "",
     imgUrl: [""],
-    owner: "",
-    owner_profile: "",
-    likes: [],
+    author: "",
+    likes: 0,
     posted_on: "",
-    comments: [
-        {
-            user: "",
-            comment: "",
-            time: ""
-        }
-    ],
-    show_Caption: false,
-    edit_post: false,
+    comments:0,
     _id: ""
 }
 const Card = () => {
     // =========================Hooks at Top ============================
     const { del_error,loading_post, error_post, postData } = useSelector((val: rootReducertype) => val?.allPosts)
     const user = useSelector((val: rootReducertype) => val?.user?.user)
-    
     const dispatch: Dispatch<any> = useDispatch();
     const [post, setPost] = useState([])
     const [postObj, setPostObj] = useState(elem)
@@ -116,18 +106,16 @@ const Card = () => {
     // comments
     // likes
 
+
     const handleLike = (state: boolean, el: postDataType) => {
         if (user) {
             if (state) {
-                el.likes.push(user.name)
-                dispatch(editPost(el))
+                el.likes=el.likes+1
+                // dispatch(editPost(el))
             }
             else {
-                let newLikedel = el.likes.filter((el) => {
-                    return el !== user.name
-                })
-                el.likes = newLikedel
-                dispatch(editPost(el))
+                el.likes=el.likes-1
+                // dispatch(editPost(el))
             }
         } else {
             Router.push("/login")

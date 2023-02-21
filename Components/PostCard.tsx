@@ -54,14 +54,13 @@ const PostCard = (props: PostCardType) => {
     const handleComment = (el: postDataType) => {
         if (user) {
             var newComment = {
-                user: user.name,
+                author:user.name,
                 comment: comment,
-                time: new Date().toDateString()
+                time: new Date().toDateString(),
+                parentId:el._id
             }
-            el.comments.push(newComment)
-            dispatch(editPost(el))
+            // dispatch(editPost(el))
             setComment("")
-            el.comment = ""
             setAddComment(true)
         } else {
             Router.push("/login")
@@ -76,13 +75,13 @@ const PostCard = (props: PostCardType) => {
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12' >
                     <div className='md:w-8 md:h-8 overflow-hidden h-10 w-10 rounded-full mx-2'>
-                        <Image src={el?.owner_profile} alt="User's Photo" width={200} height={200} />
+                        {/* <Image src={el} alt="User's Photo" width={200} height={200} /> */}
                     </div>
-                    <div className='mx-2 font-semibold'> <p>{el?.owner}</p>
+                    <div className='mx-2 font-semibold'> <p>{el?.author}</p>
                         <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
                     </div>
                 </div>
-                {el.owner === user?.name ? <div className='mr-2' >
+                {el.author === user?.name ? <div className='mr-2' >
                     <FiMoreHorizontal onClick={() => handleEditPost(el._id)} className='font-bold text-xl cursor-pointer' />
                 </div> : ''}
             </div>
@@ -93,7 +92,7 @@ const PostCard = (props: PostCardType) => {
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                         {
-                            el.likes?.includes(user?.name) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
+                            (user?.name) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
                                 : <AiOutlineHeart onClick={() => handleLike(true, el)} className='text-2xl cursor-pointer animate-in zoom-in' />
                         }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />

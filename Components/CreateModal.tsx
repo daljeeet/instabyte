@@ -6,20 +6,22 @@ import { FcStackOfPhotos } from 'react-icons/fc'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
-
+// export interface authorType{
+//     name:string
+//     authorId:string
+//     authorProfile:string
+// }
 type createmodalTypes = {
     handleModal: ()=>void
 }
-export type commontsType = {user:string,comment:string,time:string}
+// export type commontsType = {user:string,comment:string,time:string}
 export type postDataType={
         caption: string,
         imgUrl: string[],
-        owner: string,
-        owner_id:string,
-        owner_profile:string,
+        author:string,
         posted_on:string,
-        likes: string[],
-        comments:commontsType[],
+        likes: number,
+        comments:number,
         _id?:string
 }
 
@@ -31,12 +33,17 @@ const CreateModal = (props: createmodalTypes) => {
         }
     }, [])
     const user = useSelector((val:rootReducertype)=>val?.user.user)
+
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
+
     const dispatch:Dispatch<any> = useDispatch()
+
     const [caption, setCaption]  = useState("Caption...")
+
     const handleCaption = (e: { target: { value: React.SetStateAction<string> } })=>{
         setCaption(e.target.value)
     }
+    
     const handleImage = (e:any)=>{
     let form = new FormData()
     form.append("image",e.target.files[0])
@@ -51,19 +58,10 @@ const handlePost = ()=>{
     const postData:postDataType = {
         caption: caption,
         imgUrl:[img],
-        owner: user.name,
-        owner_id:user.id,
-        owner_profile:user.profile,
-        likes: [],
+        author:user.id,
+        likes: 0,
         posted_on:datestr,
-        comments:[
-          {
-            user:"",
-            comment:"",
-            time:""
-          }
-        ],
-        
+        comments:0,
       }
       dispatch(postDetails(postData))
       handleClose()
