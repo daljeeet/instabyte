@@ -6,15 +6,18 @@ import {GET_LOADING,
     PATCH_SUCCESS,
     POST_LOADING,
     POST_ERROR,
+    DEL_LOADING,
+    DEL_SUCCESS,
+    DEL_ERROR,
     POST_SUCCESS} from './actions.types'
 import { postDataType } from "../../Components/CreateModal" 
-import {getAllPostsApi, postDetailsApi} from './post.api'
+import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
 
-
-export const getAllPosts = ()=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
-dispatch({type:GET_LOADING})
-try{
-    let res = await getAllPostsApi()
+ 
+export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
+    dispatch({type:GET_LOADING})
+    try{
+        let res = await getAllPostsApi(page)
     dispatch({type:GET_SUCCESS,payload:res})
 }catch(err){
     dispatch({type:GET_ERROR})
@@ -24,9 +27,36 @@ try{
 export const postDetails = (data:postDataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:POST_LOADING})
 try{
-    let res = await postDetailsApi(data)
+  await postDetailsApi(data)
     dispatch({type:POST_SUCCESS,payload:data})
 }catch(err){
     dispatch({type:POST_ERROR})
 }
+}
+
+export const deletePostt = (id:number|string,postData:postDataType[])=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
+    dispatch({type:DEL_LOADING})
+    try{
+        let res = await deletePostApi(id);
+        if(res?.status==200){
+            dispatch({type:DEL_SUCCESS,payload:postData})
+        }else{
+            dispatch({type:DEL_ERROR})
+        }
+    }catch(err){
+        dispatch({type:DEL_ERROR})
+    }
+}
+export const editPost = (post:postDataType)=>async(dispatch: (arg0: { type: string; payload?: postDataType[]; }) => void)=>{
+    dispatch({type:PATCH_LOADING})
+    try{
+        let res = await editPostApi(post)
+        if(res?.status==200){
+            dispatch({type:PATCH_SUCCESS})
+        }else{
+            dispatch({type:PATCH_ERROR})
+        }
+    }catch(err){
+        dispatch({type:PATCH_ERROR})
+    }
 }

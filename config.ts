@@ -1,15 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signOut, sendPasswordResetEmail, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyDjNLDNt-KrmHyB8am6NTlSV-X8jlbbses",
-  authDomain: "directed-sun-365908.firebaseapp.com",
-  projectId: "directed-sun-365908",
-  storageBucket: "directed-sun-365908.appspot.com",
-  messagingSenderId: "657580500087",
-  appId: "1:657580500087:web:081f5df58eb9758db2d272",
-  measurementId: "G-XZTVSKKZ35"
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTHdOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STOREAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId:process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)

@@ -1,9 +1,11 @@
 import Link from 'next/link'
+import jwt from 'jsonwebtoken'
 import React, { Dispatch, useState,useEffect } from 'react'
-import {AiOutlineSearch,AiOutlineHome,AiOutlineHeart,AiOutlineFileAdd} from 'react-icons/ai'
+import {AiOutlineSearch,AiOutlineHome} from 'react-icons/ai'
+import {IoMdNotificationsOutline} from 'react-icons/io'
 import {MdOutlineExplore} from 'react-icons/md';
 import {CgProfile} from 'react-icons/cg'
-import {FiSend} from 'react-icons/fi'
+import {FiBookmark, FiSend} from 'react-icons/fi'
 import {BiMessageSquareAdd} from 'react-icons/bi'
 import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
@@ -13,68 +15,83 @@ import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 const Navbar = () => {
-    const {login_loading,login_error, user} = useSelector((val:rootReducertype)=>val?.user)
+    // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
-    useEffect(() => {
-      dispatch(isUserLogin())
-    }, [dispatch])
-    useEffect(()=>{
-        if(login_loading===false){
-            if(user==null){
-               Router.push('/login')
-            }
-        }
-    },[login_loading, user])
-
+    const user = useSelector((val:rootReducertype)=>val?.user?.user)
+   
     const [srchModal, setSrchModal] = useState(false)
-    const [createModal, setCreateModal] = useState(true)
+    const [createModal, setCreateModal] = useState(false)
+
+        useEffect(()=>{
+            dispatch(isUserLogin())
+        },[dispatch])
+    // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
-        setSrchModal(!srchModal)
+        if(user){
+            setSrchModal(!srchModal)
+        }else{
+            Router.push("/login",undefined,{shallow:true})
+        }
+    }
+    const closeSrchModal = ()=>{
+        setSrchModal(false)
     }
     const handleNewPost = ()=>{
-        setCreateModal(!createModal)
+        if(user){
+            setCreateModal(true)
+        }else{
+            Router.push("/login")
+        }
     }
     const handleModal = ()=>{
-        setCreateModal(!createModal)
+           setCreateModal(false)
     }
-    const handleLogout = ()=>{
-        dispatch(signoutUser())
+    const handleProfileModal = ()=>{ 
+        if(user){
+Router.push("/profile")
+         
+        }else{
+            Router.push("/login")
+        }   
     }
     return (
         <>
-        <div className='flex md:flex-col bg-black/50 md:w-48 w-screen h-14 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
+        <div className='flex md:flex-col bg-black/80 md:w-48 w-screen h-10 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
                 <Link href='/' className='hidden md:block w-fit pl-4 pt-2'>
                 {<Image src="/logod.png" alt="Tattoo fonts" width={100} height={50}/>}
                 </Link>
             <div className='flex md:flex-col w-full md:w-40 md:h-[70vh] justify-around font-semibold px-4 '>
-                <Link href={'/'} className='flex items-center' >
-                    <AiOutlineHome className='mr-2 text-2xl' /> <p className='hidden md:block' >Home</p>
+                <Link href={'/'} onClick={closeSrchModal} className='flex items-center' >
+                    <AiOutlineHome  className='mr-2 text-2xl' /> <p className='hidden md:block' >Home</p>
                 </Link>
                 <button onClick={handleSearch} className='items-center hidden md:flex' >
                     <AiOutlineSearch className='mr-2 text-2xl' /> <p className='' >Search</p>
                 </button>
-                <Link href={'/'} className='flex items-center' >
+                <Link href={'/explore'} className='flex items-center' >
                     <MdOutlineExplore className='mr-2 text-2xl' /> <p className='hidden md:block' >Explore</p>
                 </Link>
                 <Link href={'/'} className='flex items-center' >
-                    <FiSend className='mr-2 text-2xl' /> <p className='hidden md:block' >Message</p>
+                    <FiBookmark className='mr-2 text-2xl' /> <p className='hidden md:block' >Bookmarks</p>
                 </Link>
                 <Link href={'/'} className='items-center hidden md:flex' >
-                    <AiOutlineHeart className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
+                    <IoMdNotificationsOutline className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
                 </Link>
-                <Link onClick={handleNewPost} href={'/'} className='flex items-center' >
+                <div onClick={handleNewPost}  className='flex items-center cursor-pointer' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
-                </Link>
-                <Link href={'/'} className='flex items-center' >
-                    <CgProfile className='mr-2 text-2xl' /> <p className='hidden md:block' >Profile</p>
-                </Link>
+                </div>
+                <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
+                    {
+                        user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2 ' ><Image src={user.profile} width={30} height={30} alt='profile Pic' /> </div> :
+                        <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{user?.name||"Profile"}</p>
+                </div>
             </div>
-                <SrchModal srchModal={srchModal} />
-
+                        {/* =============================Profile Click List ============================== */}
+            
+                <SrchModal srchModal={srchModal} closeSrchModal={closeSrchModal} />
         </div>
-                <CreateModal handleModal={handleModal} createModal={createModal} />
+               {createModal&&<CreateModal handleModal={handleModal} />}
         {/* mobile nav  */}
-                <div onClick={handleLogout} className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
+                <div className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
                 <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>
