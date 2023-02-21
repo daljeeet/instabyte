@@ -8,10 +8,12 @@ import thunk from "redux-thunk"
 import { authUserReducer } from './auth/auth.reducer';
 import { imgPostReducer} from './ImageUrl/imgreducer'; 
 import { getAllPostsReducer} from './postdata/post.reducer';
+import { userPostreducer } from './users_post/user.recuder';
 const rootReducer = combineReducers({
     imgUrl:imgPostReducer,
     allPosts:getAllPostsReducer,
-    user:authUserReducer
+    user:authUserReducer,
+    userPost:userPostreducer
 })
 
 const composeEnhancer = compose;

@@ -12,14 +12,12 @@ export type authDataType = {
     user:userdataType|null,
     isAuth:boolean
 }
-
 const iniitailState:authDataType = {
     login_loading: false,
     login_error: false,
     user: null,
     isAuth:false
 }
-
 export const authUserReducer = (state = iniitailState, actions: { type: any; payload: any }) => {
     let { type, payload } = actions
     switch (type) {

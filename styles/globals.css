@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./libraries/_nprogress.css";
 ::-webkit-scrollbar {
     width: 5px;
 }
