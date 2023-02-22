@@ -87,9 +87,9 @@ const handleLike=(state:boolean,el:postDataType)=>{
             //     time: new Date().toDateString(),
             //     parentId:el._id
             // }
-             dispatch(editPost()
-            setComment("")
-            setAddComment(true)
+            //  dispatch(editPost(el)
+            // setComment("")
+            // setAddComment(true)
         } else {
             Router.push("/login")
         }
