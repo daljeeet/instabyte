@@ -37,8 +37,6 @@ const PostCard = (props: PostCardType) => {
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
     const Router = useRouter()
-console.log(el,"element")
-console.log(user,"user")
     useEffect(() => {
         if (!cardRef?.current) return
         const observe = new IntersectionObserver(([entry]) => {
@@ -107,7 +105,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                     <div className='h-10 w-10 rounded-full mx-2'>
                        {el.result&&<Image src={(el?.result[0]?.profile)||'/demo_img.png'} alt="User's Photo" width={200} height={200} className='rounded-full' />}
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> <p>{el?.result[0].name}</p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result&&<p>{el?.result[0].name}</p>}
                         <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
                     </div>
                 </div>
