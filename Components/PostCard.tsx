@@ -15,7 +15,6 @@ import { useRouter } from 'next/router'
 type PostCardType = {
     el: postDataType,
     // handleEditPost: (id: string | undefined) => void,
-    handleLike: (a: boolean, el: postDataType) => void,
     handlePostDetails: (el: postDataType) => void,
     handlePostEdit: (el: postDataType) => void,
     openAddImgModal: (el: postDataType) => void,
@@ -61,21 +60,23 @@ const handleEditPost = ()=>{
 }
 
 const handleLike=(state:boolean,el:postDataType)=>{
-    setLike(state)
+    // setLike(state)
     if(state){
-     
-        let newLikedObj:any={
-    likes:[...el.likes,user.id]
+       el.likes.push(user.id)
+        if(el._id){
+            console.log('Liked')
+            dispatch(editPost({likes:el.likes},el._id))
         }
-        dispatch(editPost(newLikedObj,"6"))
     }
     else{
-    let newLikedel=  el.likes.filter((el)=>{
-    return el!==user.id
+    let newLikedel=  el.likes.filter((e)=>{
+    return e!==user.id
       })
-      el.likes= newLikedel
-   //   dispatch(editPost(el))
-    
+      if(el._id){
+        el.likes= newLikedel;
+        console.log("Not Liked")
+          dispatch(editPost({likes:el.likes},el._id))
+        }
     }
     }
     const handleComment = (el: postDataType) => {
@@ -121,7 +122,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                     {
-                el.likes.includes(user?.id) ? <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
+                el.likes.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
                 : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
                }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
