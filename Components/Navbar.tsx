@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
+// import { getUserData } from '@/redux/users_post/uesr.action'
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
@@ -24,6 +25,12 @@ const Navbar = () => {
     useEffect(()=>{
             dispatch(isUserLogin())
         },[dispatch])
+    useEffect(()=>{
+        if(user){
+            // dispatch(getUserData(user.id))
+        }
+
+    },[user,dispatch])
     // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
         if(user){
@@ -48,7 +55,6 @@ const Navbar = () => {
     const handleProfileModal = ()=>{ 
         if(user){
             Router.push("/profile")
-            
         }else{
             Router.push("/login")
         }   

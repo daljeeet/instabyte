@@ -1,3 +1,4 @@
+import { userdataType } from '@/redux/auth/auth.actions'
 import { rootReducertype } from '@/redux/store'
 import Image from 'next/image'
 import React,{useState,Dispatch,useEffect} from 'react'
@@ -20,9 +21,10 @@ export type postDataType={
         imgUrl: string[],
         author:string,
         posted_on:string,
-        likes: number,
+        likes: string[],
         comments:number,
-        _id?:string
+        _id?:string,
+        result?:userdataType[]
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -59,7 +61,7 @@ const handlePost = ()=>{
         caption: caption,
         imgUrl:[img],
         author:user.id,
-        likes: 0,
+        likes:[],
         posted_on:datestr,
         comments:0,
       }

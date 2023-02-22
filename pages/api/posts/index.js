@@ -7,7 +7,6 @@ export default async function handler(req, res) {
       const {page} = req.query;
       const skip = (page-1)*5;
       try {
-        // const allPosts = await Post.find().sort({_id:-1}).skip(skip).limit(5)
         await Post.aggregate([
           {
             $lookup: {
