@@ -49,6 +49,7 @@ const Card = () => {
     const handlePostDetails = (el: postDataType) => {
         if (user) {
             setModal(true)
+            
             setPostObj(el)
         } else {
           return <LoginModal />

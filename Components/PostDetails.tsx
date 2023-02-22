@@ -49,7 +49,7 @@ const PostDetails = (props: postDataAll) => {
             comment: comment,
             time: new Date().toDateString()
         }
-        el.comments.push(newComment)
+        // el.comments.push(newComment)
         // dispatch(editPost(el))
         setComment("")
     }
@@ -70,17 +70,17 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Details And comments ===================== */}
                 <div className='md:w-1/2 w-full my-2 flex flex-col justify-between items-center'>
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> <Image src={data.owner_profile} className="rounded-full ml-4 " width={50} height={50} alt={data.owner} />
+                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
-                        <div> {data.owner} </div>
+                       { data.result&&<div> {data?.result[0]?.name} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{data.posted_on}</div>
                     </div>
                     </div>
-
                     {/* ===================profile image and name ===================== */}
                     <div className='w-11/12 h-2/3 overflow-y-auto py-2 scrollbar-hide border-t-2 mt-2 border-gray-600'>
                         {
-                            data.comments.length === 1 ? <div className='text-gray-500'>No Comments Yet....</div> : data.comments?.map((el, id) =><Comment key={id} el={el} />)
+                            data.comments==0?<div className='text-gray-500'>No Comments Yet....</div> :""
+                            // comments?.map((el, id) =><Comment key={id} el={el} />)
                         }
                     </div>
 
@@ -103,7 +103,7 @@ const PostDetails = (props: postDataAll) => {
                             </p>
                             <HiDotsVertical className='' />
                             <p className='mx-2' >{
-                                data?.comments?.length == 1 ? `No Comments` : data.comments.length === 2 ? "1 Comment" : `${data.comments.length} Comments`
+                                data?.comments == 0 ? `No Comments` : data.comments === 1 ? "1 Comment" : `${data.comments} Comments`
                             }</p>
                         </div>
                     </div>
