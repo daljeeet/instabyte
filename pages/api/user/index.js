@@ -6,12 +6,12 @@ export default async function handler(req, res) {
     switch (method) {
         case "POST":
             try{
-                const userExist = await User.find({id:req.body.id});
+                const userExist = await User.find({id: req.body.id});
                 if(userExist.length==0){
                     const newUser = new User(req.body);
                     await newUser.save()
                 }  
-                res.status(200).json({msg:true})
+                res.status(200).json({msg:true,user:userExist})
             }catch(err){
                 res.status(404).json({msg:false,err:err})
             }

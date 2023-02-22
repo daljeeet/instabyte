@@ -25,23 +25,6 @@ export async function middleware(req: NextRequest) {
   }
 }
 export const config = {
-  matcher: ['/api/protected/:path*']
+  matcher: '/api/protected/:path*'
 }
 
-import { MongoClient } from 'mongodb';
-
-/*
- * Requires the MongoDB Node.js Driver
- * https://mongodb.github.io/node-mongodb-native
- */
-
-const agg = [
-  {
-    '$lookup': {
-      'from': 'users', 
-      'localField': 'author', 
-      'foreignField': 'id', 
-      'as': 'result'
-    }
-  }
-];
