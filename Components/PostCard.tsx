@@ -14,7 +14,7 @@ import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
 type PostCardType = {
     el: postDataType,
-    handleEditPost: (id: string | undefined) => void,
+    // handleEditPost: (id: string | undefined) => void,
     handleLike: (a: boolean, el: postDataType) => void,
     handlePostDetails: (el: postDataType) => void,
     handlePostEdit: (el: postDataType) => void,
@@ -24,6 +24,8 @@ type PostCardType = {
     newLimit: () => void
 }
 const PostCard = (props: PostCardType) => {
+    const [postEditmodal, setPostEditmodal] =useState(false)
+    const { el, handleLike, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const loading_post = useSelector((val: rootReducertype) => val?.allPosts?.loading_post)
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
@@ -31,9 +33,6 @@ const PostCard = (props: PostCardType) => {
     const [addComment, setAddComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [comment, setComment] = useState('')
-
-    const { el, handleEditPost, handleLike, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
-
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
@@ -51,6 +50,13 @@ const PostCard = (props: PostCardType) => {
         observe.observe(cardRef.current)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLast])
+
+const handlePostEditmodal = ()=>{
+    setPostEditmodal(true)
+}
+const handleEditPost = ()=>{
+    setPostEditmodal(false)
+}
     const handleComment = (el: postDataType) => {
         if (user) {
             var newComment = {
@@ -70,19 +76,21 @@ const PostCard = (props: PostCardType) => {
         setShowComment(!showComment)
     }
 
+
+
     return (
         <div ref={cardRef} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
-            <div className='flex w-full justify-between items-center'>
-                <div className='flex items-center h-12' >
-                    <div className='md:w-8 md:h-8 overflow-hidden h-10 w-10 rounded-full mx-2'>
-                        {/* <Image src={el} alt="User's Photo" width={200} height={200} /> */}
+            <div className='flex w-full justify-between items-center '>
+                <div className='flex items-center h-12 w-5/6' >
+                    <div className='h-10 w-10 rounded-full mx-2'>
+                       {el.result&&<Image src={(el?.result[0]?.profile)||'/demo_img.png'} alt="User's Photo" width={200} height={200} className='rounded-full' />}
                     </div>
-                    <div className='mx-2 font-semibold'> <p>{el?.author}</p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> <p>{el?.author}</p>
                         <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
                     </div>
                 </div>
-                {el.author === user?.name ? <div className='mr-2' >
-                    <FiMoreHorizontal onClick={() => handleEditPost(el._id)} className='font-bold text-xl cursor-pointer' />
+                {el.author === user?.id ? <div className='mr-2' >
+                    <FiMoreHorizontal onClick={handlePostEditmodal} className='font-bold text-xl cursor-pointer' />
                 </div> : ''}
             </div>
             <div className='h-fit my-2' >
@@ -102,7 +110,7 @@ const PostCard = (props: PostCardType) => {
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
                     <div className='flex items-center' >
-                        <p>
+                        {/* <p>
                             {
                                 el?.likes?.length == 0 ? "No Likes" : el.likes?.length == 1 ? `1 Like ` : ` ${el.likes?.length} Likes`
                             }
@@ -112,10 +120,10 @@ const PostCard = (props: PostCardType) => {
                             {
                                 el?.comments?.length == 1 ? `No Comments` : el.comments?.length === 2 ? "1 Comment" : `${el.comments?.length} Comments`
                             }
-                        </p>
+                        </p> */}
                     </div>
                     <p className=''>
-                        <span className='font-semibold ml-2'>{el?.owner}</span>
+                       {el.result&&<span className='font-semibold ml-2'>{el?.result[0].name}</span>}
                         {
                             showComment ? <span className='mx-2' >{el.caption}</span> :
                                 <span className='mx-2'> {el?.caption?.split(' ').slice(0, 4).join(' ') + "..."}
@@ -129,15 +137,15 @@ const PostCard = (props: PostCardType) => {
                 </div>
                 <div className='flex items-center justify-around'>
                     <BiCommentAdd />
-                    <input value={el.comment} type="text" placeholder='add a comment...' onChange={(e) => handleCommentChange(e)} className='outline-none bg-transparent my-3 w-3/5' />
+                    <input value={comment} type="text" placeholder='add a comment...' onChange={(e) => handleCommentChange(e)} className='outline-none bg-transparent my-3 w-3/5' />
                     <button onClick={() => handleComment(el)} disabled={comment.length < 6} className={`font-bold bg-black/60 px-3 rounded-md ${comment.length < 6 ? "text-gray-500" : ""}`}>post</button>
                 </div>
             </div>
-            {(el?.edit_post) ? <div onClick={() => handleEditPost(el.id)} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e) => { e.stopPropagation() }} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
-                <p onClick={() => handlePostEdit(el)} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'><AiOutlineEdit className='mr-2' /> Edit Post</p>
-                <p onClick={() => openAddImgModal(el)} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'> <BiMessageSquareAdd className='mr-2' /> Add photos</p>
-                <p onClick={() => handleDelModal(el)} className='border-b-2 border-gray-500 my-4 text-red-300 cursor-pointer flex items-center'> <AiOutlineDelete className='mr-2' /> Delete Post</p>
-            </div> </div> : ""}
+            {postEditmodal&&<div onClick={handleEditPost} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e) => { e.stopPropagation() }} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
+                <p onClick={() =>{setPostEditmodal(false); handlePostEdit(el)}} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'><AiOutlineEdit className='mr-2' /> Edit Post</p>
+                <p onClick={() =>{setPostEditmodal(false); openAddImgModal(el)}} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'> <BiMessageSquareAdd className='mr-2' /> Add photos</p>
+                <p onClick={() =>{setPostEditmodal(false); handleDelModal(el)}} className='border-b-2 border-gray-500 my-4 text-red-300 cursor-pointer flex items-center'> <AiOutlineDelete className='mr-2' /> Delete Post</p>
+            </div> </div>}
             {addComment && <AlertModal text='Comment Added' color="bg-green-500" />}
         </div>
     )

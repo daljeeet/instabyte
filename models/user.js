@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     email: {type:String,required:true},
     id:{type:String,required:true},
     profile:{type:String,required:true},
-    username:{type:String}
+    username:{type:String},
+    cover:{type:String,required:true}
 })
- export const User = mongoose.models.User || mongoose.model("User", userSchema);
+ export const User = mongoose.models.User || mongoose.model("User", userSchema); 

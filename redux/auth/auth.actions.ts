@@ -19,7 +19,8 @@ export type userdataType = {
     username?:string|null;
     email:string|null,
     id:string|null,
-    profile:string|null
+    profile:string|null,
+    cover?:string
 }
 export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
@@ -28,9 +29,12 @@ export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payloa
        const userData:userdataType = {
         name:user?.user?.displayName,
         email:user?.user?.email,
-        username:user?.user?.displayName,
+        username:user?.user?.displayName?.split(' ')[0],
         id:user?.user?.uid,
-        profile:user?.user.photoURL,}  
+        profile:user?.user.photoURL,
+        cover:"coverimg"
+    }  
+    
         addUserApi(userData);
     dispatch({type:AUTH_SUCCESS,payload:userData})
     }catch(err){
@@ -57,13 +61,6 @@ export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:a
         console.log(err)
     }
 }
-export type userDetails ={
-    name:string,
-    email:string,
-    id:string,
-    profile:string,
-}
-
 export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
     try{

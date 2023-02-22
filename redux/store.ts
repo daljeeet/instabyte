@@ -9,11 +9,13 @@ import { authUserReducer } from './auth/auth.reducer';
 import { imgPostReducer} from './ImageUrl/imgreducer'; 
 import { getAllPostsReducer} from './postdata/post.reducer';
 import { userPostreducer } from './users_post/user.recuder';
+import { userDataReducer } from './user_data/user_data_reducer';
 const rootReducer = combineReducers({
     imgUrl:imgPostReducer,
     allPosts:getAllPostsReducer,
     user:authUserReducer,
-    userPost:userPostreducer
+    userPost:userPostreducer,
+    userDetails:userDataReducer
 })
 
 const composeEnhancer = compose;
