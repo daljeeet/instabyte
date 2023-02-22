@@ -47,10 +47,10 @@ export const deletePostt = (id:number|string,postData:postDataType[])=>async(dis
         dispatch({type:DEL_ERROR})
     }
 }
-export const editPost = (post:postDataType)=>async(dispatch: (arg0: { type: string; payload?: postDataType[]; }) => void)=>{
+export const editPost = (post:string[],id:string)=>async(dispatch: (arg0: { type: string; payload?: postDataType[]; }) => void)=>{
     dispatch({type:PATCH_LOADING})
     try{
-        let res = await editPostApi(post)
+        let res = await editPostApi(post,id)
         if(res?.status==200){
             dispatch({type:PATCH_SUCCESS})
         }else{

@@ -25,11 +25,12 @@ type PostCardType = {
 }
 const PostCard = (props: PostCardType) => {
     const [postEditmodal, setPostEditmodal] =useState(false)
-    const { el, handleLike, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
+    const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const loading_post = useSelector((val: rootReducertype) => val?.allPosts?.loading_post)
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
     }
+    const [like,setLike]=useState(false)
     const [addComment, setAddComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [comment, setComment] = useState('')
@@ -37,7 +38,8 @@ const PostCard = (props: PostCardType) => {
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
     const Router = useRouter()
-
+// console.log(el,"element")
+// console.log(user,"user")
     useEffect(() => {
         if (!cardRef?.current) return
         const observe = new IntersectionObserver(([entry]) => {
@@ -57,6 +59,25 @@ const handlePostEditmodal = ()=>{
 const handleEditPost = ()=>{
     setPostEditmodal(false)
 }
+
+const handleLike=(state:boolean,el:postDataType)=>{
+    setLike(state)
+    if(state){
+     
+        let newLikedObj:any={
+    likes:[...el.likes,user.id]
+        }
+        dispatch(editPost(newLikedObj,"6"))
+    }
+    else{
+    let newLikedel=  el.likes.filter((el)=>{
+    return el!==user.id
+      })
+      el.likes= newLikedel
+   //   dispatch(editPost(el))
+    
+    }
+    }
     const handleComment = (el: postDataType) => {
         if (user) {
             var newComment = {
@@ -99,10 +120,10 @@ const handleEditPost = ()=>{
             <div className='p-2' >
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
-                        {
-                            (user?.name) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
-                                : <AiOutlineHeart onClick={() => handleLike(true, el)} className='text-2xl cursor-pointer animate-in zoom-in' />
-                        }
+                    {
+                el.likes.includes(user?.id) ? <AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
+                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+               }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiBookmark className='text-2xl cursor-pointer' />
                         {/* <FiSend className='text-2xl cursor-pointer' /> */}

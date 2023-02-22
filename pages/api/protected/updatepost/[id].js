@@ -1,53 +1,22 @@
-import dbConnect from '../../../lib/dbConnect'
-import Post from '../../../models/Post'
-export const config = {
-  runtime: 'edge',
-}
-export default async function protect(req, res) {
-  const {
-    query: { id },
-    method,
-  } = req
-  await dbConnect()
+import dbConnect from "../../../../lib/dbConnect"
+import {Post} from "../../../models/Post"
 
-  switch (method) {
-    case "PATCH":
-      try {
-        const pet = await Post.findByIdAndUpdate(id, req.body, {
-          new: true,
-          runValidators: true,
-        })
-        if (!pet) {
-          return res.status(400).json({ success: false })
-        }
-        res.status(200).json({ success: true, data: pet })
-      } catch (error) {
-        res.status(400).json({ success: false })
-      }
-      break;
-    case "DELETE":
-       try {
-        const deletedPet = await Post.deleteOne({ _id: id })
-        if (!deletedPet) {
-          return res.status(400).json({ success: false })
-        }
-        res.status(200).json({ success: true, data: {} })
-      } catch (error) {
-        res.status(400).json({ success: false })
-      }
-      break;
-    case "GET":
-      try {
-        const pet = await Post.findById(id)
-        if (!pet) {
-          return res.status(400).json({ success: false })
-        }
-        res.status(200).json({ success: true, data: pet })
-      } catch (error) {
-        res.status(400).json({ success: false })
-      }
-      break;
+export default async function handler(req, res) {
+  await dbConnect()
+  switch (req.method) {
+    case 'PATCH':
+      // try {
+      //   const newPost = new Post(req.body)
+      //   newPost.save()
+      //   res.status(201).json({ success: true, data: "post Added successfully" })
+      // } catch (error) {
+      //   res.status(400).json({ success: false, error})
+      // }
+      res.status(200).json({data:req.body})
+      break
     default:
-      res.status(405).end(`Method ${method} Not Allowed`);
+      res.status(400).json({ success: false,msg:`Cannot Find ${req.method}` })
   }
+
+
 }
