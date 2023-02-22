@@ -1,5 +1,5 @@
 import axios from "axios";
-import { userdataType } from "./auth.actions";
+import { signoutUser, userdataType } from "./auth.actions";
 export const addUserApi = async(data:userdataType)=>{
     try{
      let res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL_USER}`,data)
@@ -8,7 +8,7 @@ export const addUserApi = async(data:userdataType)=>{
         console.log(auth)
         return true
     }else{
-        userLogoutApi()
+        signoutUser()
         return false;
     }
     }catch(err){

@@ -16,7 +16,7 @@ export const elem: postDataType = {
     caption: "",
     imgUrl: [""],
     author: "",
-    likes: 0,
+    likes: [],
     posted_on: "",
     comments:0,
     _id: ""
@@ -31,21 +31,19 @@ const Card = () => {
     const [modal, setModal] = useState(false)
     const [loginModal, setLoginModal] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
-    const [postEdit, setPostEdit] = useState(true)
     const [delModal, setDelModal] = useState(false)
     const [addImgModal, setAddImgModal] = useState(false)
     const [page, setPage] = useState(1)
     useEffect(() => {
         dispatch(getAllPosts(page))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch,page]) 
     useEffect(()=>{
         getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[postData])
     let getData = async()=>{
-        let alldta: any = [...post, ...postData]
-        setPost(alldta) 
+        let alldta:any = [...post, ...postData]
+            setPost(alldta)
     }
     // ======================Various Functions & Onclick Events============================
     const handlePostDetails = (el: postDataType) => {
@@ -65,7 +63,6 @@ const Card = () => {
     const handlePostEdit = (el: postDataType) => {
         if (user) {
             setModalEdit(true);
-            handleEditPost(el._id)
             setPostObj(el)
         } else {
             setLoginModal(true)
@@ -74,22 +71,9 @@ const Card = () => {
     const closePostEditModal = () => {
         setModalEdit(false)
     }
-    const handleEditPost = (id: string | undefined) => {
-        setPostEdit(!postEdit)
-        let showpostData = postData.map((e: { _id: string | undefined }) => {
-            if (e._id === id) {
-                let newData = { ...e, edit_post: postEdit }
-                return newData
-            } else {
-                return e
-            }
-        })
-        setPost(showpostData)
-    }
 
     const handleDelModal = (el: postDataType) => {
         setDelModal(true)
-        handleEditPost(el._id)
         setPostObj(el)
     }
     const closeDelModal = () => {
@@ -97,7 +81,6 @@ const Card = () => {
     }
     const openAddImgModal = (el: postDataType) => {
         setAddImgModal(true)
-        handleEditPost(el._id)
         setPostObj(el)
     }
     const closeAddImgModal = () => {
@@ -110,11 +93,11 @@ const Card = () => {
     const handleLike = (state: boolean, el: postDataType) => {
         if (user) {
             if (state) {
-                el.likes=el.likes+1
+                // el.likes=el.likes+1
                 // dispatch(editPost(el))
             }
             else {
-                el.likes=el.likes-1
+                // el.likes=el.likes-1
                 // dispatch(editPost(el))
             }
         } else {
@@ -129,7 +112,7 @@ const Card = () => {
             return <Loader text='Loading' />
         }
     }
-
+    // console.log(post)
     return (
         <div className='pb-12'>
             {post?.map((el: postDataType, id: number) =>
@@ -140,8 +123,7 @@ const Card = () => {
                         handlePostDetails={handlePostDetails}
                         handlePostEdit={handlePostEdit}
                         openAddImgModal={openAddImgModal}
-                        handleDelModal={handleDelModal} 
-                        handleEditPost={handleEditPost} 
+                        handleDelModal={handleDelModal}
                         isLast={id === post.length - 1}
                         newLimit={() => setPage(page + 1)}
                 />)}
