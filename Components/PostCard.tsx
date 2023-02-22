@@ -37,8 +37,8 @@ const PostCard = (props: PostCardType) => {
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
     const Router = useRouter()
-// console.log(el,"element")
-// console.log(user,"user")
+console.log(el,"element")
+console.log(user,"user")
     useEffect(() => {
         if (!cardRef?.current) return
         const observe = new IntersectionObserver(([entry]) => {
@@ -81,15 +81,15 @@ const handleLike=(state:boolean,el:postDataType)=>{
     }
     const handleComment = (el: postDataType) => {
         if (user) {
-            var newComment = {
-                author:user.name,
-                comment: comment,
-                time: new Date().toDateString(),
-                parentId:el._id
-            }
-            // dispatch(editPost(el))
-            setComment("")
-            setAddComment(true)
+            // var newComment = {
+            //     author:user.name,
+            //     comment: comment,
+            //     time: new Date().toDateString(),
+            //     parentId:el._id
+            // }
+            //  dispatch(editPost(el)
+            // setComment("")
+            // setAddComment(true)
         } else {
             Router.push("/login")
         }
@@ -107,7 +107,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                     <div className='h-10 w-10 rounded-full mx-2'>
                        {el.result&&<Image src={(el?.result[0]?.profile)||'/demo_img.png'} alt="User's Photo" width={200} height={200} className='rounded-full' />}
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> <p>{el?.author}</p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> <p>{el?.result[0].name}</p>
                         <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
                     </div>
                 </div>
@@ -132,17 +132,17 @@ const handleLike=(state:boolean,el:postDataType)=>{
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
                     <div className='flex items-center' >
-                        {/* <p>
+                         <p>
                             {
                                 el?.likes?.length == 0 ? "No Likes" : el.likes?.length == 1 ? `1 Like ` : ` ${el.likes?.length} Likes`
                             }
                         </p>
                         <HiDotsVertical className='' />
-                        <p>
+                        {/* <p>
                             {
                                 el?.comments?.length == 1 ? `No Comments` : el.comments?.length === 2 ? "1 Comment" : `${el.comments?.length} Comments`
                             }
-                        </p> */}
+                        </p>  */}
                     </div>
                     <p className=''>
                        {el.result&&<span className='font-semibold ml-2'>{el?.result[0].name}</span>}
@@ -160,7 +160,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                 <div className='flex items-center justify-around'>
                     <BiCommentAdd />
                     <input value={comment} type="text" placeholder='add a comment...' onChange={(e) => handleCommentChange(e)} className='outline-none bg-transparent my-3 w-3/5' />
-                    <button onClick={() => handleComment(el)} disabled={comment.length < 6} className={`font-bold bg-black/60 px-3 rounded-md ${comment.length < 6 ? "text-gray-500" : ""}`}>post</button>
+                    <button onClick={() => handleComment(el)} disabled={comment.length < 4} className={`font-bold bg-black/60 px-3 rounded-md ${comment.length < 4 ? "text-gray-500" : ""}`}>post</button>
                 </div>
             </div>
             {postEditmodal&&<div onClick={handleEditPost} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e) => { e.stopPropagation() }} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
