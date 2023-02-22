@@ -29,14 +29,14 @@ const PostDetails = (props: postDataAll) => {
     const handleLike = (state: boolean, el: postDataType) => {
         if (state) {
             el.likes.push(user.name)
-            dispatch(editPost(el))
+            // dispatch(editPost(el))
         }
         else {
             let newLikedel = el.likes.filter((el) => {
                 return el !== user.name
             })
             el.likes = newLikedel
-            dispatch(editPost(el))
+            // dispatch(editPost(el))
 
         }
     }
@@ -50,7 +50,7 @@ const PostDetails = (props: postDataAll) => {
             time: new Date().toDateString()
         }
         el.comments.push(newComment)
-        dispatch(editPost(el))
+        // dispatch(editPost(el))
         setComment("")
     }
     return (

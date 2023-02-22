@@ -26,12 +26,10 @@ export const deletePostApi = async(id:number|string)=>{
         console.log(err)
     }
 }
-
 export const editPostApi = async(data:string[],id:string)=>{
     try{
-      console.log(data,id)
         const res = await axios.patch(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`,data)
-       console.log(res)
+        return res.data
     }catch(err){
         console.log(err)
     }
