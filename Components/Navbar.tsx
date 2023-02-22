@@ -1,33 +1,35 @@
 import Link from 'next/link'
-import jwt from 'jsonwebtoken'
 import React, { Dispatch, useState,useEffect } from 'react'
 import {AiOutlineSearch,AiOutlineHome} from 'react-icons/ai'
 import {IoMdNotificationsOutline} from 'react-icons/io'
 import {MdOutlineExplore} from 'react-icons/md';
 import {CgProfile} from 'react-icons/cg'
-import {FiBookmark, FiSend} from 'react-icons/fi'
+import {FiBookmark} from 'react-icons/fi'
 import {BiMessageSquareAdd} from 'react-icons/bi'
 import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { isUserLogin, signoutUser } from '../redux/auth/auth.actions';
+import { isUserLogin, loginwithGoogle} from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
+import { getUserData } from '@/redux/user_data/user_data_acitons'
 // import { getUserData } from '@/redux/users_post/uesr.action'
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
     const user = useSelector((val:rootReducertype)=>val?.user?.user)
+    const {userData,loading,error} =  useSelector((val:rootReducertype)=>val.userDetails)
+    
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
     
     useEffect(()=>{
             dispatch(isUserLogin())
         },[dispatch])
-    useEffect(()=>{
+    useEffect(()=>{ 
         if(user){
-            // dispatch(getUserData(user.id))
+            dispatch(getUserData(user.id))
         }
 
     },[user,dispatch])
@@ -86,8 +88,8 @@ const Navbar = () => {
                 </div>
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
-                        user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2 ' ><Image src={user.profile} width={30} height={30} alt='profile Pic' /> </div> :
-                        <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{user?.name||"Profile"}</p>
+                        userData?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(userData?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' /> </div> :
+                        <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{userData?.name||"Profile"}</p>
                 </div>
             </div>
                         {/* =============================Profile Click List ============================== */}

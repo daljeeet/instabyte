@@ -6,6 +6,6 @@ const userSchema = new mongoose.Schema({
     id:{type:String,required:true},
     profile:{type:String,required:true},
     username:{type:String},
-    bgImg:{type:String}
+    cover:{type:String,required:true}
 })
- export const User = mongoose.models.User || mongoose.model("User", userSchema);
+ export const User = mongoose.models.User || mongoose.model("User", userSchema); 
