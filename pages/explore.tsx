@@ -1,16 +1,19 @@
 import Navbar from '@/Components/Navbar'
 import {Post} from  "@/models/Post.js"
 import dbConnect from '../lib/dbConnect'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,Dispatch } from 'react'
 import { postDataType } from '@/Components/CreateModal.jsx';
 import Image from 'next/image';
 import PostDetails from '@/Components/PostDetails';
 import {elem} from '../Components/Card'
 import BlurImage from '@/Components/BlurImage';
+import { useDispatch } from 'react-redux';
+import { getComments } from '@/redux/comments/comments.action';
 type dataTypes = {
   data:postDataType[]
 }
 const Explore = ({data}:dataTypes) => {
+  const dispatch:Dispatch<any> = useDispatch()
   const posts = data
   const [images, setImages ] = useState([""])
   const [modal, setModal] = useState(false)
@@ -36,6 +39,9 @@ const Explore = ({data}:dataTypes) => {
       }
     })
     setModal(true)
+    if(viewPost[0]._id){
+      dispatch(getComments(viewPost[0]._id))
+    }
     setPostObj(viewPost[0])
   }
  
