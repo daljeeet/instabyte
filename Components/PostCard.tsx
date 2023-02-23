@@ -12,6 +12,8 @@ import Loader from './Loader'
 import { editPost } from '@/redux/postdata/post.actions'
 import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
+import {addComments} from '../redux/comments/comments.action'
+import { commentType } from './Comment'
 type PostCardType = {
     el: postDataType,
     // handleEditPost: (id: string | undefined) => void,
@@ -29,7 +31,6 @@ const PostCard = (props: PostCardType) => {
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
     }
-    const [like,setLike]=useState(false)
     const [addComment, setAddComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [comment, setComment] = useState('')
@@ -62,7 +63,6 @@ const handleLike=(state:boolean,el:postDataType)=>{
     if(state){
        el.likes.push(user.id)
         if(el._id){
-            console.log('Liked')
             dispatch(editPost({likes:el.likes},el._id))
         }
     }
@@ -72,22 +72,23 @@ const handleLike=(state:boolean,el:postDataType)=>{
       })
       if(el._id){
         el.likes= newLikedel;
-        console.log("Not Liked")
           dispatch(editPost({likes:el.likes},el._id))
         }
     }
     }
     const handleComment = (el: postDataType) => {
         if (user) {
-            // var newComment = {
-            //     author:user.name,
-            //     comment: comment,
-            //     time: new Date().toDateString(),
-            //     parentId:el._id
-            // }
-            //  dispatch(editPost(el)
-            // setComment("")
-            // setAddComment(true)
+            if(el._id){
+            let newComment:commentType = {
+                    author:user.name,
+                    comment: comment,
+                    time: new Date().toDateString(),
+                    parentId:el._id
+            }
+            dispatch(addComments(newComment,[]))
+            }
+            setComment("")
+            setAddComment(true)
         } else {
             Router.push("/login")
         }

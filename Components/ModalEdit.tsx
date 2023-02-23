@@ -35,8 +35,9 @@ const ModalEdit = (props: postDataAll) => {
     }
     const handleCaptionChange = (post:postDataType)=>{
        post.caption=changeCaption;
-       post.edit_post=false
-        dispatch(editPost(post))
+       if(post._id){
+           dispatch(editPost( {caption:post.caption},post._id))
+        }
         setAlert(true)
         setCaption(!caption)
     }
@@ -64,8 +65,8 @@ const ModalEdit = (props: postDataAll) => {
                 <div className='md:w-1/2 w-full flex flex-col justify-center items-center'>
 
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> <Image src={data.owner_profile} className="rounded-full ml-4 " width={50} height={50} alt={data.owner} />
-                       <div className='mx-4' > <div className='font-semibold'> {data.owner} (You) </div>
+                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data.result[0].profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={(data?.result[0].name)||"profile photo"} />}
+                       <div className='mx-4' > {data.result&&<div className='font-semibold'> {data.result[0].name} (You) </div>}
                         <div className='text-gray-400 font-bold text-sm' >{data.posted_on}</div></div>
                     </div>
 

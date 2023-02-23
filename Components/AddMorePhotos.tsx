@@ -34,7 +34,9 @@ const AddMorePhotos = (props:addType) => {
     }
     const PostAddImage = ()=>{
       data.imgUrl.push(img)
-      dispatch(editPost(data))
+      if(data._id){
+        dispatch(editPost(data.imgUrl,data._id))
+      }
       dispatch(resetPost())
       handleClose()
     }

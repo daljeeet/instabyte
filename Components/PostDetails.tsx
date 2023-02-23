@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
-import Comment from './Comment'
+import Comment, { commentType } from './Comment'
+import { addComments, clearComments, getComments } from '@/redux/comments/comments.action'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
 }
 const PostDetails = (props: postDataAll) => {
+    const {loading, error, comments} =  useSelector((val:rootReducertype)=>val.comments)
     const dispatch: Dispatch<any> = useDispatch()
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const { data, closeModal } = props
@@ -26,31 +28,45 @@ const PostDetails = (props: postDataAll) => {
             document.body.className = "overflow-y-auto";
         }
     }, [])
-    const handleLike = (state: boolean, el: postDataType) => {
-        if (state) {
-            el.likes.push(user.name)
-            // dispatch(editPost(el))
+    useEffect(() => {
+        // if(data._id){
+        //     dispatch(getComments(data?._id))
+        // }
+        return () => {
+            dispatch(clearComments())
         }
-        else {
-            let newLikedel = el.likes.filter((el) => {
-                return el !== user.name
-            })
-            el.likes = newLikedel
-            // dispatch(editPost(el))
-
+    }, [data._id, dispatch])
+    const handleLike=(state:boolean,el:postDataType)=>{
+        if(state){
+           el.likes.push(user.id)
+            if(el._id){
+                dispatch(editPost({likes:el.likes},el._id))
+            }
         }
-    }
+        else{
+        let newLikedel=  el.likes.filter((e)=>{
+        return e!==user.id
+          })
+          if(el._id){
+            el.likes= newLikedel;
+              dispatch(editPost({likes:el.likes},el._id))
+            }
+        }
+        }
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
     }
     const handleComment = (el: postDataType) => {
-        var newComment = {
-            user: user?.name,
-            comment: comment,
-            time: new Date().toDateString()
-        }
-        // el.comments.push(newComment)
-        // dispatch(editPost(el))
+        if(el._id){
+            let newComment:commentType = {
+                    author:user.name,
+                    comment: comment,
+                    time: new Date().toDateString(),
+                    parentId:el._id
+            }
+            let allcomments = [...comments, newComment]
+            dispatch(addComments (newComment,allcomments))
+            }
         setComment("")
     }
     return (
@@ -79,8 +95,12 @@ const PostDetails = (props: postDataAll) => {
                     {/* ===================profile image and name ===================== */}
                     <div className='w-11/12 h-2/3 overflow-y-auto py-2 scrollbar-hide border-t-2 mt-2 border-gray-600'>
                         {
-                            data.comments==0?<div className='text-gray-500'>No Comments Yet....</div> :""
-                            // comments?.map((el, id) =><Comment key={id} el={el} />)
+                            comments.length==0?<div className='text-gray-500'>No Comments Yet....</div>:
+                            <div>
+                                {
+                               loading?"loading comments...":comments?.map((el:commentType, id:number) =><Comment key={id} el={el} />)
+                                }
+                            </div>
                         }
                     </div>
 
@@ -89,7 +109,7 @@ const PostDetails = (props: postDataAll) => {
                         <div className='flex w-full justify-between mt-1' >
                             <div className='flex w-1/3 h-10 items-center justify-around'>
                                 {
-                                    data.likes.includes(user.name) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
+                                    data.likes.includes(user.id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
                                         : <AiOutlineHeart onClick={() => handleLike(true, data)} className='text-3xl cursor-pointer animate-in zoom-in' />
                                 }
                                 <BiMessageRounded className='text-3xl cursor-pointer' />
@@ -103,7 +123,7 @@ const PostDetails = (props: postDataAll) => {
                             </p>
                             <HiDotsVertical className='' />
                             <p className='mx-2' >{
-                                data?.comments == 0 ? `No Comments` : data.comments === 1 ? "1 Comment" : `${data.comments} Comments`
+                                comments.length == 0 ? `No Comments` : comments.length === 1 ? "1 Comment" : `${comments.length} Comments`
                             }</p>
                         </div>
                     </div>
