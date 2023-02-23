@@ -49,6 +49,7 @@ const Card = () => {
     const handlePostDetails = (el: postDataType) => {
         if (user) {
             setModal(true)
+            
             setPostObj(el)
         } else {
           return <LoginModal />
@@ -90,20 +91,7 @@ const Card = () => {
     // likes
 
 
-    const handleLike = (state: boolean, el: postDataType) => {
-        if (user) {
-            if (state) {
-                // el.likes=el.likes+1
-                // dispatch(editPost(el))
-            }
-            else {
-                // el.likes=el.likes-1
-                // dispatch(editPost(el))
-            }
-        } else {
-            Router.push("/login")
-        }
-    }
+ 
     if (error_post) {
         return <div>Something Went Wrong.....</div>
     }
@@ -119,7 +107,7 @@ const Card = () => {
                     <PostCard
                         key={id}
                         el={el}
-                        handleLike={handleLike}
+                    
                         handlePostDetails={handlePostDetails}
                         handlePostEdit={handlePostEdit}
                         openAddImgModal={openAddImgModal}

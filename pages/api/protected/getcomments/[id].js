@@ -1,15 +1,14 @@
 import dbConnect from "../../../../lib/dbConnect"
-import {Post} from "../../../../models/Post"
+import {Comment} from "../../../../models/Comments"
 
 export default async function handler(req, res) {
   await dbConnect()
-  const {query,method} = req;
-  const {id} = query;
+  const {id,method} = req;
   switch (method) {
-    case 'PATCH':
+    case 'GET':
       try {
-        const newPost = await Post.findByIdAndUpdate({_id: id},req.body)
-        res.status(201).json({ success: true, data:newPost})
+        let allComments = Comment.find({parentId: id})
+        res.status(201).json({ success: true, data:allComments})
       } catch (error) {
         res.status(400).json({ success: false, error})
       }
@@ -17,6 +16,4 @@ export default async function handler(req, res) {
     default:
       res.status(400).json({ success: false,msg:`Cannot Find ${req.method}` })
   }
-
-
 }
