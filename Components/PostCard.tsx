@@ -49,7 +49,7 @@ const PostCard = (props: PostCardType) => {
         observe.observe(cardRef.current)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLast])
-
+console.log(el)
 const handlePostEditmodal = ()=>{
     setPostEditmodal(true)
 }
