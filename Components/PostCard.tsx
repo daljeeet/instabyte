@@ -85,10 +85,13 @@ const handleLike=(state:boolean,el:postDataType)=>{
                     time: new Date().toDateString(),
                     parentId:el._id
             }
+            dispatch(editPost({comments:el.comments+1},el._id))
+         // console.log(el.comments)
             dispatch(addComments(newComment,[]))
             }
             setComment("")
             setAddComment(true)
+    el.comments++
         } else {
             Router.push("/login")
         }
@@ -137,11 +140,11 @@ const handleLike=(state:boolean,el:postDataType)=>{
                             }
                         </p>
                         <HiDotsVertical className='' />
-                        {/* <p>
+                     <p>
                             {
-                                el?.comments?.length == 1 ? `No Comments` : el.comments?.length === 2 ? "1 Comment" : `${el.comments?.length} Comments`
+                                el?.comments == 0 ? `No Comments` : el.comments === 1 ? "1 Comment" : `${el.comments} Comments`
                             }
-                        </p>  */}
+                        </p> 
                     </div>
                     <p className=''>
                        {el.result&&<span className='font-semibold ml-2'>{el?.result[0].name}</span>}

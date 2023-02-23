@@ -28,7 +28,9 @@ export const deletePostApi = async(id:number|string)=>{
 }
 export const editPostApi = async(data:string[],id:string)=>{
     try{
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`,data)
+        
+     const res = await axios.patch(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`,data)
+     
         return res.data
     }catch(err){
         console.log(err)
