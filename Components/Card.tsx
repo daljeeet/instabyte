@@ -12,6 +12,7 @@ import Router from 'next/router'
 import PostCard from './PostCard'
 import LoginModal from './LoginModal'
 import Loader from './Loader'
+import { getComments } from '@/redux/comments/comments.action'
 export const elem: postDataType = {
     caption: "",
     imgUrl: [""],
@@ -49,7 +50,9 @@ const Card = () => {
     const handlePostDetails = (el: postDataType) => {
         if (user) {
             setModal(true)
-            
+            if(el._id){
+                dispatch(getComments(el?._id))
+            }
             setPostObj(el)
         } else {
           return <LoginModal />

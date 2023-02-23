@@ -1,6 +1,5 @@
-import dbConnect from "@lib/dbConnect"
-import {Comment} from "@models/Comment"
-import {Likes} from "@models/Likes"
+import dbConnect from "../../../../lib/dbConnect"
+import {Comment} from "../../../../models/Comments"
 
 export default async function handler(req, res) {
   await dbConnect()
@@ -8,10 +7,8 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        let postComments = Comment.find({parentId: id})
-        let postLikes = Likes.find({parentId: id})
-        let postData = [...postComments,postLikes]
-        res.status(201).json({ success: true, data:postData})
+        let postComments =await Comment.find({parentId: id})
+        res.status(201).json({ success: true, data:postComments})
       } catch (error) {
         res.status(400).json({ success: false, error})
       }

@@ -1,5 +1,5 @@
-import { expireUserCookie } from 'lib/auth'
-import { jsonResponse } from 'lib/utils'
+import { expireUserCookie } from '../../../lib/auth'
+import { jsonResponse } from '../../../lib/utils'
 export const config = {
   runtime: 'edge',
 }
