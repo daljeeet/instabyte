@@ -15,6 +15,7 @@ const Comment = (props:commentTypes) => {
     const colors = ["bg-black", "bg-violet-900", "bg-blue-800", "bg-sky-900", "bg-emerald-800", "bg-yellow-900", "bg-teal-700", "bg-cyan-700", "bg-blue-500", "bg-pink-900"]
     const random = Math.floor(Math.random() * colors.length)
     const {el} = props
+    console.log(el.time)
   return (
     <div>
             {el.author =='' ? "" : <div className='  flex m-3 items-center justify-between'>
@@ -24,7 +25,10 @@ const Comment = (props:commentTypes) => {
                 <div className=' w-1/2'>
                     <p className='text-sm' >{el.comment}</p>
                     {
-                        Date.now() - Date.parse(new Date().toDateString()) <= 86400000 ? <p className='text-sm text-gray-500' >Today</p> : Date.now() - Date.parse(new Date().toDateString()) <= 17280000? <p className='text-sm text-gray-500' >yesterday</p>:<p className='text-sm text-gray-500' >{el.time}</p>
+                       new Date(new Date().toDateString()).getTime()-new Date(`${el.time}`).getTime()<= 86400000 ? <p className='text-sm text-gray-500' >Today</p>:
+                       new Date(new Date().toDateString()).getTime()-new Date(`${el.time}`).getTime() <=172800000 ? <p className='text-sm text-gray-500' >yesterday</p>
+                       :
+                       <p className='text-sm text-gray-500' >{el.time}</p>
                     }
                 </div>
             </div>}

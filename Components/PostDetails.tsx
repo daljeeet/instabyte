@@ -58,6 +58,7 @@ const PostDetails = (props: postDataAll) => {
     }
     const handleComment = (el: postDataType) => {
         if(el._id){
+          
             let newComment:commentType = {
                     author:user.name,
                     comment: comment,
@@ -66,6 +67,8 @@ const PostDetails = (props: postDataAll) => {
             }
             let allcomments = [...comments, newComment]
             dispatch(addComments (newComment,allcomments))
+            dispatch(editPost({comments:el.comments+1},el._id))
+            el.comments++
             }
         setComment("")
     }
@@ -109,7 +112,7 @@ const PostDetails = (props: postDataAll) => {
                         <div className='flex w-full justify-between mt-1' >
                             <div className='flex w-1/3 h-10 items-center justify-around'>
                                 {
-                                    data.likes.includes(user.id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
+                                    data?.likes.includes(user.id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
                                         : <AiOutlineHeart onClick={() => handleLike(true, data)} className='text-3xl cursor-pointer animate-in zoom-in' />
                                 }
                                 <BiMessageRounded className='text-3xl cursor-pointer' />

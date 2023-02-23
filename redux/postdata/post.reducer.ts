@@ -42,6 +42,7 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state, error_post:true,loading_post:false}
         }
         case GET_SUCCESS:{
+            console.log(state.postData)
             return {...state,postData:payload,loading_post:false}
         }
         case POST_SUCCESS:{
@@ -63,6 +64,7 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
         case DEL_LOADING:{
             return {...state,del_loading:true,del_error:false}
         }
+        
         default:{
             return {...state}
         }
