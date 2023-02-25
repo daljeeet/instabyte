@@ -2,16 +2,19 @@ import { userdataType } from '../auth/auth.actions';
 import {USER_DATA_LOADING,USER_DATA_ERROR,USER_DATA_SUCCESS,USER_DATA_UPDATE_SUCCESS,
     USER_DATA_UPDATE_ERROR,
     USER_DATA_UPDATE_LOADING} from './user_data.action_types'
-
     interface insitDataType{
-        loading:boolean,
-        error:boolean,
+        get_loading:boolean,
+        get_error:boolean,
+        patch_loading:boolean,
+        patch_error:boolean
         userData:userdataType
     }
 
      const insitData:insitDataType = {
-        loading:false,
-        error:false,
+        get_loading:false,
+        get_error:false,
+        patch_loading:false,
+        patch_error:false,
         userData:{
             name:"",
             email:"",
@@ -35,15 +38,14 @@ import {USER_DATA_LOADING,USER_DATA_ERROR,USER_DATA_SUCCESS,USER_DATA_UPDATE_SUC
                 return{...state,loading:false, error:false, userData:payload}
             }
             case USER_DATA_UPDATE_SUCCESS:{
-                return{...state,loading:false, error:false,userdata:payload}
+                return{...state,patch_loading:false, patch_error:false}
             }
             case USER_DATA_UPDATE_ERROR:{
-                return{...state,error:true,loading:false }
+                return{...state,patch_error:true,patch_loading:false }
             }
             case USER_DATA_UPDATE_LOADING:{
-                return{...state, loading:true, error:false}
+                return{...state, patch_loading:true, patch_error:false}
             }
-        
             default:{
                 return{...state}
             }

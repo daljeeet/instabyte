@@ -3,14 +3,14 @@ import React, { Dispatch, useEffect, useState } from 'react'
 import { postDataType } from './CreateModal'
 import { AiFillHeart, AiOutlineHeart, AiOutlineClose } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
-import { FiBookmark, FiSend } from 'react-icons/fi'
+import { FiBookmark } from 'react-icons/fi'
 import { editPost } from '@/redux/postdata/post.actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
 import Comment, { commentType } from './Comment'
-import { addComments, clearComments, getComments } from '@/redux/comments/comments.action'
+import { addComments, clearComments} from '@/redux/comments/comments.action'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
@@ -21,7 +21,6 @@ const PostDetails = (props: postDataAll) => {
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const { data, closeModal } = props
     const [comment, setComment] = useState("")
-    const [currentDate, setCurrentDate] = useState(new Date().toDateString())
     useEffect(() => {
         document.body.className = "overflow-y-hidden";
         return () => {
@@ -29,9 +28,6 @@ const PostDetails = (props: postDataAll) => {
         }
     }, [])
     useEffect(() => {
-        // if(data._id){
-        //     dispatch(getComments(data?._id))
-        // }
         return () => {
             dispatch(clearComments())
         }
@@ -103,6 +99,7 @@ const PostDetails = (props: postDataAll) => {
                                 {
                                loading?"loading comments...":comments?.map((el:commentType, id:number) =><Comment key={id} el={el} />)
                                 }
+                                {error&&<div>something went wrong...</div>}
                             </div>
                         }
                     </div>

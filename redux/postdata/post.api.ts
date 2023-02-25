@@ -20,17 +20,15 @@ export const getAllPostsApi = async(page:number)=>{
 
 export const deletePostApi = async(id:number|string)=>{
     try{
-        const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL_POST}/${id}`)
+        const res = await axios.delete(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`)
         return res;
     }catch(err){
         console.log(err)
     }
 }
-export const editPostApi = async(data:string[],id:string)=>{
+export const editPostApi = async(data:any,id:string)=>{
     try{
-        
      const res = await axios.patch(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`,data)
-     
         return res.data
     }catch(err){
         console.log(err)

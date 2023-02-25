@@ -6,18 +6,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BsFillImageFill} from 'react-icons/bs'
 import { BiImageAdd} from 'react-icons/bi'
 import Image from 'next/image'
-import { postDataType } from './CreateModal'
-import { editPost } from '@/redux/postdata/post.actions'
 import Loader from './Loader'
+import { updateUserData } from '@/redux/user_data/user_data_acitons'
+import BlurImage from './BlurImage'
 
 type addType = {
+  isProfile:boolean
   closeAddMorePhotos:()=>void
-  data:postDataType
 }
-const AddMorePhotos = (props:addType) => {
-  const {closeAddMorePhotos,data} = props;
+const ChangeProfile = (props:addType) => {
+  const dispatch:Dispatch<any> = useDispatch()
+  const { userData,patch_loading,patch_error} = useSelector((val: rootReducertype) => val.userDetails)
+    useEffect(()=>{
+        return ()=>{
+            dispatch(resetPost())
+        }
+    },[dispatch])
+  const {closeAddMorePhotos,isProfile,} = props;
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
-    const dispatch:Dispatch<any> = useDispatch()
     useEffect(() => {
       document.body.className="overflow-y-hidden";
       return ()=>{
@@ -33,11 +39,23 @@ const AddMorePhotos = (props:addType) => {
         dispatch(postUrl(form))
     }
     const PostAddImage = ()=>{
-      data.imgUrl.push(img)
-      if(data._id){
-        dispatch(editPost({imgUrl:data.imgUrl},data._id))
+      if(userData._id){
+        if(isProfile){
+          dispatch(updateUserData({profile:img},userData._id))
+          if(!patch_loading&&!patch_error){
+            userData.profile=img;
+          }
+        }else{
+          dispatch(updateUserData({cover:img},userData._id))
+          if(!patch_loading&&!patch_error){
+            userData.cover=img;
+          }
+        }
       }
-      dispatch(resetPost())
+    //   data.imgUrl.push(img)
+    //   if(data._id){
+        // dispatch(editPost(data.imgUrl,data._id))
+    //   }
       handleClose()
     }
   return (
@@ -46,17 +64,19 @@ const AddMorePhotos = (props:addType) => {
     {iserror?<div> Image Upload Failed ☹️ <span onClick={handleClose} className='underline font-bold text-sm'>close</span> </div>:
     <div onClick={(e)=>{e.stopPropagation()}} className='m-auto w-5/6 md:w-96 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto animate-in zoom-in'>
                 <div className='w-full relative my-4'>
-               {isloading?<div className='w-3/4 m-auto h-12 overflow-hidden'><Loader text="Please Wait..." /></div>:<h3 className='text-xl'>Add Photo </h3> }
+               {isloading?<div className='w-3/4 m-auto h-12 overflow-hidden'><Loader text="Please Wait..." /></div>:<h3 className='text-xl'>Update {isProfile?"Profile":"Cover"} Photo</h3> }
                 <AiOutlineClose onClick={handleClose} className='absolute right-0 top-0 text-xl mt-2 mr-2 font-bold cursor-pointer'/>
                 </div>
                 <div className='m-auto w-1/2 flex items-center justify-center'>
-                  {img?<Image src={img} height={800} width={500} alt='asdf' />:<BsFillImageFill className='text-8xl' />}
+                  {
+                    isdone? isProfile?<Image src={img} width={200} height={180} alt='updated Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage}/>:<Image src={img} width={800} height={1200} alt='updated cover' blurDataURL={BlurImage}/>  : isProfile?<Image src={(userData?.profile)||"/demo_img.png"} width={200} height={200} alt='Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage} />:<Image src={(userData.cover)||"/demo_img.png"} width={500} height={200} alt='cover image' blurDataURL={BlurImage}/>
+                  }
                 </div>
                 <div className='p-2 my-4 w-fit m-auto flex w-1/2 justify-around'>
-                 <label htmlFor='imageUpload' className='border-indigo-500 border-2 rounded-md px-2 py-1'><BiImageAdd className='text-4xl cursor-pointer ' />
+                 <label htmlFor='imageUpload' className='border-blue-700 border-2 rounded-md px-2 py-1'><BiImageAdd className='text-4xl cursor-pointer ' />
                     <input onChange={handleImage} type="file" className='hidden' id="imageUpload" accept="image"/>
                 </label>
-                <button onClick={PostAddImage} disabled={!isdone} className='border-indigo-500 border-2 rounded-md px-2 font-bold'>
+                <button onClick={PostAddImage} disabled={!isdone} className='border-blue-500 border-2 rounded-md px-2 font-bold'>
                   Done
                 </button>
                 </div>
@@ -66,4 +86,4 @@ const AddMorePhotos = (props:addType) => {
   )
 }
 
-export default AddMorePhotos
+export default ChangeProfile

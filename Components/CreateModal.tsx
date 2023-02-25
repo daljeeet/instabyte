@@ -70,7 +70,7 @@ const handlePost = ()=>{
       props.handleModal()
 }
    return (<>
-        <div onClick={handleClose} className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-10`} >
+        <div onClick={handleClose} className={`fixed top-0 left-0 bg-black/60 right-0 w-full min-h-screen flex items-center justify-center z-50`} >
             {
                 iserror?<div> Image Upload Failed ☹️ <span onClick={handleClose} className='underline font-bold text-sm'>close</span> </div>:                
                 <div onClick={(e)=>{e.stopPropagation()}} className='m-auto w-11/12 md:w-1/2 bg-gray-900 text-center text-white rounded-lg max-h-[80vh] overflow-auto animate-in zoom-in border-[1px] border-gray-500'>

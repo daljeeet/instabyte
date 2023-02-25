@@ -1,6 +1,4 @@
-import { rootReducertype } from '@/redux/store';
 import React from 'react'
-import { useSelector } from 'react-redux';
 export type commentType={
     author:string,
     comment:string,
@@ -15,7 +13,6 @@ const Comment = (props:commentTypes) => {
     const colors = ["bg-black", "bg-violet-900", "bg-blue-800", "bg-sky-900", "bg-emerald-800", "bg-yellow-900", "bg-teal-700", "bg-cyan-700", "bg-blue-500", "bg-pink-900"]
     const random = Math.floor(Math.random() * colors.length)
     const {el} = props
-    console.log(el.time)
   return (
     <div>
             {el.author =='' ? "" : <div className='  flex m-3 items-center justify-between'>

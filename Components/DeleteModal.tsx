@@ -1,7 +1,6 @@
 import { deletePostt } from '@/redux/postdata/post.actions'
-import { rootReducertype } from '@/redux/store'
 import React, { Dispatch, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch} from 'react-redux'
 type postDataAll = {
     id: string | undefined,
     closeModal: () => void
@@ -13,16 +12,10 @@ const DeleteModal = (props: postDataAll) => {
         document.body.className="overflow-y-auto";
         }
     }, [])
-    const postData = useSelector((val: rootReducertype) => val?.allPosts?.postData)
     const dispatch: Dispatch<any> = useDispatch();
     const { id, closeModal } = props;
     const deletePost = (id: string) => {
-        let updatedPost = postData.filter((el: { id: string }) => {
-            if (el.id !== id) {
-                return el
-            }
-        })
-        dispatch((deletePostt(id, updatedPost)))
+        dispatch((deletePostt(id)))
         closeModal();
     }
     return (

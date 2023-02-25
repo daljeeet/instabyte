@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 @import "./libraries/_nprogress.css";
+@import url('https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@300&display=swap');
+body {
+    font-family: 'Shantell Sans', cursive;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }

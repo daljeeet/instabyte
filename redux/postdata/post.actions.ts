@@ -34,15 +34,11 @@ try{
 }
 }
 
-export const deletePostt = (id:number|string,postData:postDataType[])=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
+export const deletePostt = (id:number|string)=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:DEL_LOADING})
     try{
-        let res = await deletePostApi(id);
-        if(res?.status==200){
-            dispatch({type:DEL_SUCCESS,payload:postData})
-        }else{
-            dispatch({type:DEL_ERROR})
-        }
+        await deletePostApi(id);
+            dispatch({type:DEL_SUCCESS,payload:id})
     }catch(err){
         dispatch({type:DEL_ERROR})
     }
@@ -52,7 +48,7 @@ export const editPost = (post:any,id:string)=>async(dispatch: (arg0: { type: str
     try{
         
         let res = await editPostApi(post,id)
-   
+        console.log(res)
         dispatch({type:PATCH_SUCCESS})
       
 

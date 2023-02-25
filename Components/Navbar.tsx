@@ -10,17 +10,18 @@ import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { isUserLogin, loginwithGoogle} from '../redux/auth/auth.actions';
+import { isUserLogin} from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 import { getUserData } from '@/redux/user_data/user_data_acitons'
-// import { getUserData } from '@/redux/users_post/uesr.action'
+import { getOneUserPost } from '@/redux/users_post/uesr.action';
+import LoginModal from './LoginModal';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
     const user = useSelector((val:rootReducertype)=>val?.user?.user)
-    const {userData,loading,error} =  useSelector((val:rootReducertype)=>val.userDetails)
-    
+    const {userData} =  useSelector((val:rootReducertype)=>val.userDetails)
+    const [loginModal, setLoginModal] = useState(false)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
     
@@ -31,14 +32,13 @@ const Navbar = () => {
         if(user){
             dispatch(getUserData(user.id))
         }
-
     },[user,dispatch])
     // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
         if(user){
             setSrchModal(!srchModal)
         }else{
-            Router.push("/login",undefined,{shallow:true})
+            setLoginModal(true)
         }
     }
     const closeSrchModal = ()=>{
@@ -48,7 +48,7 @@ const Navbar = () => {
         if(user){
             setCreateModal(true)
         }else{
-            Router.push("/login")
+            setLoginModal(true)
         }
     }
     const handleModal = ()=>{
@@ -56,10 +56,21 @@ const Navbar = () => {
     }
     const handleProfileModal = ()=>{ 
         if(user){
-            Router.push("/profile")
+           dispatch(getOneUserPost(user.id))
+           Router.push("/profile")
         }else{
-            Router.push("/login")
+            setLoginModal(true)
         }   
+    }
+    const handleExplore = ()=>{
+        if(user){
+            Router.push("/explore")
+        }else{
+            setLoginModal(true)
+        }
+    }
+    const closeLoginModal =()=>{
+        setLoginModal(false)
     }
     return (
         <>
@@ -74,9 +85,9 @@ const Navbar = () => {
                 <button onClick={handleSearch} className='items-center hidden md:flex' >
                     <AiOutlineSearch className='mr-2 text-2xl' /> <p className='' >Search</p>
                 </button>
-                <Link href={'/explore'} className='flex items-center' >
+                <button onClick={handleExplore} className='flex items-center' >
                     <MdOutlineExplore className='mr-2 text-2xl' /> <p className='hidden md:block' >Explore</p>
-                </Link>
+                </button>
                 <Link href={'/'} className='flex items-center' >
                     <FiBookmark className='mr-2 text-2xl' /> <p className='hidden md:block' >Bookmarks</p>
                 </Link>
@@ -88,7 +99,7 @@ const Navbar = () => {
                 </div>
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
-                        userData?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(userData?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' /> </div> :
+                        userData?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(userData?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
                         <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{userData?.name||"Profile"}</p>
                 </div>
             </div>
@@ -97,9 +108,10 @@ const Navbar = () => {
                 <SrchModal srchModal={srchModal} closeSrchModal={closeSrchModal} />
         </div>
                {createModal&&<CreateModal handleModal={handleModal} />}
+              {loginModal&&<LoginModal closeLoginModal={closeLoginModal} />}
         {/* mobile nav  */}
                 <div className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
-                <Image src="/logod.png" alt="Tattoo fonts" width={100} height={50} className="ml-2" />
+                <Image src="/logod.png" alt="Instabyte logo" width={100} height={50} className="ml-2" />
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>
         </>

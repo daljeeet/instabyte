@@ -21,6 +21,7 @@ export type userdataType = {
     id:string|null,
     profile:string|null,
     cover?:string
+    _id?:string
 }
 export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
@@ -32,10 +33,12 @@ export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payloa
         username:user?.user?.displayName?.split(' ')[0],
         id:user?.user?.uid,
         profile:user?.user.photoURL,
-        cover:"coverimg"
+        cover:"/logod.png"
     }  
-    
-        addUserApi(userData);
+    let res = addUserApi(userData)
+    if(!res){
+        signoutUser()
+    }
     dispatch({type:AUTH_SUCCESS,payload:userData})
     }catch(err){
         dispatch({type:AUTH_ERROR})

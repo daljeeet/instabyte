@@ -54,7 +54,7 @@ const closePostDtlModal = ()=>{
      <Navbar/>
     <div className='md:ml-52 pt-14 h-fit' >
       <div className='grid gap-4 p-4 md:grid-cols-3 grid-cols-1 sm:grid-cols-2 grid-rows-auto'>
-       {images?.map((el:string,id:number)=><Image key={id} placeholder='blur' blurDataURL={BlurImage} onClick={()=>handleImagePost(el)} src={el||"/demo_img.png"} alt='allpics' width={400} height={800} onLoad={(e:any)=>{e.target.naturalHeight>550?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} />
+       {images?.map((el:string,id:number)=><Image key={id} placeholder='blur' blurDataURL={BlurImage} onClick={()=>handleImagePost(el)} src={el||"/emgerror.png"} alt='allpics' width={400} height={800} onLoad={(e:any)=>{e.target.naturalHeight>550?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} />
         )}
     </div>
     </div>

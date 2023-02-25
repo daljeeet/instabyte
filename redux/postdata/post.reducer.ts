@@ -17,6 +17,7 @@ export type allPostType ={
     error_post:boolean,
     del_loading:boolean,
     del_error:boolean,
+    del_success:boolean,
     patch_loading:boolean;
     patch_error:boolean;
     postData:postDataType[]
@@ -24,6 +25,7 @@ export type allPostType ={
 
 const initialState:allPostType = {
     loading_post:false,
+    del_success:false,
     error_post:false,
     del_loading:false,
     del_error:false,
@@ -42,12 +44,10 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state, error_post:true,loading_post:false}
         }
         case GET_SUCCESS:{
-            console.log(state.postData)
-            return {...state,postData:payload,loading_post:false}
+            return {...state,postData:[...state.postData, ...payload],loading_post:false}
         }
         case POST_SUCCESS:{
-             state.postData.unshift(payload)
-            return {...state,postData:state.postData,loading_post:false}
+            return {...state,postData:[payload,...state.postData],loading_post:false}
         }
         case POST_LOADING:{
             return {...state,loading_post:true}
@@ -56,15 +56,17 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state,loading_post:false,error_post:true}
         }
         case DEL_SUCCESS:{
-            return {...state,postData:payload,del_loading:false,del_error:false}
+        let newData = state.postData.filter((el)=>{
+            if(el._id!=payload){return el}
+        })
+            return {...state,postData:newData,del_loading:false,del_error:false,del_success:true}
         }
         case DEL_ERROR:{
-            return {...state,del_error:true,del_loading:false}
+            return {...state,del_error:true,del_loading:false,del_success:false}
         }
         case DEL_LOADING:{
             return {...state,del_loading:true,del_error:false}
         }
-        
         default:{
             return {...state}
         }
