@@ -22,7 +22,7 @@ export const imgPostReducer = (state=initialState,action:any)=>{
         }case SUCCESS:{
             return {...state, isloading:false, img:payload, isdone:true}
         }case ERROR:{
-            return {...state, isloading:false,iserror:true}
+            return {...state, isloading:false,iserror:true,isdone:false}
         }
         case RESET:{
             return {...state, isloading:false,

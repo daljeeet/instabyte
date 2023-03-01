@@ -1,5 +1,6 @@
 import dbConnect from "../../../../lib/dbConnect"
 import {Post} from "../../../../models/Post"
+import {Comment} from "../../../../models/Comments"
 
 export default async function handler(req, res) {
   await dbConnect()
@@ -14,6 +15,15 @@ export default async function handler(req, res) {
         res.status(400).json({ success: false, error})
       }
       break
+    case "DELETE":
+      try{
+        await Post.findByIdAndDelete({_id: id})
+        await Comment.deleteMany({parentId: id})
+        res.status(201).json({ success: true, msg:"post Deleted successfully"})
+      }catch(err){
+        res.status(400).json({msg:"error while deleting"})
+      }
+      break;
     default:
       res.status(400).json({ success: false,msg:`Cannot Find ${req.method}` })
   }

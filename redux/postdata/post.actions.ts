@@ -8,8 +8,9 @@ import {GET_LOADING,
     POST_ERROR,
     DEL_LOADING,
     DEL_SUCCESS,
-    DEL_ERROR,
-    POST_SUCCESS} from './actions.types'
+    DEL_ERROR,RESET_POSTS,
+    POST_SUCCESS,
+    INC_PAGE} from './actions.types'
 import { postDataType } from "../../Components/CreateModal" 
 import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
 
@@ -27,22 +28,17 @@ export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string;
 export const postDetails = (data:postDataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:POST_LOADING})
 try{
-  await postDetailsApi(data)
-    dispatch({type:POST_SUCCESS,payload:data})
+   let res = await postDetailsApi(data)
+    dispatch({type:POST_SUCCESS,payload:res})
 }catch(err){
-    dispatch({type:POST_ERROR})
+  dispatch({type:POST_ERROR})
 }
 }
-
-export const deletePostt = (id:number|string,postData:postDataType[])=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
+export const deletePostt = (id:number|string)=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:DEL_LOADING})
     try{
-        let res = await deletePostApi(id);
-        if(res?.status==200){
-            dispatch({type:DEL_SUCCESS,payload:postData})
-        }else{
-            dispatch({type:DEL_ERROR})
-        }
+        await deletePostApi(id);
+            dispatch({type:DEL_SUCCESS,payload:id})
     }catch(err){
         dispatch({type:DEL_ERROR})
     }
@@ -50,14 +46,17 @@ export const deletePostt = (id:number|string,postData:postDataType[])=>async(dis
 export const editPost = (post:any,id:string)=>async(dispatch: (arg0: { type: string; payload?:any; }) => void)=>{
     dispatch({type:PATCH_LOADING})
     try{
-        
-        let res = await editPostApi(post,id)
-   
-        dispatch({type:PATCH_SUCCESS})
-      
-
-   
+        await editPostApi(post,id)
+        dispatch({type:PATCH_SUCCESS})   
     }catch(err){
         dispatch({type:PATCH_ERROR})
     }
+}
+
+export const resetAllPosts =()=>(dispatch: (arg0: { type: string; }) => void)=>{
+    dispatch({type:RESET_POSTS})
+}
+
+export const nextPage = ()=>(dispatch:(arg0:{type:string})=>void)=>{
+    dispatch({type:INC_PAGE})
 }

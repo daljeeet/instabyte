@@ -3,14 +3,14 @@ import React, { Dispatch, useEffect, useState } from 'react'
 import { postDataType } from './CreateModal'
 import { AiFillHeart, AiOutlineHeart, AiOutlineClose } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
-import { FiBookmark, FiSend } from 'react-icons/fi'
+import { FiBookmark } from 'react-icons/fi'
 import { editPost } from '@/redux/postdata/post.actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
 import Comment, { commentType } from './Comment'
-import { addComments, clearComments, getComments } from '@/redux/comments/comments.action'
+import { addComments, clearComments} from '@/redux/comments/comments.action'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
@@ -21,21 +21,13 @@ const PostDetails = (props: postDataAll) => {
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const { data, closeModal } = props
     const [comment, setComment] = useState("")
-    const [currentDate, setCurrentDate] = useState(new Date().toDateString())
     useEffect(() => {
         document.body.className = "overflow-y-hidden";
         return () => {
             document.body.className = "overflow-y-auto";
-        }
-    }, [])
-    useEffect(() => {
-        // if(data._id){
-        //     dispatch(getComments(data?._id))
-        // }
-        return () => {
             dispatch(clearComments())
         }
-    }, [data._id, dispatch])
+    }, [dispatch])
     const handleLike=(state:boolean,el:postDataType)=>{
         if(state){
            el.likes.push(user.id)
@@ -73,11 +65,11 @@ const PostDetails = (props: postDataAll) => {
         setComment("")
     }
     return (
-        <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-10' >
+        <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-30' >
             <div onClick={() => closeModal()} className='fixed md:top-2 top-0 right-0 z-10 md:right-2 m-4 cursor-pointer'>
                 <AiOutlineClose className='text-3xl' />
             </div>
-            <div onClick={(e) => { e.stopPropagation() }} className='bg-darkbg flex md:flex-row flex-col h-[90%] md:w-[80%] relative overflow-y-auto scrollbar-hide animate-in zoom-in'>
+            <div onClick={(e) => { e.stopPropagation() }} className='bg-darkbg flex md:flex-row flex-col h-[80%] md:w-[80%] relative overflow-y-auto scrollbar-hide animate-in zoom-in'>
 
                 {/* ===================post Image ===================== */}
 
@@ -89,7 +81,7 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Details And comments ===================== */}
                 <div className='md:w-1/2 w-full my-2 flex flex-col justify-between items-center'>
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={data.caption} />}
+                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
                        { data.result&&<div> {data?.result[0]?.name} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{data.posted_on}</div>
@@ -103,6 +95,7 @@ const PostDetails = (props: postDataAll) => {
                                 {
                                loading?"loading comments...":comments?.map((el:commentType, id:number) =><Comment key={id} el={el} />)
                                 }
+                                {error&&<div>something went wrong...</div>}
                             </div>
                         }
                     </div>

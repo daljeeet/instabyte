@@ -11,7 +11,6 @@ export default async function handler(req, res) {
         let allComments =await Comment.find({parentId: id})
         res.status(201).json({ success: true, data:allComments})
       } catch (error) {
-        console.log(error)
         res.status(400).json({ success: false, error})
       }
       break;

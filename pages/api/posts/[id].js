@@ -10,7 +10,6 @@ export default async function handler(req, res) {
         const allPosts = await Post.find({author: id})
         res.status(200).json({data:allPosts})
       } catch (error) {
-        console.log(error)
         res.status(400).json({ success: false,error:error })
       }
       break

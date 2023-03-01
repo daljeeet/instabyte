@@ -9,11 +9,23 @@ export default async function handler(req, res) {
       case 'GET':
         try {
           let data =await User.find({id: id})
-          res.status(200).json({success:true,data:data})
+          if(data.length>0){
+            res.status(200).json({success:true,data:data[0]})
+          }else{
+            res.status(400).json({success: false, error})
+          }
         } catch (error) {
           res.status(400).json({success: false, error})
         }
-        break
+        break;
+      case "PATCH":
+        try{
+         let data = await User.findByIdAndUpdate(id,req.body)
+          res.status(200).json({success:true,msg:"user updated successfully",data:data})
+        }catch(err){
+          res.status(404).json({success:false, msg:"cannot update the user"})
+        }
+        break;
       default:
         res.status(400).json({ success: false,msg:`Cannot Find ${req.method}` })
     }

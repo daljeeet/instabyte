@@ -9,9 +9,10 @@ export default async function handler(req, res) {
                 const userExist = await User.find({id: req.body.id});
                 if(userExist.length==0){
                     const newUser = new User(req.body);
-                    await newUser.save()
+                   let user =  await newUser.save()
+                    res.status(200).json({msg:true,user:user})
                 }  
-                res.status(200).json({msg:true,user:userExist})
+                res.status(200).json({msg:true,user:userExist[0]})
             }catch(err){
                 res.status(404).json({msg:false,err:err})
             }

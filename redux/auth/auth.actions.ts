@@ -9,11 +9,16 @@ import {
 AUTH_ERROR,
 AUTH_SUCCESS,
 AUTH_RESET,
-AUTH_CHECK,
+GET_USER_LOADING,
+GET_USER_ERROR,
+GET_USER_SUCCESS,
+UPDATE_USER_LOADING,
+UPDATE_USER_ERROR,
+UPDATE_USER_SUCCESS
   }from './auth.actions.types';
-  
 import {auth,google,github} from '../../config'
-import { addUserApi, updateUserDataApi, userLogoutApi } from "./auth.api";
+import { addUserApi, getUserDataApi, userLogoutApi,upageUserDataApi } from "./auth.api";
+
 export type userdataType = {
     name:string|null,
     username?:string|null;
@@ -21,7 +26,10 @@ export type userdataType = {
     id:string|null,
     profile:string|null,
     cover?:string
+    _id?:string
+    bookmarks?:string[]
 }
+
 export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})
     try{
@@ -32,11 +40,11 @@ export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payloa
         username:user?.user?.displayName?.split(' ')[0],
         id:user?.user?.uid,
         profile:user?.user.photoURL,
-        cover:"coverimg"
+        cover:"/cover.jpg",
+        bookmarks:[]
     }  
-    
-        addUserApi(userData);
-    dispatch({type:AUTH_SUCCESS,payload:userData})
+    let res = await addUserApi(userData)
+    dispatch({type:AUTH_SUCCESS,payload:res})
     }catch(err){
         dispatch({type:AUTH_ERROR})
     }
@@ -61,29 +69,29 @@ export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:a
         console.log(err)
     }
 }
+
 export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-    dispatch({type:AUTH_LOADING})
+    dispatch({type:GET_USER_LOADING})
     try{
-        await auth.onAuthStateChanged((user)=>{
-            const userData = {
-                name:user?.displayName,
-                email:user?.email,
-                id:user?.uid,
-                profile:user?.photoURL,
+        auth.onAuthStateChanged(async(user)=>{
+            if(user){
+            let userDta = await getUserDataApi(user.uid)
+            dispatch({type:GET_USER_SUCCESS,payload:userDta})
+            }else{
+            dispatch({type:GET_USER_ERROR})
             }
-            dispatch({type:AUTH_CHECK,payload:userData})
            })
     }catch(err){
-        dispatch({type:AUTH_ERROR})
+        dispatch({type:GET_USER_ERROR})
     }
 }
 
-export const updateUserdata =  (data:userdataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
+export const updateUserdata =  (data:any,id:string)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     try{
-     let res = await updateUserDataApi(data)
-     console.log(res)
+     dispatch({type:UPDATE_USER_LOADING})
+    let res =  await upageUserDataApi(data,id)
+     dispatch({type:UPDATE_USER_SUCCESS,payload:{...res,...data}})
     }catch(err){
-        console.log(err)
+    dispatch({type:UPDATE_USER_ERROR})
     }
-
 }

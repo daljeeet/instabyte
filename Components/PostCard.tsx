@@ -26,7 +26,7 @@ type PostCardType = {
 }
 const PostCard = (props: PostCardType) => {
     const [postEditmodal, setPostEditmodal] =useState(false)
-    const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
+    const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit} = props
     const loading_post = useSelector((val: rootReducertype) => val?.allPosts?.loading_post)
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
@@ -60,8 +60,9 @@ const handleEditPost = ()=>{
 
 const handleLike=(state:boolean,el:postDataType)=>{
     // setLike(state)
+    if(user){
     if(state){
-       el.likes.push(user.id)
+       el?.likes?.push(user.id)
         if(el._id){
             dispatch(editPost({likes:el.likes},el._id))
         }
@@ -75,6 +76,9 @@ const handleLike=(state:boolean,el:postDataType)=>{
           dispatch(editPost({likes:el.likes},el._id))
         }
     }
+    }else{
+        Router.push("/login")
+    }
     }
     const handleComment = (el: postDataType) => {
         if (user) {
@@ -86,7 +90,6 @@ const handleLike=(state:boolean,el:postDataType)=>{
                     parentId:el._id
             }
             dispatch(editPost({comments:el.comments+1},el._id))
-         // console.log(el.comments)
             dispatch(addComments(newComment,[]))
             }
             setComment("")
@@ -99,18 +102,16 @@ const handleLike=(state:boolean,el:postDataType)=>{
     const toggleCaption = () => {
         setShowComment(!showComment)
     }
-
-
-
-    return (
+return (
         <div ref={cardRef} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
-            <div className='flex w-full justify-between items-center '>
+            <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                       {el.result&&<Image src={(el?.result[0]?.profile)||'/demo_img.png'} alt="User's Photo" width={200} height={200} className='rounded-full' />}
+                       {el?.result?<Image src={(el?.result[0]?.profile)||"demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>:
+                       <Image src={user.profile} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>}
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result&&<p>{el?.result[0].name}</p>}
-                        <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result?<p>{el?.result[0]?.name}</p>:<p>{user.name}</p>}
+                        <p className='text-sm font-semibold text-gray-400 text-[12px] '> {el?.posted_on} </p>
                     </div>
                 </div>
                 {el.author === user?.id ? <div className='mr-2' >
@@ -124,30 +125,29 @@ const handleLike=(state:boolean,el:postDataType)=>{
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                     {
-                el.likes.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
-                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+                el?.likes?.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500 animate-in zoom-in'  />
+                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer animate-in zoom-in' /> 
                }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiBookmark className='text-2xl cursor-pointer' />
-                        {/* <FiSend className='text-2xl cursor-pointer' /> */}
                     </div>
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
                     <div className='flex items-center' >
-                         <p>
+                         <p className='text-sm'>
                             {
                                 el?.likes?.length == 0 ? "No Likes" : el.likes?.length == 1 ? `1 Like ` : ` ${el.likes?.length} Likes`
                             }
                         </p>
                         <HiDotsVertical className='' />
-                     <p>
+                     <p className='text-sm'>
                             {
                                 el?.comments == 0 ? `No Comments` : el.comments === 1 ? "1 Comment" : `${el.comments} Comments`
                             }
                         </p> 
                     </div>
                     <p className=''>
-                       {el.result&&<span className='font-semibold ml-2'>{el?.result[0].name}</span>}
+                       {el.result&&<span className='font-semibold text-sm ml-2'>{el?.result[0]?.name}</span>}
                         {
                             showComment ? <span className='mx-2' >{el.caption}</span> :
                                 <span className='mx-2'> {el?.caption?.split(' ').slice(0, 4).join(' ') + "..."}
@@ -155,7 +155,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                         }
                         <span className='text-sm text-gray-500 cursor-pointer' onClick={toggleCaption} > {showComment ? "less" : "more"}</span>
                     </p>
-                    <p className='cursor-pointer mx-2 text-sm text-gray-200 w-fit hover:underline' onClick={() => handlePostDetails(el)} >
+                    <p className='cursor-pointer mx-2 text-sm text-gray-200 w-fit underline' onClick={() => handlePostDetails(el)} >
                         view comments
                     </p>
                 </div>
