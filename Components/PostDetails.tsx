@@ -25,13 +25,9 @@ const PostDetails = (props: postDataAll) => {
         document.body.className = "overflow-y-hidden";
         return () => {
             document.body.className = "overflow-y-auto";
-        }
-    }, [])
-    useEffect(() => {
-        return () => {
             dispatch(clearComments())
         }
-    }, [data._id, dispatch])
+    }, [dispatch])
     const handleLike=(state:boolean,el:postDataType)=>{
         if(state){
            el.likes.push(user.id)
@@ -85,7 +81,7 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Details And comments ===================== */}
                 <div className='md:w-1/2 w-full my-2 flex flex-col justify-between items-center'>
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={data.caption} />}
+                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
                        { data.result&&<div> {data?.result[0]?.name} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{data.posted_on}</div>

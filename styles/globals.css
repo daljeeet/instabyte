@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 @import "./libraries/_nprogress.css";
-@import url('https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@300&display=swap');
+
+/* @import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 body {
-    font-family: 'Shantell Sans', cursive;
+    font-family: "tilt Neon", cursive
+}
+
+@media only screen and (max-width:800px) {
+    body {
+        font-family: 'Helvetica Neue', sans-serif
+    }
 }
 
 ::-webkit-scrollbar {

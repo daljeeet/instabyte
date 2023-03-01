@@ -3,12 +3,11 @@ import { rootReducertype } from '@/redux/store'
 import React,{Dispatch, useEffect} from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsFillImageFill} from 'react-icons/bs'
 import { BiImageAdd} from 'react-icons/bi'
 import Image from 'next/image'
 import Loader from './Loader'
-import { updateUserData } from '@/redux/user_data/user_data_acitons'
 import BlurImage from './BlurImage'
+import { updateUserdata } from '@/redux/auth/auth.actions'
 
 type addType = {
   isProfile:boolean
@@ -16,7 +15,7 @@ type addType = {
 }
 const ChangeProfile = (props:addType) => {
   const dispatch:Dispatch<any> = useDispatch()
-  const { userData,patch_loading,patch_error} = useSelector((val: rootReducertype) => val.userDetails)
+  const {user} = useSelector((val: rootReducertype) => val?.user)
     useEffect(()=>{
         return ()=>{
             dispatch(resetPost())
@@ -39,23 +38,13 @@ const ChangeProfile = (props:addType) => {
         dispatch(postUrl(form))
     }
     const PostAddImage = ()=>{
-      if(userData._id){
+      if(user._id){
         if(isProfile){
-          dispatch(updateUserData({profile:img},userData._id))
-          if(!patch_loading&&!patch_error){
-            userData.profile=img;
-          }
+          dispatch(updateUserdata({profile:img},user._id))
         }else{
-          dispatch(updateUserData({cover:img},userData._id))
-          if(!patch_loading&&!patch_error){
-            userData.cover=img;
-          }
+          dispatch(updateUserdata({cover:img},user._id))
         }
       }
-    //   data.imgUrl.push(img)
-    //   if(data._id){
-        // dispatch(editPost(data.imgUrl,data._id))
-    //   }
       handleClose()
     }
   return (
@@ -69,7 +58,7 @@ const ChangeProfile = (props:addType) => {
                 </div>
                 <div className='m-auto w-1/2 flex items-center justify-center'>
                   {
-                    isdone? isProfile?<Image src={img} width={200} height={180} alt='updated Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage}/>:<Image src={img} width={800} height={1200} alt='updated cover' blurDataURL={BlurImage}/>  : isProfile?<Image src={(userData?.profile)||"/demo_img.png"} width={200} height={200} alt='Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage} />:<Image src={(userData.cover)||"/demo_img.png"} width={500} height={200} alt='cover image' blurDataURL={BlurImage}/>
+                    isdone? isProfile?<Image src={img} width={200} height={180} alt='updated Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage}/>:<Image src={img} width={800} height={1200} alt='updated cover' blurDataURL={BlurImage}/>  : isProfile?<Image src={(user?.profile)||"/demo_img.png"} width={200} height={200} alt='Profile' className='rounded-full h-32 md:h-40 w-32 md:w-40' blurDataURL={BlurImage} />:<Image src={(user.cover)||"/demo_img.png"} width={500} height={200} alt='cover image' blurDataURL={BlurImage}/>
                   }
                 </div>
                 <div className='p-2 my-4 w-fit m-auto flex w-1/2 justify-around'>

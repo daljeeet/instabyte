@@ -63,7 +63,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
     // setLike(state)
     if(user){
     if(state){
-       el.likes.push(user.id)
+       el?.likes?.push(user.id)
         if(el._id){
             dispatch(editPost({likes:el.likes},el._id))
         }
@@ -103,18 +103,16 @@ const handleLike=(state:boolean,el:postDataType)=>{
     const toggleCaption = () => {
         setShowComment(!showComment)
     }
-
-
-
-    return (
+return (
         <div ref={cardRef} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                       {el.result&&<Image src={(el?.result[0]?.profile)||'/demo_img.png'} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />}
+                       {el?.result?<Image src={(el?.result[0]?.profile)||"demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>:
+                       <Image src={user.profile} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>}
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result&&<p>{el?.result[0].name}</p>}
-                        <p className='text-sm font-semibold text-gray-400'> {el?.posted_on} </p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result?<p>{el?.result[0]?.name}</p>:<p>{user.name}</p>}
+                        <p className='text-sm font-semibold text-gray-400 text-[12px] '> {el?.posted_on} </p>
                     </div>
                 </div>
                 {el.author === user?.id ? <div className='mr-2' >
@@ -128,12 +126,11 @@ const handleLike=(state:boolean,el:postDataType)=>{
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                     {
-                el.likes.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
+                el?.likes?.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
                 : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
                }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiBookmark className='text-2xl cursor-pointer' />
-                        {/* <FiSend className='text-2xl cursor-pointer' /> */}
                     </div>
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
@@ -151,7 +148,7 @@ const handleLike=(state:boolean,el:postDataType)=>{
                         </p> 
                     </div>
                     <p className=''>
-                       {el.result&&<span className='font-semibold text-sm ml-2'>{el?.result[0].name}</span>}
+                       {el.result&&<span className='font-semibold text-sm ml-2'>{el?.result[0]?.name}</span>}
                         {
                             showComment ? <span className='mx-2' >{el.caption}</span> :
                                 <span className='mx-2'> {el?.caption?.split(' ').slice(0, 4).join(' ') + "..."}

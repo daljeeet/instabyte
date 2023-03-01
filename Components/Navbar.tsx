@@ -13,33 +13,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isUserLogin} from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
-import { getUserData } from '@/redux/user_data/user_data_acitons'
 import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import LoginModal from './LoginModal';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
-    const user = useSelector((val:rootReducertype)=>val?.user?.user)
-    const {userData} =  useSelector((val:rootReducertype)=>val.userDetails)
+    const {get_loading,user} = useSelector((val:rootReducertype)=>val?.user)
     const [loginModal, setLoginModal] = useState(false)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
-    
     useEffect(()=>{
             dispatch(isUserLogin())
-        },[dispatch])
-    useEffect(()=>{ 
-        if(user){
-            dispatch(getUserData(user.id))
-        }
-    },[user,dispatch])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        },[])
     // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
-        if(user){
             setSrchModal(!srchModal)
-        }else{
-            setLoginModal(true)
-        }
     }
     const closeSrchModal = ()=>{
         setSrchModal(false)
@@ -56,7 +45,6 @@ const Navbar = () => {
     }
     const handleProfileModal = ()=>{ 
         if(user){
-           dispatch(getOneUserPost(user.id))
            Router.push("/profile")
         }else{
             setLoginModal(true)
@@ -92,15 +80,15 @@ const Navbar = () => {
                     <FiBookmark className='mr-2 text-2xl' /> <p className='hidden md:block' >Bookmarks</p>
                 </Link>
                 <Link href={'/'} className='items-center hidden md:flex' >
-                    <IoMdNotificationsOutline className='mr-2 text-2xl' /> <p className='hidden md:block' >Notifications</p>
+                    <IoMdNotificationsOutline className='mr-2 text-3xl' /> <p className='hidden md:block' >Notifications</p>
                 </Link>
                 <div onClick={handleNewPost}  className='flex items-center cursor-pointer' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
                 </div>
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
-                        userData?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(userData?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
-                        <CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{userData?.name||"Profile"}</p>
+                        user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(user?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
+                       get_loading?<Image src='/loading_gif.gif' width={80} height={200} alt='loadingig' /> :<CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{user?.name||"Profile"}</p>
                 </div>
             </div>
                         {/* =============================Profile Click List ============================== */}

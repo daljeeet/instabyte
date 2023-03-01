@@ -10,7 +10,9 @@ import {GET_LOADING,
     DEL_LOADING,
     DEL_SUCCESS,
     DEL_ERROR,
-    POST_SUCCESS} from './actions.types'
+    RESET_POSTS,
+    POST_SUCCESS,
+    INC_PAGE} from './actions.types'
 
 export type allPostType ={
     loading_post:boolean,
@@ -21,6 +23,7 @@ export type allPostType ={
     patch_loading:boolean;
     patch_error:boolean;
     postData:postDataType[]
+    page:number
 }
 
 const initialState:allPostType = {
@@ -31,7 +34,8 @@ const initialState:allPostType = {
     del_error:false,
     patch_loading:false,
     patch_error:false,
-    postData:[]
+    postData:[],
+    page:1
 }
 
 export const getAllPostsReducer = (state=initialState,actions: { type: string; payload?:any; })=>{
@@ -66,6 +70,12 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
         }
         case DEL_LOADING:{
             return {...state,del_loading:true,del_error:false}
+        }
+        case RESET_POSTS:{
+            return {...initialState}
+        }
+        case INC_PAGE:{
+            return {...state,page:state.page+1}
         }
         default:{
             return {...state}

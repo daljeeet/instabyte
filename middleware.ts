@@ -7,8 +7,6 @@ export async function middleware(req: NextRequest) {
   const verifiedToken = await verifyAuth(req).catch((err) => {
     console.error(err.message)
   })
-  // console.log("Userid")
-  // return NextResponse.next()
   if (!verifiedToken) {
     // if this an API request, respond with JSON
     if (req.nextUrl.pathname.startsWith('/api/')) {
@@ -25,5 +23,5 @@ export async function middleware(req: NextRequest) {
   }
 }
 export const config = {
-  matcher: '/api/protected/:path*'
+  matcher: ['/api/protected/:path*',  '/profile', "/explore"]
 }

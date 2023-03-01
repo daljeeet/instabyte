@@ -7,7 +7,7 @@ import ModalEdit from './ModalEdit'
 import DeleteModal from './DeleteModal'
 import AlertModal from './AlertModal'
 import AddMorePhotos from './AddMorePhotos'
-import { getAllPosts } from '@/redux/postdata/post.actions'
+import { getAllPosts, nextPage } from '@/redux/postdata/post.actions'
 import PostCard from './PostCard'
 import LoginModal from './LoginModal'
 import Loader from './Loader'
@@ -23,31 +23,19 @@ export const elem: postDataType = {
 }
 const Card = () => {
     // =========================Hooks at Top ============================
-    const { del_success,del_error,loading_post, error_post, postData } = useSelector((val: rootReducertype) => val?.allPosts)
+
+    const { del_success,del_error,loading_post, error_post, postData,page } = useSelector((val: rootReducertype) => val?.allPosts)
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const dispatch: Dispatch<any> = useDispatch();
-    const [post, setPost] = useState([])
     const [postObj, setPostObj] = useState(elem)
     const [modal, setModal] = useState(false)
     const [loginModal, setLoginModal] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
     const [delModal, setDelModal] = useState(false)
     const [addImgModal, setAddImgModal] = useState(false)
-    const [page, setPage] = useState(1)
     useEffect(() => {
         dispatch(getAllPosts(page))
-    }, [dispatch,page]) 
-    useEffect(()=>{
-        if(postData){
-            let allData:any=postData
-            setPost(allData)
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[postData])
-    // let getData = async()=>{
-    //     let alldta:any = [...post, ...postData]
-    //         setPost(alldta)
-    // }
+    }, [dispatch, page])
     // ======================Various Functions & Onclick Events============================
     const handlePostDetails = (el: postDataType) => {
         if (user) {
@@ -102,7 +90,7 @@ const Card = () => {
     }
     return (
         <div className='pb-12'>
-            {post?.map((el: postDataType, id: number) =>
+            {postData?.map((el: postDataType, id: number) =>
                     <PostCard
                         key={id}
                         el={el}
@@ -110,8 +98,8 @@ const Card = () => {
                         handlePostEdit={handlePostEdit}
                         openAddImgModal={openAddImgModal}
                         handleDelModal={handleDelModal}
-                        isLast={id === post.length - 1}
-                        newLimit={() => setPage(page + 1)}
+                        isLast={id === postData.length - 1}
+                        newLimit={() => dispatch(nextPage())}
                 />)}
             {/* {loginModal && <LoginModal handleLoginModal={handleLoginModal} />} */}
             {modal && <PostDetails data={postObj} closeModal={closePostDtlModal} />}

@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       const {page} = req.query;
       const skip = (page-1)*5;
       try {
-        await Post.aggregate([
+      let posts = await Post.aggregate([
           {
             $lookup: {
                 from: "users",
@@ -16,12 +16,9 @@ export default async function handler(req, res) {
                 as: "result"
             }
           }
-        ],(err,result)=>{
-          if(err){
-            console.log(err)
-          }
-          res.status(200).json({data:result})
-        }).sort({_id:-1}).skip(skip).limit(5)
+        ]).sort({_id:-1}).skip(skip).limit(5);
+        
+        res.status(200).json({data:posts})
       } catch (error) {
         res.status(400).json({ success: false })
       }

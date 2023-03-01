@@ -21,7 +21,8 @@ export const getAllPostsApi = async(page:number)=>{
 export const deletePostApi = async(id:number|string)=>{
     try{
         const res = await axios.delete(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`)
-        return res;
+        console.log(res)
+        // return res;
     }catch(err){
         console.log(err)
     }

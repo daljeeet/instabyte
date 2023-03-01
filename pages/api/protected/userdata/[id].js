@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         try {
           let data =await User.find({id: id})
           if(data.length>0){
-            res.status(200).json({success:true,data:data})
+            res.status(200).json({success:true,data:data[0]})
           }else{
             res.status(400).json({success: false, error})
           }
@@ -20,8 +20,8 @@ export default async function handler(req, res) {
         break;
       case "PATCH":
         try{
-          await User.findByIdAndUpdate(id,req.body)
-          res.status(200).json({success:true,msg:"user updated successfully"})
+         let data = await User.findByIdAndUpdate(id,req.body)
+          res.status(200).json({success:true,msg:"user updated successfully",data:data})
         }catch(err){
           res.status(404).json({success:false, msg:"cannot update the user"})
         }
