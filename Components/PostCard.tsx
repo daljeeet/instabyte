@@ -53,7 +53,6 @@ const PostCard = (props: PostCardType) => {
 
 const handlePostEditmodal = ()=>{
     setPostEditmodal(true)
-
 }
 const handleEditPost = ()=>{
     setPostEditmodal(false)
@@ -126,8 +125,8 @@ return (
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                     {
-                el?.likes?.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500'  />
-                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer' /> 
+                el?.likes?.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500 animate-in zoom-in'  />
+                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer animate-in zoom-in' /> 
                }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiBookmark className='text-2xl cursor-pointer' />

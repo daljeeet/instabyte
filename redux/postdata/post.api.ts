@@ -3,7 +3,7 @@ import axios from "axios";
 export const postDetailsApi = async(data:postDataType)=>{
     try{
         const res = await axios.post(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/addpost`,data)
-        return res.data
+        return res.data.data
     }catch(err){
         console.log(err)
     }

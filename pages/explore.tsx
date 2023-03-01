@@ -1,83 +1,30 @@
 import Navbar from '@/Components/Navbar'
-import {Post} from  "@/models/Post.js"
-import dbConnect from '../lib/dbConnect'
 import React, { useEffect, useState,Dispatch } from 'react'
 import { postDataType } from '@/Components/CreateModal.jsx';
-import Image from 'next/image';
 import PostDetails from '@/Components/PostDetails';
 import {elem} from '../Components/Card'
 import BlurImage from '@/Components/BlurImage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getComments } from '@/redux/comments/comments.action';
-type dataTypes = {
-  data:postDataType[]
-}
-const Explore = ({data}:dataTypes) => {
+import { rootReducertype } from '@/redux/store';
+import ExploreImg from '@/Components/ExploreImg';
+import { getAllPosts, nextPage } from '@/redux/postdata/post.actions';
+const Explore = () => {
+  const {postData,page } = useSelector((val: rootReducertype) => val?.allPosts)
   const dispatch:Dispatch<any> = useDispatch()
-  const posts = data
-  const [images, setImages ] = useState([""])
-  const [modal, setModal] = useState(false)
-  const [postObj,setPostObj] = useState(elem)
-  //===================================extracting all Images from all posts======================
+  //=================================view Post on click of Image==================================== 
   useEffect(()=>{
-    let imgs:string[]=[]
-    posts.map((el:postDataType)=>{
-      el?.imgUrl.forEach(e=>{
-        imgs?.push(e)
-      })
-    })
-    setImages(imgs)
-  },[posts])
-
-  //=================================view Post on click of Image====================================
-  const handleImagePost = (e:string)=>{
-    let viewPost = posts.filter((el:postDataType)=>{
-      for(let i=0;i<el.imgUrl.length;i++){
-        if(e===el.imgUrl[i]){
-          return el
-        }
-      }
-    })
-    setModal(true)
-    if(viewPost[0]._id){
-      dispatch(getComments(viewPost[0]._id))
-    }
-    setPostObj(viewPost[0])
-  }
- 
-const closePostDtlModal = ()=>{
-  setModal(false)
-}
-
+    dispatch(getAllPosts(page))
+  },[dispatch, page])
   return (
     <>
      <Navbar/>
     <div className='md:ml-52 pt-14 h-fit' >
       <div className='grid gap-4 p-4 md:grid-cols-3 grid-cols-1 sm:grid-cols-2 grid-rows-auto'>
-       {images?.map((el:string,id:number)=><Image key={id} placeholder='blur' blurDataURL={BlurImage} onClick={()=>handleImagePost(el)} src={el||"/emgerror.png"} alt='allpics' width={400} height={800} onLoad={(e:any)=>{e.target.naturalHeight>550?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} />
-        )}
+    {postData.map((el:postDataType,id:number)=> <ExploreImg key={id} data={el} isLast={id==postData.length-1} newLimit={() => dispatch(nextPage())}  /> )}
     </div>
     </div>
-    {modal&&<PostDetails data={postObj} closeModal={closePostDtlModal}  />}
     </>
   )
-}
-export const getServerSideProps= async ()=>{
-  await dbConnect()
-
-  let result =  await Post.aggregate([
-    {
-      $lookup: {
-          from: "users",
-          localField: "author",
-          foreignField: "id", 
-          as: "result"
-      }
-    }
-  ]).sort({_id: -1})
-//  const res = await Post.find().sort({_id:-1})
-      return { props: {data:JSON.parse(JSON.stringify(result))}}
-    // return { props: {data:JSON.parse(JSON.stringify(result))}}
-    
 }
 export default Explore;

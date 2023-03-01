@@ -28,13 +28,12 @@ export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string;
 export const postDetails = (data:postDataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:POST_LOADING})
 try{
-  await postDetailsApi(data)
-    dispatch({type:POST_SUCCESS,payload:data})
+   let res = await postDetailsApi(data)
+    dispatch({type:POST_SUCCESS,payload:res})
 }catch(err){
-    dispatch({type:POST_ERROR})
+  dispatch({type:POST_ERROR})
 }
 }
-
 export const deletePostt = (id:number|string)=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:DEL_LOADING})
     try{

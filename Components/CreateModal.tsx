@@ -7,15 +7,10 @@ import { FcStackOfPhotos } from 'react-icons/fc'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
-// export interface authorType{
-//     name:string
-//     authorId:string
-//     authorProfile:string
-// }
+
 type createmodalTypes = {
     handleModal: ()=>void
 }
-// export type commontsType = {user:string,comment:string,time:string}
 export type postDataType={
         caption: string,
         imgUrl: string[],
@@ -79,12 +74,11 @@ const handlePost = ()=>{
                 <AiOutlineClose onClick={handleClose} className='absolute right-0 top-0 text-xl mt-2 mr-2 font-bold cursor-pointer'/>
                 </div>
                 {
-                    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-                    isloading?<img src="https://cdn.dribbble.com/users/563824/screenshots/3633228/media/d876c7712d969c0656302b16b16af2cc.gif" />:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} width={300} height={300} alt="" />:<FcStackOfPhotos className='text-[180px] m-auto my-4' />
+                    isloading?<Image src="/loading_img.gif" width={400} height={400} alt="loading" className='w-5/6 m-auto bg-black/80 my-4'/>:img?<Image className='w-5/6 m-auto bg-black/80 my-4' src={img} width={300} height={300} alt="" />:<FcStackOfPhotos className='text-[180px] m-auto my-4' />
                 }
                 {isdone?<div className='flex w-11/12 m-auto justify-around py-1 mb-4' > 
                     <input type="text" placeholder='Post Caption here' className='bg-gray-600 rounded-lg pl-2  outline-none' value={caption} onChange={handleCaption} />
-                    <button onClick={handlePost} className='bg-blue-800 px-4 py-1 rounded-lg w-fit m-auto'>Post</button>
+                    <button onClick={handlePost} className={`bg-blue-800 px-4 py-1 rounded-lg w-fit m-auto ${caption.length<6?"text-gray-400":"text-white"} `} disabled={caption.length<6}>Post</button>
                      </div>:
                 <div className='bg-blue-500 py-1 px-4 cursor-pointer w-fit m-auto mb-6 rounded-md'>
                  <label htmlFor='imageUpload' className='cursor-pointer' >Select from Device

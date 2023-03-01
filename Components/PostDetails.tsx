@@ -65,11 +65,11 @@ const PostDetails = (props: postDataAll) => {
         setComment("")
     }
     return (
-        <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-10' >
+        <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-30' >
             <div onClick={() => closeModal()} className='fixed md:top-2 top-0 right-0 z-10 md:right-2 m-4 cursor-pointer'>
                 <AiOutlineClose className='text-3xl' />
             </div>
-            <div onClick={(e) => { e.stopPropagation() }} className='bg-darkbg flex md:flex-row flex-col h-[90%] md:w-[80%] relative overflow-y-auto scrollbar-hide animate-in zoom-in'>
+            <div onClick={(e) => { e.stopPropagation() }} className='bg-darkbg flex md:flex-row flex-col h-[80%] md:w-[80%] relative overflow-y-auto scrollbar-hide animate-in zoom-in'>
 
                 {/* ===================post Image ===================== */}
 
