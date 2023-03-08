@@ -59,4 +59,4 @@ export const resetAllPosts =()=>(dispatch: (arg0: { type: string; }) => void)=>{
 
 export const nextPage = ()=>(dispatch:(arg0:{type:string})=>void)=>{
     dispatch({type:INC_PAGE})
-}
+} 

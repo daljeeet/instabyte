@@ -12,6 +12,7 @@ import PostCard from './PostCard'
 import LoginModal from './LoginModal'
 import Loader from './Loader'
 import { getComments } from '@/redux/comments/comments.action'
+import Image from 'next/image'
 export const elem: postDataType = {
     caption: "",
     imgUrl: [""],
@@ -33,8 +34,15 @@ const Card = () => {
     const [modalEdit, setModalEdit] = useState(false)
     const [delModal, setDelModal] = useState(false)
     const [addImgModal, setAddImgModal] = useState(false)
+    useEffect(()=>{
+        if(postData.length==0){
+           dispatch(getAllPosts(1))
+        }    },[])
+    
     useEffect(() => {
-        dispatch(getAllPosts(page))
+        if(page>1){
+            dispatch(getAllPosts(page))
+        }
     }, [dispatch, page])
     // ======================Various Functions & Onclick Events============================
     const handlePostDetails = (el: postDataType) => {
@@ -109,8 +117,10 @@ const Card = () => {
             {del_success && <AlertModal color="bg-green-600" text='Delete Success.' />}
             {addImgModal && <AddMorePhotos closeAddMorePhotos={closeAddImgModal} data={postObj} />}
             {loginModal&&<LoginModal closeLoginModal={closeLoginModal} />}
+           {loading_post&&
+           <Image src='/loding.gif' alt='loading_img' className='m-auto' width={500} height={500} />
+           }
             <div className='mt-10 text-center'>
-            {/* <Loader text="Loading..." /> */}
                 <p className='m-auto text-sm text-gray-500'> copyright © instabyte all Rights reserved </p>
             </div>
         </div>

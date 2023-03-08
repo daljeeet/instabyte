@@ -15,6 +15,7 @@ import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import LoginModal from './LoginModal';
+import { BsInfoCircle } from 'react-icons/bs';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
@@ -62,10 +63,14 @@ const Navbar = () => {
     }
     return (
         <>
-        <div className='flex md:flex-col bg-black/80 md:w-48 w-screen h-10 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
+        <div className='flex md:flex-col bg-black/80 md:w-48 w-screen h-14 md:h-screen fixed left-0 md:top-0 bottom-0 z-10'>
+            <div className='relative'>
                 <Link href='/' className='hidden md:block w-fit pl-4 pt-2'>
                 {<Image src="/logod.png" alt="Tattoo fonts" width={100} height={50}/>}
                 </Link>
+                <Link href="/about" className='absolute right-[20%] bottom-0' > <BsInfoCircle className='text-2xl'/>
+                </Link>
+            </div>
             <div className='flex md:flex-col w-full md:w-40 md:h-[70vh] justify-around font-semibold px-4 '>
                 <Link href={'/'} onClick={closeSrchModal} className='flex items-center' >
                     <AiOutlineHome  className='mr-2 text-2xl' /> <p className='hidden md:block' >Home</p>
@@ -85,6 +90,7 @@ const Navbar = () => {
                 <div onClick={handleNewPost}  className='flex items-center cursor-pointer' >
                     <BiMessageSquareAdd className='mr-2 text-2xl' /> <p className='hidden md:block' >Create</p>
                 </div>
+                
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
                         user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(user?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
@@ -99,7 +105,9 @@ const Navbar = () => {
               {loginModal&&<LoginModal closeLoginModal={closeLoginModal} />}
         {/* mobile nav  */}
                 <div className='md:hidden flex flex-row items-center z-10 bg-black fixed top-0 left-0 right-0 h-14  ' >
+                    <Link href={'/'}>
                 <Image src="/logod.png" alt="Instabyte logo" width={100} height={50} className="ml-2" />
+                    </Link>
                     <input type="text" placeholder='search' className='w-3/5 m-auto outline-2 bg-gray-600/80 h-8 rounded-lg pl-2 text-white' />
                 </div>
         </>

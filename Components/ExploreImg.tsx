@@ -40,9 +40,25 @@ const ExploreImg = (props:postdataObj) => {
     const closePostDtlModal = ()=>{
         setModal(false)
     }
+    const keyStr =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+
+const triplet = (e1: number, e2: number, e3: number) =>
+  keyStr.charAt(e1 >> 2) +
+  keyStr.charAt(((e1 & 3) << 4) | (e2 >> 4)) +
+  keyStr.charAt(((e2 & 15) << 2) | (e3 >> 6)) +
+  keyStr.charAt(e3 & 63)
+
+const rgbDataURL = (r: number, g: number, b: number) =>
+  `data:image/gif;base64,R0lGODlhAQABAPAA${
+    triplet(0, r, g) + triplet(b, 255, 255)
+  }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`
+  let color1 = Math.random()*235;
+  let color2 = Math.random()*255;
+  let color3 = Math.random()*255;
   return (
     <>
-       {data?.imgUrl.map((el,id)=><Image ref={cardRef} key={id} src={el} width={400} height={400} placeholder="blur" alt="image" onClick={()=>handleImagePost(data)} onLoad={(e:any)=>{e.target.naturalHeight>500?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} blurDataURL={BlurImage} />
+       {data?.imgUrl.map((el,id)=><Image ref={cardRef} key={id} src={el} width={400} height={400} placeholder="blur" alt="image" onClick={()=>handleImagePost(data)} onLoad={(e:any)=>{e.target.naturalHeight>500?e.target.className="rounded-lg row-span-2 cursor-zoom-in ":e.target.className="rounded-lg self-center cursor-zoom-in"}} blurDataURL={rgbDataURL(color1,color2,color3)} />
        )}
     {modal&&<PostDetails data={dta} closeModal={closePostDtlModal}  />}
     </>

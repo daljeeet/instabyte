@@ -1,7 +1,9 @@
 import { signoutUser } from '@/redux/auth/auth.actions'
+import Link from 'next/link'
 import Router  from 'next/router'
 import React, { Dispatch } from 'react'
 import { AiOutlineClose, AiOutlinePoweroff, AiTwotoneEdit } from 'react-icons/ai'
+import { BsInfoCircle } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 type updateModalType={
   closeModal:()=>void
@@ -27,6 +29,7 @@ const UpdateuserModal = (props:updateModalType) => {
               <div onClick={handleEditCover} className='flex items-center cursor-pointer font-semibold p-2 border-blue-500 border-b-2'><AiTwotoneEdit className='mr-4 text-green-200'/> <p>Cover</p></div>
               <div className='flex items-center cursor-pointer font-semibold p-2 border-blue-500 border-b-2'onClick={handleEditUsername} ><AiTwotoneEdit className='mr-4 text-green-200'/> <p>Uesrname</p></div>
               <div onClick={handleLogout} className='flex items-center cursor-pointer font-semibold p-2 border-blue-500 border-b-2'><AiOutlinePoweroff className='mr-4 text-red-400'/> <p>Logout</p></div>
+              <Link href={'/about'} className='flex items-center cursor-pointer font-semibold p-2 border-blue-500 border-b-2'><BsInfoCircle className='mr-4 text-green-200'/> <p>about</p></Link>
                 </div>
     </div>
   )

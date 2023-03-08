@@ -119,7 +119,7 @@ return (
                 </div> : ''}
             </div>
             <div className='h-fit my-2' >
-                {loading_post ? <Loader text='Loading...' /> : <CardSwiper data={el?.imgUrl} />}
+                <CardSwiper data={el?.imgUrl} />
             </div>
             <div className='p-2' >
                 <div className='postactions flex w-full justify-between' >
