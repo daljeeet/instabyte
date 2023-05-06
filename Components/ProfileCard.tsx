@@ -23,10 +23,10 @@ const ProfileCard = ({data}:postdata) => {
   return (
     <>
     <div onClick={()=>showPosts(data)} className='border-2 border-gray-600 rounded-xl overflow-hidden relative group' >
-        <CardSwiper data={data.imgUrl} />
+        <CardSwiper data={data} />
         <div className='justify-center items-center my-2 absolute z-20 top-0 w-full h-full bottom-0 bg-black/30 hidden group-hover:flex'>
         <p className='flex justify-center items-center mx-4 text-4xl text-gray-200'>{data.likes.length} <AiFillHeart className='mx-2' /> </p>
-        <p className='flex justify-center items-center text-4xl text-gray-200'>{data.comments}<AiFillMessage className='mx-2'/> </p>
+        <p className='flex justify-center items-center text-4xl text-gray-200'>{data.comments_count}<AiFillMessage className='mx-2'/> </p>
         </div>
     </div>
    { modal&&<PostDetails data={data} closeModal={closePostData} />}

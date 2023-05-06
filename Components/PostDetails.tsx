@@ -11,6 +11,7 @@ import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
 import Comment, { commentType } from './Comment'
 import { addComments, clearComments} from '@/redux/comments/comments.action'
+import { CalcTime } from '@/helpers/timer'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
@@ -54,13 +55,13 @@ const PostDetails = (props: postDataAll) => {
             let newComment:commentType = {
                     author:user.name,
                     comment: comment,
-                    time: new Date().toDateString(),
+                    time: Date.now(),
                     parentId:el._id
             }
             let allcomments = [...comments, newComment]
             dispatch(addComments (newComment,allcomments))
-            dispatch(editPost({comments:el.comments+1},el._id))
-            el.comments++
+            dispatch(editPost({comments:el.comments_count+1},el._id))
+            el.comments_count++
             }
         setComment("")
     }
@@ -74,8 +75,8 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Image ===================== */}
 
                 <div className='md:w-1/2 w-full justify-center items-center flex'>
-                    <div className=" w-fit overflow-y-auto m-auto justify-center items-center flex scrollbar-hide" >
-                        <CardSwiper data={data?.imgUrl} />
+                    <div className=" w-fit overflow-y-auto m-auto justify-center items-center flex scrollbar-hide relative" >
+                       <CardSwiper data={data} />
                     </div>
                 </div>
                 {/* ===================post Details And comments ===================== */}
@@ -83,8 +84,8 @@ const PostDetails = (props: postDataAll) => {
                     {/* ===================profile image and name ===================== */}
                     <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
-                       { data.result&&<div> {data?.result[0]?.name} </div>}
-                        <div className='text-gray-400 font-semibold text-sm' >{data.posted_on}</div>
+                       { data.result&&<div> {data?.result[0]?.username} </div>}
+                        <div className='text-gray-400 font-semibold text-sm' >{CalcTime(Number(data.posted_on))}</div>
                     </div>
                     </div>
                     {/* ===================profile image and name ===================== */}

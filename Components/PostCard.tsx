@@ -60,7 +60,6 @@ const PostCard = (props: PostCardType) => {
     }
 
     const handleLike = (state: boolean, el: postDataType) => {
-        // setLike(state)
         if (user) {
             if (state) {
                 el?.likes?.push(user.id)
@@ -119,7 +118,7 @@ const PostCard = (props: PostCardType) => {
                     <FiMoreHorizontal onClick={handlePostEditmodal} className='font-bold text-xl cursor-pointer' />
                 </div> : ''}
             </div>
-            <div className='h-fit my-2' >
+            <div className='h-fit my-2 relative' >
                 <CardSwiper data={el} />
             </div>
             <div className='p-2' >

@@ -84,7 +84,7 @@ const handlePost = ()=>{
                      </div>:
                 <div className='bg-blue-500 py-1 px-4 cursor-pointer w-fit m-auto mb-6 rounded-md'>
                  <label htmlFor='imageUpload' className='cursor-pointer' >Select from Device
-                    <input onChange={handleImage} type="file" className='hidden' id="imageUpload" accept="image"/>
+                    <input onChange={handleImage} type="file" className='hidden' id="imageUpload" accept="image" multiple={false}/>
                 </label>
                 </div>}
             </div>}

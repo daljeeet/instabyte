@@ -56,9 +56,9 @@ const ModalEdit = (props: postDataAll) => {
                 {/* ===================post Image ===================== */}
 
                 <div className='md:w-1/2 w-full justify-center items-center flex'>
-                    <div className="h-full overflow-y-auto m-auto justify-center items-center flex scrollbar-hide p-4 " >
+                    <div className="h-full overflow-y-auto m-auto justify-center items-center flex scrollbar-hide p-4 relative" >
                         {/* <Image src={el} width={400} height={1600} className='rounded-2xl' alt='Post Image' /> */}
-                        <CardSwiper data={data?.imgUrl} />
+                        <CardSwiper data={data} />
                     </div>
                    </div>
                 {/* ===================post Details And comments ===================== */}

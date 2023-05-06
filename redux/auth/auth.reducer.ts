@@ -38,10 +38,10 @@ export const authUserReducer = (state = iniitailState, actions: { type: any; pay
             return { ...state, login_loading: true, get_error:false, login_error:false}
         }
         case AUTH_ERROR: {
-            return { ...state, login_loading: false, error: true,get_loading:false, get_error:false, }
+            return { ...state, login_loading: false, error: true, }
         }
         case AUTH_SUCCESS: {
-            return { ...state, login_loading: false, error: false, user: payload,get_loading:false, get_error:false,}
+            return { ...state, login_loading: false, error: false, user: payload,}
         }
         case AUTH_RESET: {
             return {...iniitailState}

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 export type commentType={
     author:string,
     comment:string,
-    time:string, 
+    time:string|number, 
     parentId:string
 }
 type commentTypes = {

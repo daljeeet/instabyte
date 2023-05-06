@@ -5,8 +5,7 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import { AiOutlineCheck, AiOutlineClose,AiOutlineSetting } from 'react-icons/ai';
-import { signoutUser, updateUserdata } from '@/redux/auth/auth.actions';
-import CardSwiper from '@/Components/CardSwiper';
+import { updateUserdata } from '@/redux/auth/auth.actions';
 import UpdateuserModal from '@/Components/UpdateuserModal';
 import Loader from '@/Components/Loader';
 import ChangeProfile from '@/Components/ChangeProfle';
@@ -16,7 +15,6 @@ import ProfileCard from '@/Components/ProfileCard';
 
 const Profile = () => {
      
-    const [inputval, setInputval] = useState("")
     const inputRef = useRef<HTMLInputElement>(null);
     const [editUser, setEditUser] = useState(false)
     const [editProfile, setEditProfile] = useState(false)
@@ -24,6 +22,7 @@ const Profile = () => {
     const { userPosts } = useSelector((val: rootReducertype) => val.userPost)
     const [logoutMenu, setLogoutMenu] = useState(false)
     const {get_loading,user} = useSelector((val: rootReducertype) => val?.user)
+    const [inputval, setInputval] = useState(user?.username)
     const dispatch: Dispatch<any> = useDispatch()
     useEffect(() => {
         if(user){
