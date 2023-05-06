@@ -27,10 +27,12 @@ const AddMorePhotos = (props:addType) => {
     const handleClose = ()=>{
       closeAddMorePhotos()
     }
-    const handleImage = (e:any)=>{
+    const handleImage:React.ChangeEventHandler<HTMLInputElement> = (e)=>{
+      if(e.target.files){
         let form = new FormData()
         form.append("image",e.target.files[0])
         dispatch(postUrl(form))
+      }
     }
     const PostAddImage = ()=>{
       data.imgUrl.push(img)

@@ -12,8 +12,9 @@ import Loader from './Loader'
 import { editPost } from '@/redux/postdata/post.actions'
 import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
-import {addComments} from '../redux/comments/comments.action'
+import { addComments } from '../redux/comments/comments.action'
 import { commentType } from './Comment'
+import { CalcTime } from '@/helpers/timer'
 type PostCardType = {
     el: postDataType,
     // handleEditPost: (id: string | undefined) => void,
@@ -25,8 +26,8 @@ type PostCardType = {
     newLimit: () => void
 }
 const PostCard = (props: PostCardType) => {
-    const [postEditmodal, setPostEditmodal] =useState(false)
-    const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit} = props
+    const [postEditmodal, setPostEditmodal] = useState(false)
+    const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const loading_post = useSelector((val: rootReducertype) => val?.allPosts?.loading_post)
     const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
         setComment(e.target.value)
@@ -51,50 +52,50 @@ const PostCard = (props: PostCardType) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLast])
 
-const handlePostEditmodal = ()=>{
-    setPostEditmodal(true)
-}
-const handleEditPost = ()=>{
-    setPostEditmodal(false)
-}
+    const handlePostEditmodal = () => {
+        setPostEditmodal(true)
+    }
+    const handleEditPost = () => {
+        setPostEditmodal(false)
+    }
 
-const handleLike=(state:boolean,el:postDataType)=>{
-    // setLike(state)
-    if(user){
-    if(state){
-       el?.likes?.push(user.id)
-        if(el._id){
-            dispatch(editPost({likes:el.likes},el._id))
+    const handleLike = (state: boolean, el: postDataType) => {
+        // setLike(state)
+        if (user) {
+            if (state) {
+                el?.likes?.push(user.id)
+                if (el._id) {
+                    dispatch(editPost({ likes: el.likes }, el._id))
+                }
+            }
+            else {
+                let newLikedel = el.likes.filter((e) => {
+                    return e !== user.id
+                })
+                if (el._id) {
+                    el.likes = newLikedel;
+                    dispatch(editPost({ likes: el.likes }, el._id))
+                }
+            }
+        } else {
+            Router.push("/login")
         }
-    }
-    else{
-    let newLikedel=  el.likes.filter((e)=>{
-    return e!==user.id
-      })
-      if(el._id){
-        el.likes= newLikedel;
-          dispatch(editPost({likes:el.likes},el._id))
-        }
-    }
-    }else{
-        Router.push("/login")
-    }
     }
     const handleComment = (el: postDataType) => {
         if (user) {
-            if(el._id){
-            let newComment:commentType = {
-                    author:user.name,
+            if (el._id) {
+                let newComment: commentType = {
+                    author: user.name,
                     comment: comment,
                     time: new Date().toDateString(),
-                    parentId:el._id
-            }
-            dispatch(editPost({comments:el.comments+1},el._id))
-            dispatch(addComments(newComment,[]))
+                    parentId: el._id
+                }
+                dispatch(editPost({ comments: el.comments_count + 1 }, el._id))
+                dispatch(addComments(newComment, []))
             }
             setComment("")
             setAddComment(true)
-    el.comments++
+            el.comments_count++
         } else {
             Router.push("/login")
         }
@@ -102,16 +103,16 @@ const handleLike=(state:boolean,el:postDataType)=>{
     const toggleCaption = () => {
         setShowComment(!showComment)
     }
-return (
+    return (
         <div ref={cardRef} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                       {el?.result?<Image src={(el?.result[0]?.profile)||"demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>:
-                       <Image src={user.profile} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10'/>}
+                        {el?.result ? <Image src={(el?.result[0]?.profile) || "demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' /> :
+                            <Image src={user.profile} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />}
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result?<p>{el?.result[0]?.name}</p>:<p>{user.name}</p>}
-                        <p className='text-sm font-semibold text-gray-400 text-[12px] '> {el?.posted_on} </p>
+                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.result ? <p>{el?.result[0]?.username}</p> : <p>{user.username}</p>}
+                        <p className='text-sm font-semibold text-gray-400 text-[12px] '> {CalcTime(Number(el?.posted_on))} </p>
                     </div>
                 </div>
                 {el.author === user?.id ? <div className='mr-2' >
@@ -119,35 +120,35 @@ return (
                 </div> : ''}
             </div>
             <div className='h-fit my-2' >
-                <CardSwiper data={el?.imgUrl} />
+                <CardSwiper data={el} />
             </div>
             <div className='p-2' >
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
-                    {
-                el?.likes?.includes(user?.id)?<AiFillHeart onClick={()=>handleLike(false,el) } className='text-2xl cursor-pointer text-red-500 animate-in zoom-in'  />
-                : <AiOutlineHeart onClick={()=>handleLike(true,el)} className='text-2xl cursor-pointer animate-in zoom-in' /> 
-               }
+                        {
+                            el?.likes?.includes(user?.id) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
+                                : <AiOutlineHeart onClick={() => handleLike(true, el)} className='text-2xl cursor-pointer animate-in zoom-in' />
+                        }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />
                         <FiBookmark className='text-2xl cursor-pointer' />
                     </div>
                 </div>
                 <div className='border-b-2 border-gray-600 pb-3'>
                     <div className='flex items-center' >
-                         <p className='text-sm'>
+                        <p className='text-sm'>
                             {
                                 el?.likes?.length == 0 ? "No Likes" : el.likes?.length == 1 ? `1 Like ` : ` ${el.likes?.length} Likes`
                             }
                         </p>
                         <HiDotsVertical className='' />
-                     <p className='text-sm'>
+                        <p className='text-sm'>
                             {
-                                el?.comments == 0 ? `No Comments` : el.comments === 1 ? "1 Comment" : `${el.comments} Comments`
+                                el?.comments_count == 0 ? `No Comments` : el.comments_count === 1 ? "1 Comment" : `${el.comments_count} Comments`
                             }
-                        </p> 
+                        </p>
                     </div>
                     <p className=''>
-                       {el.result&&<span className='font-semibold text-sm ml-2'>{el?.result[0]?.name}</span>}
+                        {el.result && <span className='font-semibold text-sm ml-2'>{el?.result[0]?.name}</span>}
                         {
                             showComment ? <span className='mx-2' >{el.caption}</span> :
                                 <span className='mx-2'> {el?.caption?.split(' ').slice(0, 4).join(' ') + "..."}
@@ -165,10 +166,10 @@ return (
                     <button onClick={() => handleComment(el)} disabled={comment.length < 4} className={`font-bold bg-black/60 px-3 rounded-md ${comment.length < 4 ? "text-gray-500" : ""}`}>post</button>
                 </div>
             </div>
-            {postEditmodal&&<div onClick={handleEditPost} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e) => { e.stopPropagation() }} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
-                <p onClick={() =>{setPostEditmodal(false); handlePostEdit(el)}} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'><AiOutlineEdit className='mr-2' /> Edit Post</p>
-                <p onClick={() =>{setPostEditmodal(false); openAddImgModal(el)}} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'> <BiMessageSquareAdd className='mr-2' /> Add photos</p>
-                <p onClick={() =>{setPostEditmodal(false); handleDelModal(el)}} className='border-b-2 border-gray-500 my-4 text-red-300 cursor-pointer flex items-center'> <AiOutlineDelete className='mr-2' /> Delete Post</p>
+            {postEditmodal && <div onClick={handleEditPost} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/20 z-10'> <div onClick={(e) => { e.stopPropagation() }} className='z-10 bg-black/70 font-bold p-10 rounded-lg animate-in zoom-in'>
+                <p onClick={() => { setPostEditmodal(false); handlePostEdit(el) }} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'><AiOutlineEdit className='mr-2' /> Edit Post</p>
+                <p onClick={() => { setPostEditmodal(false); openAddImgModal(el) }} className='border-b-2 border-gray-500 my-4 text-lime-100 cursor-pointer flex items-center'> <BiMessageSquareAdd className='mr-2' /> Add photos</p>
+                <p onClick={() => { setPostEditmodal(false); handleDelModal(el) }} className='border-b-2 border-gray-500 my-4 text-red-300 cursor-pointer flex items-center'> <AiOutlineDelete className='mr-2' /> Delete Post</p>
             </div> </div>}
             {addComment && <AlertModal text='Comment Added' color="bg-green-500" />}
         </div>

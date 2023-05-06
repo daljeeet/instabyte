@@ -15,9 +15,9 @@ export type postDataType={
         caption: string,
         imgUrl: string[],
         author:string,
-        posted_on:string,
+        posted_on:string|number,
         likes: string[],
-        comments:number,
+        comments_count:number,
         _id?:string,
         result?:userdataType[]
 }
@@ -37,28 +37,30 @@ const CreateModal = (props: createmodalTypes) => {
 
     const [caption, setCaption]  = useState("Caption...")
 
-    const handleCaption = (e: { target: { value: React.SetStateAction<string> } })=>{
+    const handleCaption:React.ChangeEventHandler<HTMLInputElement>  = (e)=>{
         setCaption(e.target.value)
     }
     
-    const handleImage = (e:any)=>{
-    let form = new FormData()
-    form.append("image",e.target.files[0])
-    dispatch(postUrl(form))
+    const handleImage:React.ChangeEventHandler<HTMLInputElement> = (e)=>{
+        if(e.target.files){
+        let form = new FormData()
+        form.append("image",e.target.files[0])
+        dispatch(postUrl(form))
+    }
 }
 const handleClose = ()=>{
     dispatch(resetPost())
     props.handleModal()
 }
 const handlePost = ()=>{
-    let datestr = new Date().toLocaleDateString("en-US",{day:"numeric",month:"short"})
+    // let datestr = new Date().toLocaleDateString("en-US",{day:"numeric",month:"short"})
     const postData:postDataType = {
         caption: caption,
         imgUrl:[img],
         author:user.id,
         likes:[],
-        posted_on:datestr,
-        comments:0,
+        posted_on:Date.now(),
+        comments_count:0,
       }
       dispatch(postDetails(postData))
       handleClose()

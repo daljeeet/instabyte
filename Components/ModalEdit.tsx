@@ -30,7 +30,7 @@ const ModalEdit = (props: postDataAll) => {
         }
     }, [])
 
-    const handleChange = (e:any)=>{
+    const handleChange:React.ChangeEventHandler<HTMLTextAreaElement> = (e)=>{
         setChangeCaption(e.target.value)
     }
     const handleCaptionChange = (post:postDataType)=>{
