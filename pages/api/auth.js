@@ -10,6 +10,6 @@ export default async function auth(req) {
   try {
    return await setUserCookie(jsonResponse(200, {success:true }))
   } catch (err) {
-    return jsonResponse(500, { error: { message: 'Authentication failed.' } })
+    return jsonResponse(500, { error: { message: 'Authentication failed.'} })
   }
 }

@@ -13,7 +13,7 @@ type addType = {
   isProfile:boolean
   closeAddMorePhotos:()=>void
 }
-const ChangeProfile = (props:addType) => {
+const ChangeProfile = ({closeAddMorePhotos,isProfile}:addType) => {
   const dispatch:Dispatch<any> = useDispatch()
   const {user} = useSelector((val: rootReducertype) => val?.user)
     useEffect(()=>{
@@ -21,7 +21,6 @@ const ChangeProfile = (props:addType) => {
             dispatch(resetPost())
         }
     },[dispatch])
-  const {closeAddMorePhotos,isProfile,} = props;
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     useEffect(() => {
       document.body.className="overflow-y-hidden";

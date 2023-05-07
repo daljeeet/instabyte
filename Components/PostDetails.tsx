@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React, { Dispatch, useEffect, useState } from 'react'
-import { postDataType } from './CreateModal'
 import { AiFillHeart, AiOutlineHeart, AiOutlineClose } from 'react-icons/ai'
 import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
 import { FiBookmark } from 'react-icons/fi'
@@ -9,9 +8,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
-import Comment, { commentType } from './Comment'
 import { addComments, clearComments} from '@/redux/comments/comments.action'
 import { CalcTime } from '@/helpers/timer'
+import { commentType, postDataType } from '@/helpers/dataTypes'
+import Comment from './Comment'
 type postDataAll = {
     data: postDataType,
     closeModal: () => void
@@ -53,10 +53,9 @@ const PostDetails = (props: postDataAll) => {
         if(el._id){
           
             let newComment:commentType = {
-                    author:user.name,
-                    comment: comment,
-                    time: Date.now(),
-                    parentId:el._id
+                author: user._id,
+                body: comment,
+                post_id: el._id,
             }
             let allcomments = [...comments, newComment]
             dispatch(addComments (newComment,allcomments))

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Dispatch } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { postDataType } from './CreateModal'
 import { rootReducertype } from '@/redux/store'
 import PostDetails from './PostDetails'
 import ModalEdit from './ModalEdit'
@@ -13,6 +12,7 @@ import LoginModal from './LoginModal'
 import Loader from './Loader'
 import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
+import { postDataType } from '@/helpers/dataTypes'
 const Card = () => {
     // =========================Hooks at Top ============================
 

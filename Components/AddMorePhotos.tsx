@@ -6,16 +6,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BsFillImageFill} from 'react-icons/bs'
 import { BiImageAdd} from 'react-icons/bi'
 import Image from 'next/image'
-import { postDataType } from './CreateModal'
 import { editPost } from '@/redux/postdata/post.actions'
 import Loader from './Loader'
+import { postDataType } from '@/helpers/dataTypes'
 
 type addType = {
   closeAddMorePhotos:()=>void
   data:postDataType
 }
-const AddMorePhotos = (props:addType) => {
-  const {closeAddMorePhotos,data} = props;
+const AddMorePhotos = ({closeAddMorePhotos,data}:addType) => {
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
     const dispatch:Dispatch<any> = useDispatch()
     useEffect(() => {

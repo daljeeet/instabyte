@@ -5,7 +5,7 @@ export const postDetailsApi = async(data:postDataType)=>{
         const res = await axios.post(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/addpost`,data)
         return res.data.data
     }catch(err){
-        console.log(err)
+        throw err
     }
 }
 
@@ -14,17 +14,16 @@ export const getAllPostsApi = async(page:number)=>{
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL_POST}?page=${page}`)
         return res.data.data
     }catch(err){
-        console.log(err)
+        throw err
     }
 }
 
 export const deletePostApi = async(id:number|string)=>{
     try{
         const res = await axios.delete(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`)
-        console.log(res)
-        // return res;
+        return res;
     }catch(err){
-        console.log(err)
+        throw err
     }
 }
 export const editPostApi = async(data:any,id:string)=>{
@@ -32,6 +31,6 @@ export const editPostApi = async(data:any,id:string)=>{
      const res = await axios.patch(`${process.env.NEXT_PUBLIC_PROTECTED_URL}/updatepost/${id}`,data)
         return res.data
     }catch(err){
-        console.log(err)
+        throw err
     }
 }

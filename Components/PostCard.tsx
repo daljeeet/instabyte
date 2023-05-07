@@ -6,15 +6,14 @@ import { BiCommentAdd, BiMessageRounded, BiMessageSquareAdd } from 'react-icons/
 import { HiDotsVertical } from 'react-icons/hi'
 import CardSwiper from './CardSwiper'
 import { useDispatch, useSelector } from 'react-redux'
-import { postDataType } from './CreateModal'
 import { rootReducertype } from '@/redux/store'
 import Loader from './Loader'
 import { editPost } from '@/redux/postdata/post.actions'
 import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
 import { addComments } from '../redux/comments/comments.action'
-import { commentType } from './Comment'
 import { CalcTime } from '@/helpers/timer'
+import { commentType, postDataType } from '@/helpers/dataTypes'
 type PostCardType = {
     el: postDataType,
     // handleEditPost: (id: string | undefined) => void,
@@ -84,12 +83,11 @@ const PostCard = (props: PostCardType) => {
         if (user) {
             if (el._id) {
                 let newComment: commentType = {
-                    author: user.name,
-                    comment: comment,
-                    time: new Date().toDateString(),
-                    parentId: el._id
+                    author: user._id,
+                    body: comment,
+                    post_id: el._id,
                 }
-                dispatch(editPost({ comments: el.comments_count + 1 }, el._id))
+                // dispatch(editPost({ comments: el.comments_count + 1 }, el._id))
                 dispatch(addComments(newComment, []))
             }
             setComment("")

@@ -1,6 +1,5 @@
 import Navbar from '@/Components/Navbar'
 import React, { useEffect, useState, Dispatch, useRef } from 'react'
-import { postDataType } from '@/Components/CreateModal.jsx';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
@@ -12,6 +11,7 @@ import ChangeProfile from '@/Components/ChangeProfle';
 import BlurImage from '@/Components/BlurImage';
 import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import ProfileCard from '@/Components/ProfileCard';
+import { postDataType } from '@/helpers/dataTypes';
 
 const Profile = () => {
      

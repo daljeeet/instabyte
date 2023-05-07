@@ -1,4 +1,4 @@
-import { userdataType } from './auth.actions'
+import { userdataType } from '@/helpers/dataTypes';
 import {
     AUTH_LOADING,
     AUTH_ERROR,

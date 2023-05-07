@@ -1,4 +1,3 @@
-import { userdataType } from '@/redux/auth/auth.actions'
 import { rootReducertype } from '@/redux/store'
 import Image from 'next/image'
 import React,{useState,Dispatch,useEffect} from 'react'
@@ -7,19 +6,10 @@ import { FcStackOfPhotos } from 'react-icons/fc'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
+import { postDataType } from '@/helpers/dataTypes'
 
 type createmodalTypes = {
     handleModal: ()=>void
-}
-export type postDataType={
-        caption: string,
-        imgUrl: string[],
-        author:string,
-        posted_on:string|number,
-        likes: string[],
-        comments_count:number,
-        _id?:string,
-        result?:userdataType[]
 }
 
 const CreateModal = (props: createmodalTypes) => {
@@ -83,7 +73,7 @@ const handlePost = ()=>{
                     <button onClick={handlePost} className={`bg-blue-800 px-4 py-1 rounded-lg w-fit m-auto ${caption.length<6?"text-gray-400":"text-white"} `} disabled={caption.length<6}>Post</button>
                      </div>:
                 <div className='bg-blue-500 py-1 px-4 cursor-pointer w-fit m-auto mb-6 rounded-md'>
-                 <label htmlFor='imageUpload' className='cursor-pointer' >Select from Device
+                 <label htmlFor='imageUpload' className='cursor-pointer'>Select from Device
                     <input onChange={handleImage} type="file" className='hidden' id="imageUpload" accept="image" multiple={false}/>
                 </label>
                 </div>}

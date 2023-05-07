@@ -1,4 +1,4 @@
-import { commentType } from '@/Components/Comment';
+import { commentType } from '@/helpers/dataTypes';
 import {
     GET_COMMENTS_LOADING,
     GET_COMMENTS_SUCCESS,

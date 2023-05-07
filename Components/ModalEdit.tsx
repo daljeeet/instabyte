@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { postDataType } from './CreateModal'
 import { AiFillEdit, AiOutlineClose} from 'react-icons/ai'
 import { MdAddCircle } from 'react-icons/md'
 import { useDispatch} from 'react-redux'
@@ -9,6 +8,7 @@ import { editPost } from '@/redux/postdata/post.actions'
 import AlertModal from './AlertModal'
 import CardSwiper from './CardSwiper'
 import AddMorePhotos from './AddMorePhotos'
+import { postDataType } from '@/helpers/dataTypes'
 
 type postDataAll = {
     data: postDataType,

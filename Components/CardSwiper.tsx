@@ -4,12 +4,12 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper";
 import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react";
-import { postDataType } from "./CreateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { rootReducertype } from "@/redux/store";
 import { editPost } from "@/redux/postdata/post.actions";
 import { useRouter } from "next/router";
 import { AiFillHeart } from "react-icons/ai";
+import { postDataType } from "@/helpers/dataTypes";
 
 type cardSwiperType = {
   data: postDataType

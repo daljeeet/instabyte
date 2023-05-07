@@ -18,17 +18,7 @@ UPDATE_USER_SUCCESS
   }from './auth.actions.types';
 import {auth,google,github} from '../../config'
 import { addUserApi, getUserDataApi, userLogoutApi,upageUserDataApi } from "./auth.api";
-
-export type userdataType = {
-    name:string|null,
-    username?:string|null;
-    email:string|null,
-    id:string|null,
-    profile:string|null,
-    cover?:string
-    _id?:string
-    bookmarks?:string[]
-}
+import { userdataType } from "@/helpers/dataTypes";
 
 export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     dispatch({type:AUTH_LOADING})

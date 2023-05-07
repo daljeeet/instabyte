@@ -2,9 +2,8 @@ import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
 import React, { useState,useEffect,useRef,Dispatch } from 'react'
 import { useDispatch } from 'react-redux'
-import BlurImage from './BlurImage'
-import { postDataType } from './CreateModal'
 import PostDetails from './PostDetails'
+import { postDataType } from '@/helpers/dataTypes'
 type postdataObj={
     data:postDataType
     isLast:boolean;

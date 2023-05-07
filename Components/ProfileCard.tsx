@@ -3,8 +3,8 @@ import React,{useState,Dispatch} from 'react'
 import { AiFillHeart, AiFillMessage } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import CardSwiper from './CardSwiper'
-import { postDataType } from './CreateModal'
 import PostDetails from './PostDetails'
+import { postDataType } from '@/helpers/dataTypes'
 type postdata = {
   data:postDataType
 }

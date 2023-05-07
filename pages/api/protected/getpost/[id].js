@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        let postComments =await Comment.find({parentId: id})
+        let postComments =await Comment.find({post_id: id})
         res.status(201).json({ success: true, data:postComments})
       } catch (error) {
         res.status(400).json({ success: false, error})

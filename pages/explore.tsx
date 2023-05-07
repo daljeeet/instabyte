@@ -1,10 +1,10 @@
 import Navbar from '@/Components/Navbar'
 import React, { useEffect, useState, Dispatch } from 'react'
-import { postDataType } from '@/Components/CreateModal.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducertype } from '@/redux/store';
 import ExploreImg from '@/Components/ExploreImg';
 import { getAllPosts, nextPage } from '@/redux/postdata/post.actions';
+import { postDataType } from '@/helpers/dataTypes';
 const Explore = () => {
   const { postData, page } = useSelector((val: rootReducertype) => val?.allPosts)
   const dispatch: Dispatch<any> = useDispatch()

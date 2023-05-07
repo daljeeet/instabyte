@@ -1,4 +1,5 @@
-import { commentType } from '@/Components/Comment';
+
+import { commentType } from '@/helpers/dataTypes';
 import {GET_COMMENTS_LOADING,
     GET_COMMENTS_SUCCESS,
     GET_COMMENTS_FAIL,
@@ -13,7 +14,9 @@ import { addCommentApi, deleteCommentApi, getCommentsApi } from './comments.api'
 export const addComments = (comment:commentType,all:commentType[])=> async(dispatch: (arg0: { type: string; payload?:any; }) => void)=>{
     dispatch({type:ADD_COMMENTS_LOADING})
 try{
-    await addCommentApi(comment);
+    let res  = await addCommentApi(comment);
+    console.log(res)
+
     dispatch({type:ADD_COMMENTS_SUCCESS,payload:all})
 }catch(err){
 dispatch({type:ADD_COMMENTS_FAIL})
@@ -24,10 +27,7 @@ export const getComments = (id:string)=>async(dispatch: (arg0: { type: string; p
     dispatch({type:GET_COMMENTS_LOADING})
     try{
         let res = await getCommentsApi(id);
-        if(res){
             dispatch({type:GET_COMMENTS_SUCCESS,payload:res})
-        }
-
     }catch(err){
         dispatch({type:GET_COMMENTS_FAIL})
     }
