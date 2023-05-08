@@ -19,11 +19,31 @@ export type postDataType = {
     caption: string,
     imgUrl: string[],
     author: string,
+    posted_on?: string | number,
+    likes?: string[],
+    comments_count?: number,
+    _id?: string,
+}
+export type resPostDataType = {
+    caption: string,
+    imgUrl: string[],
+    author: string,
     posted_on: string | number,
     likes: string[],
     comments_count: number,
-    _id?: string,
-    result?: userdataType[]
+    _id: string,
+    author_data: commentAuther[]
+}
+
+export type resUserdataType = {
+    name: string | null,
+    username: string | null;
+    email: string | null,
+    id: string | null,
+    profile: string | null,
+    cover: string
+    _id: string
+    bookmarks: string[]
 }
 export type userdataType = {
     name: string | null,

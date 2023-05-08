@@ -9,10 +9,10 @@ import { rootReducertype } from "@/redux/store";
 import { editPost } from "@/redux/postdata/post.actions";
 import { useRouter } from "next/router";
 import { AiFillHeart } from "react-icons/ai";
-import { postDataType } from "@/helpers/dataTypes";
+import { resPostDataType } from "@/helpers/dataTypes";
 
 type cardSwiperType = {
-  data: postDataType
+  data: resPostDataType
 }
 export default function CardSwiper({ data }: cardSwiperType) {
   const user = useSelector((val: rootReducertype) => val?.user?.user)
@@ -34,14 +34,14 @@ export default function CardSwiper({ data }: cardSwiperType) {
 
   }, [hide])
 
-  const handleDoubleTap = (data: postDataType) => {
+  const handleDoubleTap = (data: resPostDataType) => {
     setHide(true)
     if (user && data._id) {
       const exist = data?.likes?.filter((el) => {
         return el === user?.id
       })
-      if(exist.length===0){
-        data.likes.push(user.id)
+      if(!exist?.length){
+        data.likes.push(user._id)
         dispatch(editPost({ likes: data.likes }, data._id))
       }else{
       ""
@@ -58,7 +58,7 @@ export default function CardSwiper({ data }: cardSwiperType) {
         disableOnInteraction: true,
       }}>
         {images?.map((el: string, id: number) => <SwiperSlide key={id} onDoubleClick={() => handleDoubleTap(data)}>
-          <Image className="w-auto h-fit" src={el} alt="Post Image" width={1000} height={800} placeholder='blur' blurDataURL={"/imgLoader.gif"} />
+          <Image className="w-full h-fit" src={el} alt="Post Image" width={1000} height={800} placeholder='blur' blurDataURL={"/imgLoader.gif"} />
         </SwiperSlide>)}
       </Swiper>
       {hide &&

@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const allPosts = await Post.find({author: id})
+        const allPosts = await Post.find({author:id})
         res.status(200).json({data:allPosts})
       } catch (error) {
         res.status(400).json({ success: false,error:error })

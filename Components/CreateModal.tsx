@@ -43,14 +43,10 @@ const handleClose = ()=>{
     props.handleModal()
 }
 const handlePost = ()=>{
-    // let datestr = new Date().toLocaleDateString("en-US",{day:"numeric",month:"short"})
     const postData:postDataType = {
         caption: caption,
         imgUrl:[img],
-        author:user.id,
-        likes:[],
-        posted_on:Date.now(),
-        comments_count:0,
+        author:user._id
       }
       dispatch(postDetails(postData))
       handleClose()
@@ -82,5 +78,4 @@ const handlePost = ()=>{
         </>
     )
 }
-
 export default CreateModal

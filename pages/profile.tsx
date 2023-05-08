@@ -26,7 +26,7 @@ const Profile = () => {
     const dispatch: Dispatch<any> = useDispatch()
     useEffect(() => {
         if(user){
-            dispatch(getOneUserPost(user?.id))
+            dispatch(getOneUserPost(user?._id))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch,user]) 
@@ -72,7 +72,7 @@ const Profile = () => {
             <div className='flex h-40 items-center justify-between md:w-[50%] m-auto relative'>
                 <Image src={`${user?.cover||"/logod.png"}`} width={1200} height={1200} alt='Cover Photo' className='border-[1px] border-blue-400 rounded-xl absolute z-0 w-full h-full' blurDataURL={BlurImage}/>
                 <div className='border-2 ml-4 rounded-full relative border-blue-400/60'>
-                    <Image className="rounded-full w-24 h-24" src={`${user?.profile||"/demo_img.png"}`} width={100} height={100} alt="user.name" blurDataURL={BlurImage} />
+                    <Image className="rounded-full w-24 h-24" src={`${user?.profile}`} width={100} height={100} alt="user.name" blurDataURL={BlurImage} />
                     <div className={`w-4 h-4 absolute bottom-2 right-0 rounded-full ${user? "bg-green-500" : "bg-red-500"}`} ></div>
                 </div>
                 <div className='flex flex-col items-center mr-4 bg-black/50 z-10 py-2 relative'>

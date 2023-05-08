@@ -19,12 +19,12 @@ const Comment = ({el}:commentTypes) => {
     
     const handleEditComment =(elem:commentType)=>{
     
-    } 
+    }
       return (      
     <div>
             {el.author =='' ? "" : <div className='  flex m-3 items-center justify-between'>
                 <div className={`rounded-full mr-2 flex justify-center items-center text-xl`}>
-                  <Image src={(authorData?.profile)?authorData?.profile:"/profile.png"} alt="profile" height={50} width={50} className='h-[50px] w-[50px] rounded-full' />
+                  <Image src={(authorData?.profile)?authorData?.profile:user.profile} alt="profile" height={50} width={50} className='h-[50px] w-[50px] rounded-full' />
                 </div>
                 <p className='mr-2 font-semibold text-sm w-1/3' >{authorData?.username}</p>
                 <div className='w-1/2 text-gray-400 text-[10px]'>

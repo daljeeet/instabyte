@@ -1,3 +1,4 @@
+import { postDataType } from '@/helpers/dataTypes';
 import {GET_LOADING,
     GET_ERROR,
     GET_SUCCESS,
@@ -11,7 +12,6 @@ import {GET_LOADING,
     DEL_ERROR,RESET_POSTS,
     POST_SUCCESS,
     INC_PAGE} from './actions.types'
-import { postDataType } from "../../Components/CreateModal" 
 import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
 
  

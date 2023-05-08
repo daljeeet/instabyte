@@ -10,6 +10,7 @@ export default async function handler(req, res) {
         let newPst = await newPost.save()
         res.status(201).json({ success: true, data: newPst})
       } catch (error) {
+        console.log(error)
         res.status(400).json({ success: false, error})
       }
       break

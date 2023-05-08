@@ -5,7 +5,7 @@ export default function Home() {
     return (
     <>
     <Navbar/>
-    <div className="md:w-[35%] px-1 md:m-auto pt-6 ">
+    <div className="md:w-[40%] px-1 md:m-auto pt-6 ">
       <div >
       <Status/>
       </div>

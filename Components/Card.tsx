@@ -12,7 +12,7 @@ import LoginModal from './LoginModal'
 import Loader from './Loader'
 import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
-import { postDataType } from '@/helpers/dataTypes'
+import { postDataType, resPostDataType } from '@/helpers/dataTypes'
 const Card = () => {
     // =========================Hooks at Top ============================
 
@@ -28,6 +28,7 @@ const Card = () => {
     useEffect(()=>{
         if(postData.length==0){
            dispatch(getAllPosts(1))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }    },[])
     
     useEffect(() => {
@@ -89,7 +90,7 @@ const Card = () => {
     }
     return (
         <div className='pb-12'>
-            {postData?.map((el: postDataType, id: number) =>
+            {postData?.map((el: resPostDataType, id: number) =>
                     <PostCard
                         key={id}
                         el={el}

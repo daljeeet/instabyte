@@ -11,13 +11,11 @@ ADD_COMMENTS_SUCCESS,
 ADD_COMMENTS_FAIL,RESET_COMMENTS} from './comments.action.types'
 import { addCommentApi, deleteCommentApi, getCommentsApi } from './comments.api';
 
-export const addComments = (comment:commentType,all:commentType[])=> async(dispatch: (arg0: { type: string; payload?:any; }) => void)=>{
+export const addComments = (comment:commentType)=> async(dispatch: (arg0: { type: string; payload?:any; }) => void)=>{
     dispatch({type:ADD_COMMENTS_LOADING})
 try{
-    let res  = await addCommentApi(comment);
-    console.log(res)
-
-    dispatch({type:ADD_COMMENTS_SUCCESS,payload:all})
+    let res  = await addCommentApi(comment)
+    dispatch({type:ADD_COMMENTS_SUCCESS,payload:res.data.comment})
 }catch(err){
 dispatch({type:ADD_COMMENTS_FAIL})
 }

@@ -31,7 +31,7 @@ export default async function handler(req, res) {
                 ]
             }
           }
-        ])
+        ]).sort({_id:-1})
         res.status(201).json({ success: true, data:allComments})
       } catch (error) {
         console.log(error)

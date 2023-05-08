@@ -12,8 +12,17 @@ export default async function handler(req, res) {
             $lookup: {
                 from: "users",
                 localField: "author",
-                foreignField: "id", 
-                as: "result"
+                foreignField: "_id", 
+                as: "author_data",
+                pipeline:[
+                  {
+                    $project: {
+                      _id: 1,
+                      username: 1,
+                      profile: 1,
+                    }
+                  }
+                ]
             }
           }
         ]).sort({_id:-1}).skip(skip).limit(5);

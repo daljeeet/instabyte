@@ -32,7 +32,7 @@ export const commentsReducer = (state = initialComment, action: { type: string; 
             return { ...state, loading: true }
         }
         case ADD_COMMENTS_SUCCESS: {
-            return { ...state, loading: false, error: false, comments: payload }
+            return { ...state, loading: false, error: false, comments: [payload,...state.comments] }
         }
         case ADD_COMMENTS_FAIL: {
             return { ...state, loading: false, error: true }

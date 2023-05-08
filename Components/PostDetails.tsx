@@ -1,19 +1,20 @@
 import Image from 'next/image'
-import React, { Dispatch, useEffect, useState } from 'react'
+import React, { Dispatch, useEffect} from 'react'
 import { AiFillHeart, AiOutlineHeart, AiOutlineClose } from 'react-icons/ai'
-import { BiCommentAdd, BiMessageRounded } from 'react-icons/bi'
+import { BiMessageRounded } from 'react-icons/bi'
 import { FiBookmark } from 'react-icons/fi'
 import { editPost } from '@/redux/postdata/post.actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '@/redux/store'
 import CardSwiper from './CardSwiper'
 import { HiDotsVertical } from 'react-icons/hi'
-import { addComments, clearComments} from '@/redux/comments/comments.action'
+import { clearComments} from '@/redux/comments/comments.action'
 import { CalcTime } from '@/helpers/timer'
-import { commentType, postDataType } from '@/helpers/dataTypes'
+import { commentType, resPostDataType } from '@/helpers/dataTypes'
 import Comment from './Comment'
+import NewComment from './NewComment'
 type postDataAll = {
-    data: postDataType,
+    data: resPostDataType,
     closeModal: () => void
 }
 const PostDetails = (props: postDataAll) => {
@@ -21,7 +22,6 @@ const PostDetails = (props: postDataAll) => {
     const dispatch: Dispatch<any> = useDispatch()
     const user = useSelector((val: rootReducertype) => val?.user?.user)
     const { data, closeModal } = props
-    const [comment, setComment] = useState("")
     useEffect(() => {
         document.body.className = "overflow-y-hidden";
         return () => {
@@ -29,16 +29,16 @@ const PostDetails = (props: postDataAll) => {
             dispatch(clearComments())
         }
     }, [dispatch])
-    const handleLike=(state:boolean,el:postDataType)=>{
+    const handleLike=(state:boolean,el:resPostDataType)=>{
         if(state){
-           el.likes.push(user.id)
+           el.likes.push(user._id)
             if(el._id){
                 dispatch(editPost({likes:el.likes},el._id))
             }
         }
         else{
         let newLikedel=  el.likes.filter((e)=>{
-        return e!==user.id
+        return e!==user._id
           })
           if(el._id){
             el.likes= newLikedel;
@@ -46,24 +46,7 @@ const PostDetails = (props: postDataAll) => {
             }
         }
         }
-    const handleCommentChange = (e: { target: { value: React.SetStateAction<string> } }) => {
-        setComment(e.target.value)
-    }
-    const handleComment = (el: postDataType) => {
-        if(el._id){
-          
-            let newComment:commentType = {
-                author: user._id,
-                body: comment,
-                post_id: el._id,
-            }
-            let allcomments = [...comments, newComment]
-            dispatch(addComments (newComment,allcomments))
-            dispatch(editPost({comments:el.comments_count+1},el._id))
-            el.comments_count++
-            }
-        setComment("")
-    }
+        
     return (
         <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-30' >
             <div onClick={() => closeModal()} className='fixed md:top-2 top-0 right-0 z-10 md:right-2 m-4 cursor-pointer'>
@@ -74,16 +57,16 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Image ===================== */}
 
                 <div className='md:w-1/2 w-full justify-center items-center flex'>
-                    <div className=" w-fit overflow-y-auto m-auto justify-center items-center flex scrollbar-hide relative" >
+                    <div className="w-full p-4 overflow-y-auto m-auto justify-center items-center flex scrollbar-hide relative" >
                        <CardSwiper data={data} />
                     </div>
                 </div>
                 {/* ===================post Details And comments ===================== */}
                 <div className='md:w-1/2 w-full my-2 flex flex-col justify-between items-center'>
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data?.result[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
+                    <div className='w-11/12 h-14 flex items-center'> {data.author_data&&<Image src={(data?.author_data[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
-                       { data.result&&<div> {data?.result[0]?.username} </div>}
+                       { data?.author_data&&<div> {(data?.author_data[0]?.username)?data?.author_data[0]?.username:user.username} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{CalcTime(Number(data.posted_on))}</div>
                     </div>
                     </div>
@@ -105,7 +88,7 @@ const PostDetails = (props: postDataAll) => {
                         <div className='flex w-full justify-between mt-1' >
                             <div className='flex w-1/3 h-10 items-center justify-around'>
                                 {
-                                    data?.likes.includes(user.id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
+                                    data?.likes.includes(user._id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
                                         : <AiOutlineHeart onClick={() => handleLike(true, data)} className='text-3xl cursor-pointer animate-in zoom-in' />
                                 }
                                 <BiMessageRounded className='text-3xl cursor-pointer' />
@@ -126,10 +109,8 @@ const PostDetails = (props: postDataAll) => {
 
                     {/* ===================Write Comment===================== */}
 
-                    <div className='w-11/12 h-14 flex items-center ml-4 '>
-                        <BiCommentAdd className='text-gray-500 text-2xl' />
-                        <input onChange={handleCommentChange} value={comment} type="text" placeholder='Write Comment...' className='bg-transparent w-5/6 pl-4 outline-none' />
-                        <button onClick={() => handleComment(data)} disabled={comment.length < 5} className={`px-3 rounded-md font-semibold ${comment.length < 5 ? "text-gray-500" : ''} `}>Post</button>
+                    <div className='w-11/12 h-14 flex items-center ml-4'>
+                        <NewComment el={data} />
                     </div>
                 </div>
             </div>
