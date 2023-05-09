@@ -47,6 +47,6 @@ export async function setUserCookie(res: NextResponse) {
  * Expires the user token cookie
  */
 export function expireUserCookie(res: NextResponse) {
-  res.cookies.set(USER_TOKEN, '', { httpOnly: true, maxAge: 0 })
+  res.cookies.set(USER_TOKEN, '', { httpOnly: true, maxAge: 24*60*60*1000 })
   return res
 }

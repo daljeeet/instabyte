@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { verifyAuth } from 'lib/auth';
-import Userid from './Components/Userid';
 export async function middleware(req: NextRequest) {
   
   // validate the user is authenticated
@@ -16,7 +15,7 @@ export async function middleware(req: NextRequest) {
     }
     // otherwise, redirect to the set token page
     else {
-      return NextResponse.redirect(new URL('/', req.url))
+      return NextResponse.redirect(new URL('/login', req.url))
     }
   }else{
     return NextResponse.next()
