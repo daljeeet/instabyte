@@ -8,10 +8,10 @@ import { editPost } from '@/redux/postdata/post.actions'
 import AlertModal from './AlertModal'
 import CardSwiper from './CardSwiper'
 import AddMorePhotos from './AddMorePhotos'
-import { postDataType } from '@/helpers/dataTypes'
+import { resPostDataType } from '@/helpers/dataTypes'
 
 type postDataAll = {
-    data: postDataType,
+    data: resPostDataType,
     closeModal: () => void
 }
 
@@ -33,7 +33,7 @@ const ModalEdit = (props: postDataAll) => {
     const handleChange:React.ChangeEventHandler<HTMLTextAreaElement> = (e)=>{
         setChangeCaption(e.target.value)
     }
-    const handleCaptionChange = (post:postDataType)=>{
+    const handleCaptionChange = (post:resPostDataType)=>{
        post.caption=changeCaption;
        if(post._id){
            dispatch(editPost( {caption:post.caption},post._id))
@@ -65,8 +65,8 @@ const ModalEdit = (props: postDataAll) => {
                 <div className='md:w-1/2 w-full flex flex-col justify-center items-center'>
 
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data.result&&<Image src={(data.result[0].profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={(data?.result[0].name)||"profile photo"} />}
-                       <div className='mx-4' > {data.result&&<div className='font-semibold'> {data.result[0].name} (You) </div>}
+                    <div className='w-11/12 h-14 flex items-center'> {data?.author_data&&<Image src={(data?.author_data[0].profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={(data?.author_data[0].username)||"profile photo"} />}
+                       <div className='mx-4' > {data?.author_data&&<div className='font-semibold'> {data?.author_data[0].username} (You) </div>}
                         <div className='text-gray-400 font-bold text-sm' >{data.posted_on}</div></div>
                     </div>
 

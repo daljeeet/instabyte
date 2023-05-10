@@ -3,9 +3,9 @@ import Image from 'next/image'
 import React, { useState,useEffect,useRef,Dispatch } from 'react'
 import { useDispatch } from 'react-redux'
 import PostDetails from './PostDetails'
-import { postDataType } from '@/helpers/dataTypes'
+import { postDataType, resPostDataType } from '@/helpers/dataTypes'
 type postdataObj={
-    data:postDataType
+    data:resPostDataType
     isLast:boolean;
     newLimit:()=>void
 }
@@ -29,7 +29,7 @@ const ExploreImg = (props:postdataObj) => {
     }, [isLast])
 
 
-    const handleImagePost = (data:postDataType)=>{
+    const handleImagePost = (data:resPostDataType)=>{
         setModal(true)
         if(data._id){
             setDta(data)

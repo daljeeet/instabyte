@@ -1,6 +1,6 @@
 import dbConnect from "../../../../lib/dbConnect";
 import { Comment } from "../../../../models/Comments";
-import { Post } from "../../../../models/post";
+import { Post } from "../../../../models/Post";
 export default async function handler(req, res) {
   await dbConnect();
   const { method } = req;

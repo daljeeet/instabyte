@@ -1,4 +1,5 @@
-import { postDataType } from '@/Components/CreateModal'
+
+import { postDataType } from '@/helpers/dataTypes';
 import {GET_LOADING,
     GET_ERROR,
     GET_SUCCESS,

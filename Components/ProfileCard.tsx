@@ -4,9 +4,9 @@ import { AiFillHeart, AiFillMessage } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import CardSwiper from './CardSwiper'
 import PostDetails from './PostDetails'
-import { postDataType } from '@/helpers/dataTypes'
+import { resPostDataType } from '@/helpers/dataTypes'
 type postdata = {
-  data:postDataType
+  data:resPostDataType
 }
 const ProfileCard = ({data}:postdata) => {
   const dispatch:Dispatch<any> = useDispatch()
@@ -14,7 +14,7 @@ const ProfileCard = ({data}:postdata) => {
   const closePostData = ()=>{
     setModal(false)
   }
-  const showPosts = (data:postDataType)=>{
+  const showPosts = (data:resPostDataType)=>{
     setModal(true);
     if(data._id){
       dispatch(getComments(data._id))

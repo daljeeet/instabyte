@@ -11,7 +11,7 @@ import ChangeProfile from '@/Components/ChangeProfle';
 import BlurImage from '@/Components/BlurImage';
 import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import ProfileCard from '@/Components/ProfileCard';
-import { postDataType } from '@/helpers/dataTypes';
+import { postDataType, resPostDataType } from '@/helpers/dataTypes';
 
 const Profile = () => {
      
@@ -100,7 +100,7 @@ const Profile = () => {
             <div className='md:ml-52 md:px-10 px-2'>
                 <p className='font-semibold text-lg mt-4 bg-black/60 px-4 rounded-full text-center'>Your Posts</p>
                {get_loading?<Loader text="Loading Your Posts" /> :<div className='grid md:grid-cols-3 gap-5 my-6 grid-cols-1'>
-                    {userPosts?.map((el: postDataType, id: number) => <div key={id} className='h-fit rounded-lg overflow-hidden ' ><ProfileCard data={el} /></div>)}
+                    {userPosts?.map((el: resPostDataType, id: number) => <div key={id} className='h-fit rounded-lg overflow-hidden ' ><ProfileCard data={el} /></div>)}
                 </div>}
             </div>
         </div>

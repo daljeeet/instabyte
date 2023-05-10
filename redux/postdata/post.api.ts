@@ -1,4 +1,4 @@
-import { postDataType } from "../../Components/CreateModal" 
+import { postDataType} from "@/helpers/dataTypes";
 import axios from "axios";
 export const postDetailsApi = async(data:postDataType)=>{
     try{

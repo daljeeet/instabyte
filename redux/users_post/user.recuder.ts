@@ -1,10 +1,10 @@
-import { postDataType } from '@/Components/CreateModal';
+import { resPostDataType } from '@/helpers/dataTypes'
 import {USER_POST_GET_LOADING,USER_POST_GET_SUCCESS,USER_POST_GET_ERROR}from './user.action.type'
 
 export type allPostType ={
     userPost_loading:boolean,
     userPost_error:boolean,
-    userPosts:postDataType[]
+    userPosts:resPostDataType[]
 }
 
 const initialState:allPostType = {

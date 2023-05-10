@@ -72,7 +72,7 @@ const register = () => {
         {showPassword?<BiHide onClick={()=>setShowPassword(!showPassword)} className='text-2xl w-[10%] cursor-pointer' />:<BiShow onClick={()=>setShowPassword(!showPassword)} className='text-2xl w-[10%] cursor-pointer' />}
         </label>
         {data.password.length>0&&<p className='text-start mx-2 mt-1 text-sm'>strength: <span className={`${passStrength?"text-green-500":"text-red-500"}`}>{passStrength?"Strong":"Weak"}</span></p>}
-        <input required value={cPass} onChange={(e)=>setCpass(e.target.value)} name='cpass' className='outline-none px-4 mt-4 bg-transparent border-b-2' placeholder='Confrm password' type={"text"}/>
+        <input required value={cPass} onChange={(e)=>setCpass(e.target.value)} name='cpass' className='outline-none px-4 mt-4 bg-transparent border-b-2' placeholder='Confrm password' type={"password"}/>
         {cPass.length>5&&<p className='text-start mx-2 mt-1 text-sm'><span className={`${passMatch?"text-green-500":"text-red-500"}`}>{passMatch?"passwords matched":"passwords don't matched"}</span></p>}
         <input className='bg-black/50 w-fit mx-auto my-4 px-4 py-2 rounded-lg font-semibold cursor-pointer' value='Register ' type="submit"/>
         <h4 className='m-auto w-fit mb-4 font-semibold'>OR</h4>
