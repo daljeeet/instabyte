@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useState,useEffect,useRef,Dispatch } from 'react'
 import { useDispatch } from 'react-redux'
 import PostDetails from './PostDetails'
-import { postDataType, resPostDataType } from '@/helpers/dataTypes'
+import { resPostDataType } from '@/helpers/dataTypes'
 type postdataObj={
     data:resPostDataType
     isLast:boolean;

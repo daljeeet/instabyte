@@ -20,7 +20,7 @@ type postDataAll = {
 const PostDetails = (props: postDataAll) => {
     const {loading, error, comments} =  useSelector((val:rootReducertype)=>val.comments)
     const dispatch: Dispatch<any> = useDispatch()
-    const user = useSelector((val: rootReducertype) => val?.user?.user)
+    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
     const { data, closeModal } = props
     useEffect(() => {
         document.body.className = "overflow-y-hidden";
@@ -64,7 +64,7 @@ const PostDetails = (props: postDataAll) => {
                 {/* ===================post Details And comments ===================== */}
                 <div className='md:w-1/2 w-full my-2 flex flex-col justify-between items-center'>
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data.author_data&&<Image src={(data?.author_data[0]?.profile)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
+                    <div className='w-11/12 h-14 flex items-center'> {data.author_data&&<Image src={(data?.author_data[0]?.image)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
                        { data?.author_data&&<div> {(data?.author_data[0]?.username)?data?.author_data[0]?.username:user.username} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{CalcTime(Number(data.posted_on))}</div>

@@ -15,7 +15,7 @@ type cardSwiperType = {
   data: resPostDataType
 }
 export default function CardSwiper({ data }: cardSwiperType) {
-  const user = useSelector((val: rootReducertype) => val?.user?.user)
+  const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
   const [hide, setHide] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
   const Router = useRouter()

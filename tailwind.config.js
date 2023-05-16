@@ -14,15 +14,16 @@ module.exports = {
         width: 'width 0.2s ease-in-out',
         loader: 'loader 1.2s ease-in-out infinite',
       },
-      keyframes: {
+      keyframes: { 
         width: {
           '0%': { width:"0" },
           '100%': { width:'52' },
         },
         loader:{
-          "50%":{width:"100%"},
+          "0%":{width:"0%"},
+          "50%":{width:"100%",left:"0"},
           "100%":{width:"0",right:"0",left:"unset"}
-        }
+        },
       },
       colors: {
         'darkbg': '#0f172a',

@@ -65,7 +65,7 @@ const ModalEdit = (props: postDataAll) => {
                 <div className='md:w-1/2 w-full flex flex-col justify-center items-center'>
 
                     {/* ===================profile image and name ===================== */}
-                    <div className='w-11/12 h-14 flex items-center'> {data?.author_data&&<Image src={(data?.author_data[0].profile)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={(data?.author_data[0].username)||"profile photo"} />}
+                    <div className='w-11/12 h-14 flex items-center'> {data?.author_data&&<Image src={(data?.author_data[0].image)||"/demo_img.png"} className="rounded-full ml-4 " width={50} height={50} alt={(data?.author_data[0].username)||"profile photo"} />}
                        <div className='mx-4' > {data?.author_data&&<div className='font-semibold'> {data?.author_data[0].username} (You) </div>}
                         <div className='text-gray-400 font-bold text-sm' >{data.posted_on}</div></div>
                     </div>

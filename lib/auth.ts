@@ -7,6 +7,7 @@ interface UserJwtPayload {
   jti: string
   iat: number
 }
+
 export class AuthError extends Error {}
 
 /**
@@ -14,12 +15,15 @@ export class AuthError extends Error {}
  */
 export async function verifyAuth(req: NextRequest) {
   const token = req.cookies.get(USER_TOKEN)?.value
+
   if (!token) throw new AuthError('Missing user token')
+
   try {
     const verified = await jwtVerify(
       token,
       new TextEncoder().encode(getJwtSecretKey())
     )
+    console.log(verified)
     return verified.payload as UserJwtPayload
   } catch (err) {
     throw new AuthError('Your token has expired.')
@@ -34,10 +38,12 @@ export async function setUserCookie(res: NextResponse) {
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()
+    .setExpirationTime('2h')
     .sign(new TextEncoder().encode(getJwtSecretKey()))
 
   res.cookies.set(USER_TOKEN, token, {
     httpOnly: true,
+    maxAge: 60 * 60 * 2, // 2 hours in seconds
   })
 
   return res
@@ -47,6 +53,6 @@ export async function setUserCookie(res: NextResponse) {
  * Expires the user token cookie
  */
 export function expireUserCookie(res: NextResponse) {
-  res.cookies.set(USER_TOKEN, '', { httpOnly: true, maxAge: 24*60*60*1000 })
+  res.cookies.set(USER_TOKEN, '', { httpOnly: true, maxAge: 0 })
   return res
 }

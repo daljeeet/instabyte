@@ -7,7 +7,7 @@ import { BsFillImageFill} from 'react-icons/bs'
 import { BiImageAdd} from 'react-icons/bi'
 import Image from 'next/image'
 import { editPost } from '@/redux/postdata/post.actions'
-import Loader from './Loader'
+import {Loader} from './Loader'
 import { postDataType } from '@/helpers/dataTypes'
 
 type addType = {

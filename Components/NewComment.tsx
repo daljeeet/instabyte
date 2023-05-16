@@ -15,7 +15,7 @@ const NewComment = ({el}:propsType) => {
     const [comment, setComment] = useState('')
     const [addComment, setAddComment] = useState(false)
     const dispatch:Dispatch<any> = useDispatch()
-    const user = useSelector((val: rootReducertype) => val?.user?.user)
+    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
     const Router = useRouter()
     const handleCommentChange:React.ChangeEventHandler<HTMLInputElement>  = (e) => {
         e.target.style.height="auto";

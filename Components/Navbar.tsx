@@ -10,21 +10,20 @@ import SrchModal from './SrchModal';
 import CreateModal from './CreateModal';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { isUserLogin} from '../redux/auth/auth.actions';
 import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
-import { getOneUserPost } from '@/redux/users_post/uesr.action';
 import LoginModal from './LoginModal';
 import { BsInfoCircle } from 'react-icons/bs';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
-    const {get_loading,user} = useSelector((val:rootReducertype)=>val?.user)
+    const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
+    const get_loading=false
     const [loginModal, setLoginModal] = useState(false)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
     useEffect(()=>{
-            dispatch(isUserLogin())
+            // dispatch(isUserLogin())
         // eslint-disable-next-line react-hooks/exhaustive-deps
         },[])
     // =====================All The funcitons for Various tasks========================
@@ -35,7 +34,7 @@ const Navbar = () => {
         setSrchModal(false)
     }
     const handleNewPost = ()=>{
-        if(user){
+        if(loggedInUser){
             setCreateModal(true)
         }else{
             setLoginModal(true)
@@ -44,15 +43,15 @@ const Navbar = () => {
     const handleModal = ()=>{
         setCreateModal(false)
     }
-    const handleProfileModal = ()=>{ 
-        if(user){
+    const handleProfileModal = ()=>{
+        if(loggedInUser){
            Router.push("/profile")
         }else{
             setLoginModal(true)
         }   
     }
     const handleExplore = ()=>{
-        if(user){
+        if(loggedInUser){
             Router.push("/explore")
         }else{
             setLoginModal(true)
@@ -93,8 +92,8 @@ const Navbar = () => {
                 
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
-                        user?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(user?.profile)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
-                       get_loading?<Image src='/loading_gif.gif' width={80} height={200} alt='loadingig' /> :<CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{user?.name||"Profile"}</p>
+                        loggedInUser?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(loggedInUser?.image)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
+                       get_loading?<Image src='/loading_gif.gif' width={80} height={200} alt='loadingig' /> :<CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{loggedInUser?.name||"Profile"}</p>
                 </div>
             </div>
                         {/* =============================Profile Click List ============================== */}

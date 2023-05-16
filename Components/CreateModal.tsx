@@ -6,7 +6,7 @@ import { FcStackOfPhotos } from 'react-icons/fc'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
-import { postDataType } from '@/helpers/dataTypes'
+import {postDataType } from '@/helpers/dataTypes'
 
 type createmodalTypes = {
     handleModal: ()=>void
@@ -19,7 +19,7 @@ const CreateModal = (props: createmodalTypes) => {
         document.body.className="overflow-y-auto";
         }
     }, [])
-    const user = useSelector((val:rootReducertype)=>val?.user.user)
+    const user = useSelector((val:rootReducertype)=>val?.user.loggedInUser)
 
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
 

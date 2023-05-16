@@ -25,7 +25,7 @@ export default async function handler(req, res) {
                     $project: {
                       _id: 1,
                       username: 1,
-                      profile: 1,
+                      image: 1,
                     }
                   }
                 ]

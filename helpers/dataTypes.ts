@@ -1,18 +1,18 @@
 export interface commentType {
-    id?:string,
-    reply_count?:number|string,
-    created_at?:number|string,
-    updated_at?:number|string,
+    id?: string,
+    reply_count?: number | string,
+    created_at?: number | string,
+    updated_at?: number | string,
     author: string,
-    author_data?:commentAuther[],
+    author_data?: commentAuther[],
     body: string,
     post_id: string | number,
-    parent_id?:string|number
+    parent_id?: string | number
 }
-export interface commentAuther{
-    _id:string,
-    username:string,
-    profile:string,
+export interface commentAuther {
+    _id: string,
+    username: string,
+    image: string,
 }
 
 export type postDataType = {
@@ -39,21 +39,16 @@ export type resUserdataType = {
     name: string | null,
     username: string | null;
     email: string | null,
-    id: string | null,
-    profile: string | null,
-    cover: string
-    _id: string
-    bookmarks: string[]
+    image: string | null,
+    cover: string;
+    _id: string;
+    followers_count: number
+    following_count: number
 }
 export type userdataType = {
     name: string | null,
-    username?: string | null;
-    email: string | null,
-    id: string | null,
-    profile: string | null,
-    cover?: string
-    _id?: string
-    bookmarks?: string[]
+    image: string | null,
+    _id: string,
 }
 
 export type postData = {

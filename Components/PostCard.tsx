@@ -26,7 +26,7 @@ const PostCard = (props: PostCardType) => {
     const [postEditmodal, setPostEditmodal] = useState(false)
     const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const [showComment, setShowComment] = useState(false)
-    const user = useSelector((val: rootReducertype) => val?.user?.user)
+    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
     const Router = useRouter()
@@ -78,8 +78,8 @@ const PostCard = (props: PostCardType) => {
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                        {el?.author_data ? <Image src={(el?.author_data[0]?.profile) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' /> :
-                            <Image src={user.profile} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />}
+                        {el?.author_data ? <Image src={(el?.author_data[0]?.image) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' /> :
+                            <Image src={user.image} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />}
                     </div>
                     <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.author_data ? <p>{el?.author_data[0]?.username}</p> : <p>{user.username}</p>}
                         <p className='text-sm font-semibold text-gray-400 text-[12px] '> {CalcTime(Number(el?.posted_on))} </p>

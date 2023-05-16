@@ -1,11 +1,12 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { verifyAuth } from 'lib/auth';
 export async function middleware(req: NextRequest) {
-  
+  console.log(req)
   // validate the user is authenticated
   const verifiedToken = await verifyAuth(req).catch((err) => {
-    console.error(err.message)
+    console.error("error from middleware",err.message)
   })
+  console.log('verified',verifiedToken)
   if (!verifiedToken) {
     // if this an API request, respond with JSON
     if (req.nextUrl.pathname.startsWith('/api/')) {

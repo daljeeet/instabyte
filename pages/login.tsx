@@ -1,22 +1,37 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import Image from 'next/image';
-import Login from '../Components/Login';
 import Link from 'next/link';
-import { BsInfoCircle } from 'react-icons/bs';
+import { BsInfoCircle } from 'react-icons/bs'; 
 import { FcGoogle } from 'react-icons/fc';
-import { FaApple, FaFacebookF, FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { signIn } from 'next-auth/react';
+import { FaFacebookF, FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { useSession, signIn, signOut } from "next-auth/react"
 import { BiHide, BiShow } from 'react-icons/bi';
+import { rootReducertype } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import Router  from 'next/router';
+import { loginUser, signInWithSocialMedia } from '@/redux/auth/auth.actions';
 const login = () => {
+  const {data:session}  = useSession();
+  const dispatch:Dispatch<any> = useDispatch()
+  const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
     const [showPassword, setShowPassword] = useState(false)
     const [data,setData] = useState({email:"",password:""})
+    useEffect(()=>{
+      if(!loggedInUser&&session){
+          let dta = {name:session.user?.name,email:session.user?.email,image:session.user?.image}
+              dispatch(signInWithSocialMedia(dta))
+      }else if((loggedInUser&&session)||loggedInUser){
+        Router.push("/")
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[loggedInUser, session])
     const handleChange:React.ChangeEventHandler<HTMLInputElement> = (e)=>{
         setData({...data,[e.target.name]:e.target.value})
     }
 const handleSubmit = (e: { preventDefault: () => void; })=>{
     e.preventDefault()
-    console.log(data)
+      dispatch(loginUser(data))
 }
   return (
     <div className='flex justify-center items-center m-auto w-11/12 min-h-screen'>
@@ -42,7 +57,6 @@ const handleSubmit = (e: { preventDefault: () => void; })=>{
             <p>Login using</p>
             <div onClick={()=>signIn()} className='flex w-fit m-auto my-4 bg-black/50 p-2 cursor-pointer rounded-full'>
             <FcGoogle className='text-xl mx-2' />
-            <FaApple className='text-xl mx-2' />
             <FaFacebookF className='text-xl mx-2 text-blue-400' />
             <FaGithub className='text-xl mx-2' />
             <FaLinkedinIn className='text-xl mx-2 text-blue-600' />

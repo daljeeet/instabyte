@@ -1,71 +1,84 @@
 import { userdataType } from '@/helpers/dataTypes';
-import {
-    AUTH_LOADING,
-    AUTH_ERROR,
-    AUTH_SUCCESS,
-    AUTH_RESET,
-    GET_USER_LOADING,
-    GET_USER_ERROR,
-    GET_USER_SUCCESS,
-    UPDATE_USER_LOADING,
-    UPDATE_USER_ERROR,
-    UPDATE_USER_SUCCESS
-} from './auth.actions.types';
+import Jwt, { JwtPayload } from 'jsonwebtoken';
+import{
+    LOGIN_USER_LOADING,
+    LOGIN_USER_ERROR,
+    LOGIN_USER_SUCCESS,
+    REGISTER_USER_LOADING,
+    REGISTER_USER_ERROR,
+    REGISTER_USER_SUCCESS,
+    LOGOUT_USER_LOADING,
+    LOGOUT_USER_ERROR,
+    LOGOUT_USER_SUCCESS,
+  }from './auth.actions.types';
 export type authDataType = {
-    login_loading: boolean,
-    login_error: boolean,
-    user: userdataType | null,
-    get_loading: boolean,
-    get_error: boolean,
-    update_loading: boolean;
-    update_success: boolean;
-    update_error: boolean;
+    loggedInUser:null|string,
+   login_loading:boolean,
+   login_error:boolean,
+   register_loading:boolean,
+   register_error:boolean,
+   logout_loading:boolean,
+   logout_error:boolean
 }
+let data:string|null= null
+if(!typeof window){
+    data = localStorage.getItem("token");
+}
+console.log(data)
 const iniitailState: authDataType = {
-    login_loading: false,
-    login_error: false,
-    user: null,
-    get_loading: false,
-    get_error: false,
-    update_loading: false,
-    update_success: false,
-    update_error: false
+   loggedInUser:data,
+   login_loading:false,
+   login_error:false,
+   register_loading:false,
+   register_error:false,
+   logout_loading:false,
+   logout_error:false
 }
 export const authUserReducer = (state = iniitailState, actions: { type: any; payload: any }) => {
     let { type, payload } = actions
     switch (type) {
-        case AUTH_LOADING: {
-            return { ...state, login_loading: true, get_error:false, login_error:false}
+        case LOGIN_USER_LOADING:{
+            return {...state,login_loading:true,
+                login_error:false, }
         }
-        case AUTH_ERROR: {
-            return { ...state, login_loading: false, error: true, }
-        }
-        case AUTH_SUCCESS: {
-            return { ...state, login_loading: false, error: false, user: payload,}
-        }
-        case AUTH_RESET: {
-            return {...iniitailState}
-        }
-        case GET_USER_LOADING: {
-            return { ...state, get_loading:true, get_error:false,}
-        }
-        case GET_USER_ERROR: {
-            return { ...state, get_error:true,get_loading:false, }
-        }
-        case GET_USER_SUCCESS: {
-            return { ...state, get_loading:false, get_error:false, user:payload}
-        }
-        case UPDATE_USER_LOADING: {
-            return { ...state, update_loading:true,update_error:false, get_error:false,}
-        }
-        case UPDATE_USER_ERROR: {
-            return { ...state, update_error:true,update_loading:false, get_error:false, }
-        }
-        case UPDATE_USER_SUCCESS: {
-            return { ...state, update_error:false,update_loading:false,user:payload}
-        }
-        default: {
-            return { ...state }
+case LOGIN_USER_ERROR:{
+    return {...state,login_loading:false,
+        login_error:true, }
+}
+case LOGIN_USER_SUCCESS:{
+   localStorage.setItem("token",payload)
+ return {...state,login_loading:false,login_error:false,loggedInUser:payload}
+}
+case REGISTER_USER_LOADING:{
+    return {...state,register_loading:true,
+        register_error:false, }
+}
+case REGISTER_USER_ERROR:{
+    return {...state,register_loading:false,
+        register_error:true, }
+}
+case REGISTER_USER_SUCCESS:{
+    localStorage.setItem("token",payload)
+        return {...state,login_loading:false,login_error:false,loggedInUser:payload }
+     
+}
+case LOGOUT_USER_LOADING:{
+    return {...state,logout_loading:true,
+        logout_error:false }
+}
+case LOGOUT_USER_ERROR:{
+    return {...state,logout_loading:false,
+        logout_error:true}
+}
+case LOGOUT_USER_SUCCESS:{
+    localStorage.removeItem("token")
+    return {...state,logout_loading:false,
+        logout_error:false,loggedInUser:null }
+}
+        
+        default:{
+            return state
         }
     }
+    
 }
