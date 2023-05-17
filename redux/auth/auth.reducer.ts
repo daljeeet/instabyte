@@ -1,5 +1,3 @@
-import { userdataType } from '@/helpers/dataTypes';
-import Jwt, { JwtPayload } from 'jsonwebtoken';
 import{
     LOGIN_USER_LOADING,
     LOGIN_USER_ERROR,
@@ -20,13 +18,9 @@ export type authDataType = {
    logout_loading:boolean,
    logout_error:boolean
 }
-let data:string|null= null
-if(!typeof window){
-    data = localStorage.getItem("token");
-}
-console.log(data)
+
 const iniitailState: authDataType = {
-   loggedInUser:data,
+   loggedInUser:null,
    login_loading:false,
    login_error:false,
    register_loading:false,
@@ -46,12 +40,12 @@ case LOGIN_USER_ERROR:{
         login_error:true, }
 }
 case LOGIN_USER_SUCCESS:{
-   localStorage.setItem("token",payload)
- return {...state,login_loading:false,login_error:false,loggedInUser:payload}
+    localStorage.setItem("token",payload)
+        return {...state,login_loading:false,login_error:false,loggedInUser:payload}
 }
 case REGISTER_USER_LOADING:{
     return {...state,register_loading:true,
-        register_error:false, }
+        register_error:false,}
 }
 case REGISTER_USER_ERROR:{
     return {...state,register_loading:false,
@@ -60,11 +54,11 @@ case REGISTER_USER_ERROR:{
 case REGISTER_USER_SUCCESS:{
     localStorage.setItem("token",payload)
         return {...state,login_loading:false,login_error:false,loggedInUser:payload }
-     
-}
-case LOGOUT_USER_LOADING:{
-    return {...state,logout_loading:true,
-        logout_error:false }
+        
+    }
+    case LOGOUT_USER_LOADING:{
+        return {...state,logout_loading:true,
+            logout_error:false }
 }
 case LOGOUT_USER_ERROR:{
     return {...state,logout_loading:false,
@@ -74,8 +68,7 @@ case LOGOUT_USER_SUCCESS:{
     localStorage.removeItem("token")
     return {...state,logout_loading:false,
         logout_error:false,loggedInUser:null }
-}
-        
+}        
         default:{
             return state
         }

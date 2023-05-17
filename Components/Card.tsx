@@ -13,11 +13,12 @@ import {Loader} from './Loader'
 import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
 import { postDataType, resPostDataType } from '@/helpers/dataTypes'
+import GetUser from './GetUser'
 const Card = () => {
     // =========================Hooks at Top ============================
 
     const { del_success,del_error,loading_post, error_post, postData,page } = useSelector((val: rootReducertype) => val?.allPosts)
-    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
+    const user = GetUser()
     const dispatch: Dispatch<any> = useDispatch();
     const [postObj, setPostObj] = useState<any>(null)
     const [modal, setModal] = useState(false)

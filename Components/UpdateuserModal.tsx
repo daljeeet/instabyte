@@ -1,10 +1,11 @@
-import { signoutUser } from '@/redux/auth/auth.actions'
+import { logoutUser} from '@/redux/auth/auth.actions'
 import Link from 'next/link'
 import Router  from 'next/router'
 import React, { Dispatch } from 'react'
 import { AiOutlineClose, AiOutlinePoweroff, AiTwotoneEdit } from 'react-icons/ai'
 import { BsInfoCircle } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
+import { signOut } from "next-auth/react"
 type updateModalType={
   closeModal:()=>void
   handleEditUsername:()=>void
@@ -15,7 +16,8 @@ const UpdateuserModal = (props:updateModalType) => {
   const dispatch: Dispatch<any> = useDispatch()
   const {closeModal,handleEditUsername,handleEditProfile,handleEditCover} = props;
   const handleLogout = ()=>{
-    dispatch(signoutUser())
+    dispatch(logoutUser())
+    signOut()
     closeModal
     Router.push("/login")
   }

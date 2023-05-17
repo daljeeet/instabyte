@@ -1,11 +1,9 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/user";
-import { setUserCookie } from '../../../lib/auth'
-import { jsonResponse } from '../../../lib/utils'
 import bcrypt from 'bcryptjs';
-export const config = {
-    runtime: 'edge',
-  }
+import {SignJWT} from 'jose';
+import {USER_TOKEN, getJwtSecretKey } from '../../../lib/constants';
+import { nanoid } from '@reduxjs/toolkit';
 export default async function handler(req, res) {
   await dbConnect();
   const { method, body } = req;
@@ -22,8 +20,12 @@ export default async function handler(req, res) {
               image: userExist.image,
               _id: userExist._id,
             };
-            await setUserCookie(jsonResponse(200, resData))
-            res.status(200).json({message:"login successfull"});
+             // token for storing user data 
+             let userToken = await jwt.sign(resData,getJwtSecretKey())
+             // token for authencating user to protect routes
+            const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+            res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
+            res.status(200).json(userToken)
           }
         } else {
           let error = new Error("Invalid Credentials");

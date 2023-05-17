@@ -1,6 +1,5 @@
-import type { NextRequest, NextResponse } from 'next/server'
-import { nanoid } from 'nanoid'
-import { SignJWT, jwtVerify } from 'jose'
+import type { NextRequest} from 'next/server'
+import { jwtVerify } from 'jose'
 import { USER_TOKEN, getJwtSecretKey } from './constants'
 
 interface UserJwtPayload {
@@ -23,36 +22,8 @@ export async function verifyAuth(req: NextRequest) {
       token,
       new TextEncoder().encode(getJwtSecretKey())
     )
-    console.log(verified)
     return verified.payload as UserJwtPayload
   } catch (err) {
     throw new AuthError('Your token has expired.')
   }
-}
-
-/**
- * Adds the user token cookie to a response.
- */
-export async function setUserCookie(res: NextResponse) {
-  const token = await new SignJWT({})
-    .setProtectedHeader({ alg: 'HS256' })
-    .setJti(nanoid())
-    .setIssuedAt()
-    .setExpirationTime('2h')
-    .sign(new TextEncoder().encode(getJwtSecretKey()))
-
-  res.cookies.set(USER_TOKEN, token, {
-    httpOnly: true,
-    maxAge: 60 * 60 * 2, // 2 hours in seconds
-  })
-
-  return res
-}
-
-/**
- * Expires the user token cookie
- */
-export function expireUserCookie(res: NextResponse) {
-  res.cookies.set(USER_TOKEN, '', { httpOnly: true, maxAge: 0 })
-  return res
 }

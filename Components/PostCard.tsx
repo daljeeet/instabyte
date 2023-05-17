@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { CalcTime } from '@/helpers/timer'
 import { resPostDataType } from '@/helpers/dataTypes'
 import NewComment from './NewComment'
+import GetUser from './GetUser'
 type PostCardType = {
     el: resPostDataType,
     // handleEditPost: (id: string | undefined) => void,
@@ -26,7 +27,7 @@ const PostCard = (props: PostCardType) => {
     const [postEditmodal, setPostEditmodal] = useState(false)
     const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const [showComment, setShowComment] = useState(false)
-    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
+    const user = GetUser()
     const dispatch: Dispatch<any> = useDispatch();
     const cardRef: any = useRef()
     const Router = useRouter()
@@ -72,14 +73,12 @@ const PostCard = (props: PostCardType) => {
         }
     }
     return (
-        <div ref={cardRef} className='mt-10 border-[1px] border-gray-600 rounded-md relative' >
-
+        <div ref={cardRef} className='mt-10 border-[1px] bg-black/20 rounded-md relative border-blue-900 py-2'>
             {/* Post & Author Details : name,time, etc */}
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                        {el?.author_data ? <Image src={(el?.author_data[0]?.image) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' /> :
-                            <Image src={user.image} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />}
+                         <Image src={(el?.author_data[0]?.image) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />
                     </div>
                     <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.author_data ? <p>{el?.author_data[0]?.username}</p> : <p>{user.username}</p>}
                         <p className='text-sm font-semibold text-gray-400 text-[12px] '> {CalcTime(Number(el?.posted_on))} </p>
@@ -100,7 +99,7 @@ const PostCard = (props: PostCardType) => {
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                         {
-                            el?.likes?.includes(user?.id) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
+                            el?.likes.includes(user?._id) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
                                 : <AiOutlineHeart onClick={() => handleLike(true, el)} className='text-2xl cursor-pointer animate-in zoom-in' />
                         }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />

@@ -1,10 +1,9 @@
+import {SignJWT} from 'jose';
 import dbConnect from '../../../lib/dbConnect'
 import User from '../../../models/user';
-import { setUserCookie } from '../../../lib/auth'
-import { jsonResponse } from '../../../lib/utils'
-export const config = {
-    runtime: 'edge',
-  }
+import {USER_TOKEN, getJwtSecretKey } from '../../../lib/constants';
+import { nanoid } from '@reduxjs/toolkit';
+import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     await dbConnect();
     const {method,body} = req;
@@ -17,18 +16,23 @@ export default async function handler(req, res) {
                     let newUser = new User(data)
                     let userData  = await newUser.save()
                     let resData= {name:userData.name,image:userData.image,_id:userData._id}
-                    await setUserCookie(jsonResponse(200, resData))
-                    // res.setHeader('Set-Cookie',`user-token=${token}; Path=/; HttpOnly`);
-                    res.status(200).json({message:"user registered successfully"})
+                    // token for storing user data 
+                    let userToken = await jwt.sign(resData,getJwtSecretKey())
+                    // token for authencating user to protect routes
+                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+                    res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
+                    res.status(200).json(userToken)
                 }else{
                     let resData= {name:userExist.name,image:userExist.image,_id:userExist._id}
-                    await setUserCookie(jsonResponse(200, resData))
-
-                    // res.setHeader('Set-Cookie',`user-token=${token}; Path=/; HttpOnly`);
-                    res.status(200).json({message:"login successfull"})
+                    // token for storing user data 
+                    let userToken = await jwt.sign(resData,getJwtSecretKey())
+                    // token for authencating user to protect routes
+                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+                    res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
+                      res.status(200).json(userToken)
                 }
             }catch(err){
-                console.log("error:",err)
+                console.log("error from social_media_login:",err)
                 res.status(404).json({msg:'login failed',err:err})
             }
             break;

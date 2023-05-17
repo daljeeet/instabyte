@@ -7,14 +7,17 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaFacebookF, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { BiHide, BiShow } from 'react-icons/bi';
-import { rootReducertype } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Router  from 'next/router';
 import { loginUser, signInWithSocialMedia } from '@/redux/auth/auth.actions';
+import GetUser from '@/Components/GetUser';
 const login = () => {
+  // signOut()
   const {data:session}  = useSession();
   const dispatch:Dispatch<any> = useDispatch()
-  const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
+  // const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
+  const loggedInUser = GetUser();
+  console.log(loggedInUser)
     const [showPassword, setShowPassword] = useState(false)
     const [data,setData] = useState({email:"",password:""})
     useEffect(()=>{

@@ -13,6 +13,7 @@ import { CalcTime } from '@/helpers/timer'
 import { commentType, resPostDataType } from '@/helpers/dataTypes'
 import Comment from './Comment'
 import NewComment from './NewComment'
+import GetUser from './GetUser'
 type postDataAll = {
     data: resPostDataType,
     closeModal: () => void
@@ -20,7 +21,7 @@ type postDataAll = {
 const PostDetails = (props: postDataAll) => {
     const {loading, error, comments} =  useSelector((val:rootReducertype)=>val.comments)
     const dispatch: Dispatch<any> = useDispatch()
-    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
+    const user = GetUser()
     const { data, closeModal } = props
     useEffect(() => {
         document.body.className = "overflow-y-hidden";
@@ -31,7 +32,7 @@ const PostDetails = (props: postDataAll) => {
     }, [dispatch])
     const handleLike=(state:boolean,el:resPostDataType)=>{
         if(state){
-           el.likes.push(user._id)
+           el.likes.push(user?._id)
             if(el._id){
                 dispatch(editPost({likes:el.likes},el._id))
             }
@@ -66,7 +67,7 @@ const PostDetails = (props: postDataAll) => {
                     {/* ===================profile image and name ===================== */}
                     <div className='w-11/12 h-14 flex items-center'> {data.author_data&&<Image src={(data?.author_data[0]?.image)||"/demo_img.png"} className="rounded-full ml-4 h-12 w-12 " width={50} height={50} alt={data.caption} />}
                     <div className='mx-4'>
-                       { data?.author_data&&<div> {(data?.author_data[0]?.username)?data?.author_data[0]?.username:user.username} </div>}
+                       { data?.author_data&&<div> {(data?.author_data[0]?.username)&&data?.author_data[0]?.username} </div>}
                         <div className='text-gray-400 font-semibold text-sm' >{CalcTime(Number(data.posted_on))}</div>
                     </div>
                     </div>
@@ -88,7 +89,7 @@ const PostDetails = (props: postDataAll) => {
                         <div className='flex w-full justify-between mt-1' >
                             <div className='flex w-1/3 h-10 items-center justify-around'>
                                 {
-                                    data?.likes.includes(user._id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
+                                    data?.likes.includes(user?._id) ? <AiFillHeart onClick={() => handleLike(false, data)} className='text-3xl cursor-pointer text-red-500 animate-in zoom-in' />
                                         : <AiOutlineHeart onClick={() => handleLike(true, data)} className='text-3xl cursor-pointer animate-in zoom-in' />
                                 }
                                 <BiMessageRounded className='text-3xl cursor-pointer' />

@@ -1,4 +1,4 @@
-import {User} from "../../../../models/user"
+import User from "../../../../models/user"
 import dbConnect from '../../../../lib/dbConnect'
 
 export default async function handler(req, res) {

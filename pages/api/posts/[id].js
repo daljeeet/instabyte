@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import dbConnect from '../../../lib/dbConnect'
 import {Post} from '../../../models/Post'
 export default async function handler(req, res) {
@@ -10,8 +9,8 @@ export default async function handler(req, res) {
       try {
         const allPosts = await Post.find({author:id})
         res.status(200).json({data:allPosts})
-        mongoose.connection.close();
       } catch (error) {
+        console.log(error)
         res.status(400).json({ success: false,error:error })
       }
       break

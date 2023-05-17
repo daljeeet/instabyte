@@ -4,18 +4,18 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper";
 import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootReducertype } from "@/redux/store";
+import { useDispatch } from "react-redux";
 import { editPost } from "@/redux/postdata/post.actions";
 import { useRouter } from "next/router";
 import { AiFillHeart } from "react-icons/ai";
 import { resPostDataType } from "@/helpers/dataTypes";
+import GetUser from "./GetUser";
 
 type cardSwiperType = {
   data: resPostDataType
 }
 export default function CardSwiper({ data }: cardSwiperType) {
-  const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
+  const user = GetUser()
   const [hide, setHide] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
   const Router = useRouter()
@@ -38,10 +38,10 @@ export default function CardSwiper({ data }: cardSwiperType) {
     setHide(true)
     if (user && data._id) {
       const exist = data?.likes?.filter((el) => {
-        return el === user?.id
+        return el === user?._id
       })
       if(!exist?.length){
-        data.likes.push(user._id)
+        data.likes.push(user?._id)
         dispatch(editPost({ likes: data.likes }, data._id))
       }else{
       ""

@@ -7,6 +7,7 @@ import { BiCommentAdd } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
+import GetUser from './GetUser'
 
 interface propsType{
     el:resPostDataType
@@ -15,7 +16,7 @@ const NewComment = ({el}:propsType) => {
     const [comment, setComment] = useState('')
     const [addComment, setAddComment] = useState(false)
     const dispatch:Dispatch<any> = useDispatch()
-    const user = useSelector((val: rootReducertype) => val?.user?.loggedInUser)
+    const user = GetUser()
     const Router = useRouter()
     const handleCommentChange:React.ChangeEventHandler<HTMLInputElement>  = (e) => {
         e.target.style.height="auto";

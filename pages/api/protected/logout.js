@@ -1,15 +1,20 @@
-import { expireUserCookie } from '../../../lib/auth'
-import { jsonResponse } from '../../../lib/utils'
-export const config = {
-  runtime: 'edge',
-}
-export default async function auth(req) {
-  if (req.method !== 'POST') {
-    return jsonResponse(405, { error: { message: 'Method not allowed' } })
+export default async function handler(req, res) {
+  await dbConnect();
+  const { method} = req;
+  switch (method) {
+    case "POST":
+      try {
+        res.setHeader("Set-Cookie", `${USER_TOKEN}=""; Path=/; Max-Age=480000; HttpOnly`);
+        res.status(200).json(resData)
+      } catch (err) {
+        res.status(404).json(err);
+      }
+      break;
+    default:
+      res.status(404).json({ error: `mehtod ${method} is not allowed ` });
+      break; 
   }
-  try {
-   return await expireUserCookie(jsonResponse(200, {success:true }))
-  } catch (err) {
-    return jsonResponse(500, { error: { message: 'Authentication failed.' } })
-  }
 }
+// export const config = {
+//     runtime: 'edge',
+//   }

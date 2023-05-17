@@ -14,10 +14,12 @@ import Router from 'next/router';
 import { rootReducertype } from '@/redux/store';
 import LoginModal from './LoginModal';
 import { BsInfoCircle } from 'react-icons/bs';
+import GetUser from './GetUser';
 const Navbar = () => {
     // =========================== All Hooks at the top ====================================
     const dispatch:Dispatch<any> = useDispatch()
-    const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
+    const {login_loading} = useSelector((val:rootReducertype)=>val?.user)
+    const loggedInUser = GetUser()
     const get_loading=false
     const [loginModal, setLoginModal] = useState(false)
     const [srchModal, setSrchModal] = useState(false)

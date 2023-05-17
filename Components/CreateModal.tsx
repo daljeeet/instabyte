@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
 import {postDataType } from '@/helpers/dataTypes'
+import GetUser from './GetUser'
 
 type createmodalTypes = {
     handleModal: ()=>void
@@ -19,7 +20,7 @@ const CreateModal = (props: createmodalTypes) => {
         document.body.className="overflow-y-auto";
         }
     }, [])
-    const user = useSelector((val:rootReducertype)=>val?.user.loggedInUser)
+    const user = GetUser()
 
     const {isloading,img,iserror,isdone} = useSelector((val:rootReducertype)=>val?.imgUrl)
 
