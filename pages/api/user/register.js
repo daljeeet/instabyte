@@ -1,6 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/user";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken'
 import { SignJWT } from "jose";
 import { USER_TOKEN, getJwtSecretKey } from "../../../lib/constants";
 import { nanoid } from "@reduxjs/toolkit";
@@ -14,7 +15,8 @@ export default async function handler(req, res) {
         const saltRounds = process.env.SALT;
         const userExist = await User.findOne({ email: body.email });
         if (!userExist) {
-          let hash = bcrypt.hash(password, saltRounds);
+          let hash = await bcrypt.hash(password, saltRounds);
+          console.log(hash)
           let data = { ...body, password: hash };
           let newUser = new User(data);
           let userData = await newUser.save();
@@ -30,11 +32,11 @@ export default async function handler(req, res) {
             .setProtectedHeader({ alg: "HS256" })
             .setJti(nanoid())
             .setIssuedAt()
-            .setExpirationTime("200h")
+            .setExpirationTime("7200h")
             .sign(new TextEncoder().encode(getJwtSecretKey()));
           res.setHeader(
             "Set-Cookie",
-            `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`
+            `${USER_TOKEN}=${token}; Path=/; Max-Age=2600000; HttpOnly`
           );
           res.status(200).json(userToken);
         } else {

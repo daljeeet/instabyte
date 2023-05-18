@@ -5,8 +5,7 @@ import { AiFillHeart, AiOutlineDelete, AiOutlineEdit, AiOutlineHeart } from 'rea
 import { BiMessageRounded, BiMessageSquareAdd } from 'react-icons/bi'
 import { HiDotsVertical } from 'react-icons/hi'
 import CardSwiper from './CardSwiper'
-import { useDispatch, useSelector } from 'react-redux'
-import { rootReducertype } from '@/redux/store'
+import { useDispatch} from 'react-redux'
 import { editPost } from '@/redux/postdata/post.actions'
 import { useRouter } from 'next/router'
 import { CalcTime } from '@/helpers/timer'
@@ -24,6 +23,7 @@ type PostCardType = {
     newLimit: () => void
 }
 const PostCard = (props: PostCardType) => {
+    const [isLiked, setIsLiked] = useState(false)
     const [postEditmodal, setPostEditmodal] = useState(false)
     const { el, handlePostDetails, handlePostEdit, openAddImgModal, handleDelModal, isLast, newLimit } = props
     const [showComment, setShowComment] = useState(false)
@@ -45,6 +45,14 @@ const PostCard = (props: PostCardType) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLast])
 
+    useEffect(()=>{
+        if(el?.likes?.includes(user?._id)){
+            setIsLiked(true)
+        }else{
+            setIsLiked(false)
+        }
+    },[el?.likes, user?._id])
+
     const handlePostEditmodal = () => {
         setPostEditmodal(true)
     }
@@ -54,12 +62,14 @@ const PostCard = (props: PostCardType) => {
     const handleLike = (state: boolean, el: resPostDataType) => {
         if (user) {
             if (state) {
+                setIsLiked(true)
                 el?.likes?.push(user._id)
                 if (el._id) {
                     dispatch(editPost({ likes: el.likes }, el._id))
                 }
             }
             else {
+                setIsLiked(false)
                 let newLikedel = el.likes.filter((e) => {
                     return e !== user._id
                 })
@@ -72,6 +82,12 @@ const PostCard = (props: PostCardType) => {
             Router.push("/login")
         }
     }
+
+    const handleUserProfile= (id:string|number)=>{
+        if(user){
+            Router.push(`/profile/${id}`)
+        }
+    }
     return (
         <div ref={cardRef} className='mt-10 border-[1px] bg-black/20 rounded-md relative border-blue-900 py-2'>
             {/* Post & Author Details : name,time, etc */}
@@ -80,11 +96,11 @@ const PostCard = (props: PostCardType) => {
                     <div className='h-10 w-10 rounded-full mx-2'>
                          <Image src={(el?.author_data[0]?.image) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />
                     </div>
-                    <div className='mx-2 font-semibold w-3/4 overflow-hidden'> {el.author_data ? <p>{el?.author_data[0]?.username}</p> : <p>{user.username}</p>}
+                    <div onClick={()=>handleUserProfile(el.author_data[0]._id)} className='mx-2 font-semibold w-3/4 overflow-hidden hover:underline cursor-pointer'> {el.author_data ? <p>{el?.author_data[0]?.username}</p> : <p>{user.username}</p>}
                         <p className='text-sm font-semibold text-gray-400 text-[12px] '> {CalcTime(Number(el?.posted_on))} </p>
                     </div>
                 </div>
-                {el.author === user?.id ? <div className='mr-2' >
+                {el.author_data[0]._id === user?._id ? <div className='mr-2' >
                     <FiMoreHorizontal onClick={handlePostEditmodal} className='font-bold text-xl cursor-pointer' />
                 </div> : ''}
             </div>
@@ -99,7 +115,7 @@ const PostCard = (props: PostCardType) => {
                 <div className='postactions flex w-full justify-between' >
                     <div className='my-1 flex items-center' >
                         {
-                            el?.likes.includes(user?._id) ? <AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
+                            isLiked?<AiFillHeart onClick={() => handleLike(false, el)} className='text-2xl cursor-pointer text-red-500 animate-in zoom-in' />
                                 : <AiOutlineHeart onClick={() => handleLike(true, el)} className='text-2xl cursor-pointer animate-in zoom-in' />
                         }
                         <BiMessageRounded onClick={() => handlePostDetails(el)} className='text-2xl cursor-pointer mx-2' />

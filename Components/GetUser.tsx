@@ -13,7 +13,7 @@ const GetUser = () => {
       getToken(token)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  },[userToken])
 
   const getToken = async(token:string)=>{
     if(key){

@@ -9,7 +9,6 @@ import AddMorePhotos from './AddMorePhotos'
 import { getAllPosts, nextPage } from '@/redux/postdata/post.actions'
 import PostCard from './PostCard'
 import LoginModal from './LoginModal'
-import {Loader} from './Loader'
 import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
 import { postDataType, resPostDataType } from '@/helpers/dataTypes'
@@ -17,7 +16,7 @@ import GetUser from './GetUser'
 const Card = () => {
     // =========================Hooks at Top ============================
 
-    const { del_success,del_error,loading_post, error_post, postData,page } = useSelector((val: rootReducertype) => val?.allPosts)
+    const { delete_post_success,delete_post_error,add_post_loading, add_post_error, postData,page } = useSelector((val: rootReducertype) => val?.allPosts)
     const user = GetUser()
     const dispatch: Dispatch<any> = useDispatch();
     const [postObj, setPostObj] = useState<any>(null)
@@ -81,13 +80,8 @@ const Card = () => {
     const closeAddImgModal = () => {
         setAddImgModal(false)
     }
-    if (error_post) {
+    if (add_post_error) {
         return <div>Something Went Wrong.....</div>
-    }
-    if(page==1){
-        if(loading_post){
-            return <Loader text='Loading' />
-        }
     }
     return (
         <div className='pb-12'>
@@ -99,18 +93,18 @@ const Card = () => {
                         handlePostEdit={handlePostEdit}
                         openAddImgModal={openAddImgModal}
                         handleDelModal={handleDelModal}
-                        isLast={id === postData.length - 1}
+                        isLast={id === postData?.length - 1}
                         newLimit={() => dispatch(nextPage())}
                 />)}
             {/* {loginModal && <LoginModal handleLoginModal={handleLoginModal} />} */}
             {modal && <PostDetails data={postObj} closeModal={closePostDtlModal} />}
             {modalEdit && <ModalEdit data={postObj} closeModal={closePostEditModal} />}
             {delModal && <DeleteModal id={postObj?._id} closeModal={closeDelModal} />}
-            {del_error && <AlertModal color="bg-red-600" text='Error in Deleting the post. Try again' />}
-            {del_success && <AlertModal color="bg-green-600" text='Delete Success.' />}
+            {delete_post_error && <AlertModal color="bg-red-600" text='Error in Deleting the post. Try again' />}
+            {delete_post_success && <AlertModal color="bg-green-600" text='Delete Success.' />}
             {addImgModal && <AddMorePhotos closeAddMorePhotos={closeAddImgModal} data={postObj} />}
             {loginModal&&<LoginModal closeLoginModal={closeLoginModal} />}
-           {loading_post&&
+           {add_post_loading&&
            <Image src='/loding.gif' alt='loading_img' className='m-auto' width={500} height={500} />
            }
             <div className='mt-10 text-center'>

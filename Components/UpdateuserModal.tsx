@@ -1,11 +1,11 @@
 import { logoutUser} from '@/redux/auth/auth.actions'
 import Link from 'next/link'
-import Router  from 'next/router'
 import React, { Dispatch } from 'react'
 import { AiOutlineClose, AiOutlinePoweroff, AiTwotoneEdit } from 'react-icons/ai'
 import { BsInfoCircle } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { signOut } from "next-auth/react"
+import Router from 'next/router'
 type updateModalType={
   closeModal:()=>void
   handleEditUsername:()=>void
@@ -18,8 +18,7 @@ const UpdateuserModal = (props:updateModalType) => {
   const handleLogout = ()=>{
     dispatch(logoutUser())
     signOut()
-    closeModal
-    Router.push("/login")
+    Router.push("/")
   }
   return (
     <div onClick={() => closeModal()} className='fixed h-screen flex justify-center items-center right-0 top-0 left-0 bg-black/60 z-10' >

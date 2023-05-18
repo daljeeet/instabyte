@@ -1,4 +1,3 @@
-import type { NextRequest} from 'next/server'
 import { jwtVerify } from 'jose'
 import { USER_TOKEN, getJwtSecretKey } from './constants'
 
@@ -12,7 +11,7 @@ export class AuthError extends Error {}
 /**
  * Verifies the user's JWT token and returns its payload if it's valid.
  */
-export async function verifyAuth(req: NextRequest) {
+export const verifyAuth = async(req:any)=>{
   const token = req.cookies.get(USER_TOKEN)?.value
 
   if (!token) throw new AuthError('Missing user token')

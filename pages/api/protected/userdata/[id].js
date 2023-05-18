@@ -8,14 +8,18 @@ export default async function handler(req, res) {
     switch (method) {
       case 'GET':
         try {
-          let data =await User.find({id: id})
-          if(data.length>0){
-            res.status(200).json({success:true,data:data[0]})
+          let data =await User.findOne({_id: id})
+          .select('-password')
+          .exec();
+          if(data){
+            res.status(200).json(data)
           }else{
-            res.status(400).json({success: false, error})
+            let error = new Error("No details found for the Profile")
+            res.status(400).json(error)
           }
         } catch (error) {
-          res.status(400).json({success: false, error})
+          console.log(error)
+          res.status(400).json(error)
         }
         break;
       case "PATCH":

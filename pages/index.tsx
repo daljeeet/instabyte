@@ -1,9 +1,21 @@
 import Card from "../Components/Card";
 import Status from "../Components/Status";
 import Navbar from "../Components/Navbar";
-import CardSkl from "@/Skeleton/CardSkl";
+import CardSkl from "@/Components/Sklls/CardSkl";
+import { useSelector } from "react-redux";
+import { rootReducertype } from "@/redux/store";
+import { useEffect, useState } from "react";
+import { resPostDataType } from "@/helpers/dataTypes";
 export default function Home() {
-  
+  const [showPost, setShowPost] = useState<any>(false)
+  const postData:resPostDataType[] = useSelector((val: rootReducertype) => val?.allPosts?.postData)
+  useEffect(()=>{
+    if(postData?.length){
+      setShowPost(false)
+    }else{
+      setShowPost(true)
+    }
+  },[postData])
     return (
     <>
     <Navbar/>
@@ -11,8 +23,9 @@ export default function Home() {
       <div >
       <Status/>
       </div>
-      {/* <CardSkl/> */}
-      <Card/>
+      {
+       showPost?<CardSkl/>:<Card/>
+      }
     </div>
     </>
   )

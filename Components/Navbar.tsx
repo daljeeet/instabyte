@@ -24,10 +24,6 @@ const Navbar = () => {
     const [loginModal, setLoginModal] = useState(false)
     const [srchModal, setSrchModal] = useState(false)
     const [createModal, setCreateModal] = useState(false)
-    useEffect(()=>{
-            // dispatch(isUserLogin())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        },[])
     // =====================All The funcitons for Various tasks========================
     const handleSearch = ()=>{
             setSrchModal(!srchModal)
@@ -47,7 +43,7 @@ const Navbar = () => {
     }
     const handleProfileModal = ()=>{
         if(loggedInUser){
-           Router.push("/profile")
+           Router.push(`/profile/${loggedInUser._id}`)
         }else{
             setLoginModal(true)
         }   
@@ -68,8 +64,6 @@ const Navbar = () => {
             <div className='relative'>
                 <Link href='/' className='hidden md:block w-fit pl-4 pt-2'>
                 {<Image src="/logod.png" alt="Tattoo fonts" width={100} height={50}/>}
-                </Link>
-                <Link href="/about" className='absolute right-[20%] bottom-0' > <BsInfoCircle className='text-2xl'/>
                 </Link>
             </div>
             <div className='flex md:flex-col w-full md:w-40 md:h-[70vh] justify-around font-semibold px-4 '>
@@ -95,7 +89,7 @@ const Navbar = () => {
                 <div onClick={handleProfileModal} className='flex items-center cursor-pointer' >
                     {
                         loggedInUser?<div className='rounded-full h-5 w-5 relative overflow-hidden mr-2'><Image src={(loggedInUser?.image)||"/demo_img.png"} width={30} height={30} alt='profile Pic' className='w-6 h-6' /> </div> :
-                       get_loading?<Image src='/loading_gif.gif' width={80} height={200} alt='loadingig' /> :<CgProfile className='mr-2 text-2xl' />} <p className='hidden md:block text-sm' >{loggedInUser?.name||"Profile"}</p>
+                       get_loading?<Image src='/loading_gif.gif' width={80} height={80} alt='loadingig' /> :<CgProfile className='mr-2 text-2xl' />}<p className='hidden md:block text-sm' >{loggedInUser?.name||"Profile"}</p>
                 </div>
             </div>
                         {/* =============================Profile Click List ============================== */}

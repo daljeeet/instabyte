@@ -6,7 +6,7 @@ import { FcStackOfPhotos } from 'react-icons/fc'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
-import {postDataType } from '@/helpers/dataTypes'
+import {postDataType, resPostDataType } from '@/helpers/dataTypes'
 import GetUser from './GetUser'
 
 type createmodalTypes = {

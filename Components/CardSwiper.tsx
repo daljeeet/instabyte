@@ -8,11 +8,11 @@ import { useDispatch } from "react-redux";
 import { editPost } from "@/redux/postdata/post.actions";
 import { useRouter } from "next/router";
 import { AiFillHeart } from "react-icons/ai";
-import { resPostDataType } from "@/helpers/dataTypes";
+import { postDataType, resPostDataType } from "@/helpers/dataTypes";
 import GetUser from "./GetUser";
 
 type cardSwiperType = {
-  data: resPostDataType
+  data: resPostDataType|postDataType
 }
 export default function CardSwiper({ data }: cardSwiperType) {
   const user = GetUser()
@@ -34,14 +34,14 @@ export default function CardSwiper({ data }: cardSwiperType) {
 
   }, [hide])
 
-  const handleDoubleTap = (data: resPostDataType) => {
+  const handleDoubleTap = (data: postDataType) => {
     setHide(true)
-    if (user && data._id) {
+    if (user && data?._id) {
       const exist = data?.likes?.filter((el) => {
         return el === user?._id
       })
-      if(!exist?.length){
-        data.likes.push(user?._id)
+      if(!exist?.length&&data?.likes){
+        data?.likes.push(user?._id)
         dispatch(editPost({ likes: data.likes }, data._id))
       }else{
       ""

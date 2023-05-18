@@ -15,6 +15,7 @@ import axios from 'axios';
 
 const register = () => {
     const dispatch:Dispatch<any> = useDispatch()
+  const token = useSelector((val:rootReducertype)=>val.user.loggedInUser)
     const {data:session}  = useSession();
     const {loggedInUser} = useSelector((val:rootReducertype)=>val?.user)
     const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +33,11 @@ const register = () => {
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[loggedInUser, session])
+      useEffect(()=>{
+        if(token){
+          Router.push("/")
+        }
+      },[token])
       
       useEffect(() => {
         if(symbolExists(data.password)&&data.password.length>6&&numberExists(data.password)){

@@ -23,7 +23,6 @@ try{
 export const loginUserApi = async (data:initialLoginData)=>{
     try{
         let res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL_USER}/login`,data)
-        console.log(data,res)
         return res
     }catch(err){
         throw err

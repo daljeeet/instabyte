@@ -1,5 +1,5 @@
 
-import { postDataType } from '@/helpers/dataTypes';
+import { postDataType, resPostDataType } from '@/helpers/dataTypes';
 import {GET_LOADING,
     GET_ERROR,
     GET_SUCCESS,
@@ -16,25 +16,27 @@ import {GET_LOADING,
     INC_PAGE} from './actions.types'
 
 export type allPostType ={
-    loading_post:boolean,
-    error_post:boolean,
-    del_loading:boolean,
-    del_error:boolean,
-    del_success:boolean,
-    patch_loading:boolean;
-    patch_error:boolean;
-    postData:postDataType[]
+    get_post_loading:boolean,
+    get_post_error:boolean,
+    add_post_error:boolean,
+    add_post_loading:boolean,
+    update_post_loading:boolean,
+    delete_post_loading:boolean,
+    delete_post_error:boolean,
+    delete_post_success:false,
+    postData:resPostDataType[],
     page:number
 }
 
 const initialState:allPostType = {
-    loading_post:false,
-    del_success:false,
-    error_post:false,
-    del_loading:false,
-    del_error:false,
-    patch_loading:false,
-    patch_error:false,
+    get_post_loading:false,
+    get_post_error:false,
+    add_post_error:false,
+    add_post_loading:false,
+    update_post_loading:false,
+    delete_post_loading:false,
+    delete_post_error:false,
+    delete_post_success:false,
     postData:[],
     page:1
 }
@@ -43,43 +45,43 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
     const {type,payload}= actions;
     switch (type) {
         case GET_LOADING:{
-            return {...state, loading_post:true}
+            return {...state, get_post_loading:true,get_post_error:false}
         }
         case GET_ERROR:{
-            return {...state, error_post:true,loading_post:false}
+            return {...state, get_post_loading:false,get_post_error:true}
         }
         case GET_SUCCESS:{
-            return {...state,postData:[...state.postData, ...payload],loading_post:false}
+            return {...state,postData:[...state.postData, ...payload], get_post_loading:false,get_post_error:false,}
         }
         case POST_SUCCESS:{
-            return {...state,postData:[payload,...state.postData],loading_post:false}
+            return {...state,postData:[payload,...state.postData], add_post_error:false,add_post_loading:false,}
         }
         case POST_LOADING:{
-            return {...state,loading_post:true}
+            return {...state,add_post_error:false,add_post_loading:true}
         }
         case POST_ERROR:{
-            return {...state,loading_post:false,error_post:true}
+            return {...state,add_post_error:true,add_post_loading:false}
         }
         case DEL_SUCCESS:{
         let newData = state.postData.filter((el)=>{
             if(el._id!=payload){return el}
         })
-            return {...state,postData:newData,del_loading:false,del_error:false,del_success:true}
+            return {...state,postData:newData,delete_post_loading:false,delete_post_error:false}
         }
         case DEL_ERROR:{
-            return {...state,del_error:true,del_loading:false,del_success:false}
+            return {...state,delete_post_loading:false,delete_post_error:true}
         }
         case DEL_LOADING:{
-            return {...state,del_loading:true,del_error:false}
+            return {...state,delete_post_loading:true,delete_post_error:false}
         }
         case RESET_POSTS:{
-            return {...initialState}
+            return initialState
         }
         case INC_PAGE:{
             return {...state,page:state.page+1}
         }
         default:{
-            return {...state}
+            return state
         }
     }
 }

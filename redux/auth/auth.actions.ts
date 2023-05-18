@@ -21,8 +21,7 @@ export const registerUser = (data:initialUserData)=>async(dispatch:Dispatch)=>{
 dispatch({type:REGISTER_USER_LOADING})
 try{
     let res = await registerUserApi(data)
-    console.log(res)
-    dispatch({type:REGISTER_USER_SUCCESS})
+    dispatch({type:REGISTER_USER_SUCCESS,payload:res.data})
 }catch(err){
     dispatch({type:REGISTER_USER_ERROR,payload:err})
 }
@@ -54,8 +53,7 @@ export const loginUser = (data:initialLoginData)=>async(dispatch:Dispatch)=>{
     dispatch({type:LOGIN_USER_LOADING})
     try{
         let res = await loginUserApi(data)
-        console.log(res);
-        dispatch({type:LOGIN_USER_SUCCESS})
+        dispatch({type:LOGIN_USER_SUCCESS,payload:res.data})
     }catch(err){
         dispatch({type:LOGIN_USER_ERROR})
     }
@@ -66,67 +64,14 @@ export const logoutUser = ()=>async(dispatch:Dispatch)=>{
     try{
         await logoutUserApi()
         dispatch({type:LOGOUT_USER_SUCCESS})
-    }catch(err){
+    }catch(err){ 
         dispatch({type:LOGOUT_USER_ERROR})
     }
 }
 
 
+// old function for updating user
 
-// export const loginwithGoogle =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-//     dispatch({type:AUTH_LOADING})
-//     try{
-//        let user = await signInWithPopup(auth,google)
-//        const userData:userdataType = {
-//         name:user?.user?.displayName,
-//         email:user?.user?.email,
-//         username:user?.user?.displayName?.split(' ')[0],
-//         id:user?.user?.uid,
-//         profile:user?.user.photoURL,
-//         cover:"/cover.jpg",
-//         bookmarks:[]
-//     }  
-//     let res = await addUserApi(userData)
-//     dispatch({type:AUTH_SUCCESS,payload:res})
-//     }catch(err){
-//         dispatch({type:AUTH_ERROR})
-//     }
-// }
-
-// export const  loginwithGithub = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-//     dispatch({type:AUTH_LOADING})
-//     try{
-//         let res = await signInWithPopup(auth,github)
-//         dispatch({type:AUTH_SUCCESS,payload:res})
-//     }catch(er){
-//         dispatch({type:AUTH_ERROR})
-//     }
-// }
-
-export const signoutUser =()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-    try{
-        // await signOut(auth)
-        // await userLogoutApi()
-    }catch(err){
-        console.log(err)
-    }
-}
-
-// export const isUserLogin = ()=> async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
-//     dispatch({type:GET_USER_LOADING})
-//     try{
-//         auth.onAuthStateChanged(async(user)=>{
-//             if(user){
-//             let userDta = await getUserDataApi(user.uid)
-//             dispatch({type:GET_USER_SUCCESS,payload:userDta})
-//             }else{
-//             dispatch({type:GET_USER_ERROR})
-//             }
-//            })
-//     }catch(err){
-//         dispatch({type:GET_USER_ERROR})
-//     }
-// }
 
 export const updateUserdata =  (data:any,id:string)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
     try{

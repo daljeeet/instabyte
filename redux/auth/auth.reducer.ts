@@ -46,7 +46,7 @@ case LOGIN_USER_SUCCESS:{
 case REGISTER_USER_LOADING:{
     return {...state,register_loading:true,
         register_error:false,}
-}
+} 
 case REGISTER_USER_ERROR:{
     return {...state,register_loading:false,
         register_error:true, }
@@ -54,7 +54,6 @@ case REGISTER_USER_ERROR:{
 case REGISTER_USER_SUCCESS:{
     localStorage.setItem("token",payload)
         return {...state,login_loading:false,login_error:false,loggedInUser:payload }
-        
     }
     case LOGOUT_USER_LOADING:{
         return {...state,logout_loading:true,
@@ -66,8 +65,7 @@ case LOGOUT_USER_ERROR:{
 }
 case LOGOUT_USER_SUCCESS:{
     localStorage.removeItem("token")
-    return {...state,logout_loading:false,
-        logout_error:false,loggedInUser:null }
+    return {...state,logout_loading:false,logout_error:false,loggedInUser:null }
 }        
         default:{
             return state

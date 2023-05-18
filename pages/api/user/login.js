@@ -1,6 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/user";
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken'
 import {SignJWT} from 'jose';
 import {USER_TOKEN, getJwtSecretKey } from '../../../lib/constants';
 import { nanoid } from '@reduxjs/toolkit';
@@ -23,8 +24,8 @@ export default async function handler(req, res) {
              // token for storing user data 
              let userToken = await jwt.sign(resData,getJwtSecretKey())
              // token for authencating user to protect routes
-            const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
-            res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
+            const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('7200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+            res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=2600000; HttpOnly`);
             res.status(200).json(userToken)
           }
         } else {
@@ -32,6 +33,7 @@ export default async function handler(req, res) {
           res.status(401).json(error);
         }
       } catch (err) {
+        console.log(err)
         res.status(404).json(err);
       }
       break;

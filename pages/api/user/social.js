@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "POST":
             try{
+                console.log('from social')
                 const userExist = await User.findOne({email:body.email});
                 if(!userExist){
                     const data = {...body,username:body.email.split('@')[0]}
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
                     // token for storing user data 
                     let userToken = await jwt.sign(resData,getJwtSecretKey())
                     // token for authencating user to protect routes
-                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('7200h').sign(new TextEncoder().encode(getJwtSecretKey()))
                     res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
                     res.status(200).json(userToken)
                 }else{
@@ -27,8 +28,8 @@ export default async function handler(req, res) {
                     // token for storing user data 
                     let userToken = await jwt.sign(resData,getJwtSecretKey())
                     // token for authencating user to protect routes
-                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('200h').sign(new TextEncoder().encode(getJwtSecretKey()))
-                    res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=480000; HttpOnly`);
+                    const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('7200h').sign(new TextEncoder().encode(getJwtSecretKey()))
+                    res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=2600000; HttpOnly`);
                       res.status(200).json(userToken)
                 }
             }catch(err){

@@ -69,7 +69,7 @@ const Comment = ({el}:commentTypes) => {
                 <div className='md:max-w-[400px] pl-[40px] ml-[30px] mt-2 border-l-[1px] border-gray-600'>
                     <p className='text-xs text-white'>{commentBody} {largeBody?more?<span className='underline cursor-pointer text-blue-200 ml-2' onClick={()=>setMore(false)}>More</span>:<span className='underline cursor-pointer text-blue-200 ml-2' onClick={()=>setMore(true)}>Less</span>:""}</p>
                 <div className='mt-3 flex items-center text-sm'>
-                  <button className='text-[12px] flex items-center'>1 Reply<span>
+                  <button className='text-[12px] flex items-center'>Reply<span>
                     <BsCaretDownFill className='mx-1 mt-1 text-sm'/> 
                     {/* <BsCaretUpFill className='mx-1 mt-1 text-sm'/>  */}
                     </span> </button>
