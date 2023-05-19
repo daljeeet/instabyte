@@ -5,7 +5,7 @@ import { AiFillEdit } from 'react-icons/ai'
 import { RiLogoutCircleRFill } from 'react-icons/ri'
 import { rootReducertype } from '@/redux/store'
 import { useDispatch, useSelector } from 'react-redux'
-import GetUser from '../GetUser'
+import GetUser from '../../helpers/GetUser'
 import { signOut } from "next-auth/react"
 import { logoutUser } from '@/redux/auth/auth.actions'
 import Router from 'next/router'
@@ -16,9 +16,9 @@ const UserDetails = () => {
     const dispatch:Dispatch<any> = useDispatch() 
     const loggedInUserData = GetUser()
     useEffect(()=>{
-        if(!token){
+            if(!token){
             Router.push("/")
-        }
+        }        
     },[token])
     const handleLogOut = ()=>{
         Router.push("/")

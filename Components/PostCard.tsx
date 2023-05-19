@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import { CalcTime } from '@/helpers/timer'
 import { resPostDataType } from '@/helpers/dataTypes'
 import NewComment from './NewComment'
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 type PostCardType = {
     el: resPostDataType,
     // handleEditPost: (id: string | undefined) => void,

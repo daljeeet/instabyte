@@ -9,8 +9,9 @@ import{
     LOGOUT_USER_ERROR,
     LOGOUT_USER_SUCCESS,
   }from './auth.actions.types';
+import { CookieValueTypes, getCookie } from 'cookies-next';
 export type authDataType = {
-    loggedInUser:null|string,
+    loggedInUser:null|string|CookieValueTypes|undefined,
    login_loading:boolean,
    login_error:boolean,
    register_loading:boolean,
@@ -18,9 +19,9 @@ export type authDataType = {
    logout_loading:boolean,
    logout_error:boolean
 }
-
+let token = getCookie("token");
 const iniitailState: authDataType = {
-   loggedInUser:null,
+   loggedInUser:token,
    login_loading:false,
    login_error:false,
    register_loading:false,
@@ -40,8 +41,8 @@ case LOGIN_USER_ERROR:{
         login_error:true, }
 }
 case LOGIN_USER_SUCCESS:{
-    localStorage.setItem("token",payload)
-        return {...state,login_loading:false,login_error:false,loggedInUser:payload}
+    let token = getCookie("token");
+        return {...state,login_loading:false,login_error:false,loggedInUser:token}
 }
 case REGISTER_USER_LOADING:{
     return {...state,register_loading:true,
@@ -52,8 +53,8 @@ case REGISTER_USER_ERROR:{
         register_error:true, }
 }
 case REGISTER_USER_SUCCESS:{
-    localStorage.setItem("token",payload)
-        return {...state,login_loading:false,login_error:false,loggedInUser:payload }
+    let token = getCookie("token");
+        return {...state,login_loading:false,login_error:false,loggedInUser:token}
     }
     case LOGOUT_USER_LOADING:{
         return {...state,logout_loading:true,
@@ -64,7 +65,7 @@ case LOGOUT_USER_ERROR:{
         logout_error:true}
 }
 case LOGOUT_USER_SUCCESS:{
-    localStorage.removeItem("token")
+
     return {...state,logout_loading:false,logout_error:false,loggedInUser:null }
 }        
         default:{

@@ -16,7 +16,6 @@ export default async function handler(req, res) {
         const userExist = await User.findOne({ email: body.email });
         if (!userExist) {
           let hash = await bcrypt.hash(password, saltRounds);
-          console.log(hash)
           let data = { ...body, password: hash };
           let newUser = new User(data);
           let userData = await newUser.save();
@@ -34,11 +33,8 @@ export default async function handler(req, res) {
             .setIssuedAt()
             .setExpirationTime("7200h")
             .sign(new TextEncoder().encode(getJwtSecretKey()));
-          res.setHeader(
-            "Set-Cookie",
-            `${USER_TOKEN}=${token}; Path=/; Max-Age=2600000; HttpOnly`
-          );
-          res.status(200).json(userToken);
+            res.setHeader("Set-Cookie",[`${USER_TOKEN}=${token}; Path=/; Max-Age=2600000;`,`token=${userToken}; Path=/; Max-Age=480000;`]);
+          res.status(200).json({msg:"User Registred sussfully"})
         } else {
           let error = new Error("user already exist");
           res.status(401).json(error);

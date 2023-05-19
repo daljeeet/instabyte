@@ -10,6 +10,8 @@ import { RiLogoutCircleRFill } from 'react-icons/ri'
 import UserDetails from '@/Components/profile/UserDetails'
 import ProfileSkl from '@/Components/Sklls/ProfileSkl'
 import UsersPost from '@/Components/profile/UsersPost'
+import { cookies } from 'next/headers';
+
 const Profile = () => {
   const router = useRouter()
   const userId = router.query.id

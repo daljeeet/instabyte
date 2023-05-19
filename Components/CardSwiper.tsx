@@ -9,7 +9,7 @@ import { editPost } from "@/redux/postdata/post.actions";
 import { useRouter } from "next/router";
 import { AiFillHeart } from "react-icons/ai";
 import { postDataType, resPostDataType } from "@/helpers/dataTypes";
-import GetUser from "./GetUser";
+import GetUser from "../helpers/GetUser";
 
 type cardSwiperType = {
   data: resPostDataType|postDataType

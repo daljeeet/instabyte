@@ -3,7 +3,7 @@ import { CalcTime } from '@/helpers/timer';
 import Image from 'next/image';
 import React, { useState,useEffect } from 'react'
 import { HiDotsVertical } from 'react-icons/hi';
-import GetUser from './GetUser';
+import GetUser from '../helpers/GetUser';
 import { spawn } from 'child_process';
 import { FaReply } from 'react-icons/fa';
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';

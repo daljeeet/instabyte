@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { rootReducertype } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { resPostDataType } from "@/helpers/dataTypes";
+
 export default function Home() {
   const [showPost, setShowPost] = useState<any>(false)
   const postData:resPostDataType[] = useSelector((val: rootReducertype) => val?.allPosts?.postData)
@@ -16,6 +17,7 @@ export default function Home() {
       setShowPost(true)
     }
   },[postData])
+
     return (
     <>
     <Navbar/>

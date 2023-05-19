@@ -1,4 +1,4 @@
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 
 const Userid = () => {
     const user = GetUser()

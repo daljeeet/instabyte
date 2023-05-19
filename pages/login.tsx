@@ -10,7 +10,7 @@ import { BiHide, BiShow } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import { loginUser, signInWithSocialMedia } from '@/redux/auth/auth.actions';
-import GetUser from '@/Components/GetUser';
+import GetUser from '@/helpers/GetUser';
 import { rootReducertype } from '@/redux/store';
 const login = () => {
   const { data: session } = useSession();

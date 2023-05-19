@@ -13,7 +13,7 @@ import { CalcTime } from '@/helpers/timer'
 import { commentType, resPostDataType } from '@/helpers/dataTypes'
 import Comment from './Comment'
 import NewComment from './NewComment'
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 type postDataAll = {
     data: resPostDataType,
     closeModal: () => void

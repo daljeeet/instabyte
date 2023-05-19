@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-        res.setHeader("Set-Cookie", `${USER_TOKEN}=; Path=/; Max-Age=480000; HttpOnly`);
+        res.setHeader("Set-Cookie",[`${USER_TOKEN}=""; Path=/; Max-Age=2600000;`,`token=${null}; Path=/; Max-Age=480000;`]);
         res.status(200).json({message:"logout successfull"})
            } catch (err) {
         console.log(err)

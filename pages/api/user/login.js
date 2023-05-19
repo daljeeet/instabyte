@@ -25,8 +25,8 @@ export default async function handler(req, res) {
              let userToken = await jwt.sign(resData,getJwtSecretKey())
              // token for authencating user to protect routes
             const token = await new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setJti(nanoid()).setIssuedAt().setExpirationTime('7200h').sign(new TextEncoder().encode(getJwtSecretKey()))
-            res.setHeader("Set-Cookie", `${USER_TOKEN}=${token}; Path=/; Max-Age=2600000; HttpOnly`);
-            res.status(200).json(userToken)
+            res.setHeader("Set-Cookie",[`${USER_TOKEN}=${token}; Path=/; Max-Age=2600000;`,`token=${userToken}; Path=/; Max-Age=480000;`]);
+            res.status(200).json({msg:"login successful"})
           }
         } else {
           let error = new Error("Invalid Credentials");

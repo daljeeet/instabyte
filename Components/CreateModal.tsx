@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { postUrl, resetPost } from '../redux/ImageUrl/actions'
 import { postDetails } from '../redux/postdata/post.actions'
 import {postDataType, resPostDataType } from '@/helpers/dataTypes'
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 
 type createmodalTypes = {
     handleModal: ()=>void

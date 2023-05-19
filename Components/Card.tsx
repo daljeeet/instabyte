@@ -12,7 +12,7 @@ import LoginModal from './LoginModal'
 import { getComments } from '@/redux/comments/comments.action'
 import Image from 'next/image'
 import { postDataType, resPostDataType } from '@/helpers/dataTypes'
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 const Card = () => {
     // =========================Hooks at Top ============================
 

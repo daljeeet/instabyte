@@ -8,13 +8,14 @@ import Image from 'next/image'
 import {Loader} from './Loader'
 import BlurImage from './BlurImage'
 import { updateUserdata } from "../redux/auth/auth.actions"
+import GetUser from '@/helpers/GetUser'
 type addType = {
   isProfile:boolean
   closeAddMorePhotos:()=>void
 }
 const ChangeProfile = ({closeAddMorePhotos,isProfile}:addType) => {
   const dispatch:Dispatch<any> = useDispatch()
-  const {loggedInUser} = useSelector((val: rootReducertype) => val?.user)
+  const {loggedInUser} = GetUser()
     useEffect(()=>{
         return ()=>{
             dispatch(resetPost())

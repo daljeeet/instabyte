@@ -51,7 +51,10 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state, get_post_loading:false,get_post_error:true}
         }
         case GET_SUCCESS:{
-            return {...state,postData:[...state.postData, ...payload], get_post_loading:false,get_post_error:false,}
+            const mixedArr = [...payload,...state.postData];
+            const concatenatedArray:any = new Set(mixedArr.map((el:postDataType)=>JSON.stringify(el)))
+           const uniqueArr = [...concatenatedArray].map((el:any)=>JSON.parse(el))
+            return {...state,postData:uniqueArr, get_post_loading:false,get_post_error:false,}
         }
         case POST_SUCCESS:{
             return {...state,postData:[payload,...state.postData], add_post_error:false,add_post_loading:false,}

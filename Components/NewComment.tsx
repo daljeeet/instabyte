@@ -7,7 +7,7 @@ import { BiCommentAdd } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import AlertModal from './AlertModal'
 import { useRouter } from 'next/router'
-import GetUser from './GetUser'
+import GetUser from '../helpers/GetUser'
 
 interface propsType{
     el:resPostDataType
