@@ -24,6 +24,7 @@ const register = () => {
     const [userExist, setUserExist] = useState(false)
     const [loading,setLoading]  = useState(false)
     const [username,setUsername] = useState("")
+    console.log(userExist)
     useEffect(()=>{
         if(!loggedInUser&&session){
             let dta = {name:session.user?.name,email:session.user?.email,image:session.user?.image}
@@ -87,7 +88,7 @@ const register = () => {
     }
     const handleSubmit:React.FormEventHandler<HTMLFormElement> = (e)=>{
         e.preventDefault()
-        if(!userExist){
+        if(!userExist&&username.length>4){
             let userData = {...data, username}
             dispatch(registerUser(userData))
         }

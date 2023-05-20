@@ -1,16 +1,13 @@
 import React, { Dispatch, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Navbar from '@/Components/Navbar'
-import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOneUserPost, getUserData } from '@/redux/users_post/uesr.action'
 import { rootReducertype } from '@/redux/store'
-import { AiFillEdit } from 'react-icons/ai'
-import { RiLogoutCircleRFill } from 'react-icons/ri'
 import UserDetails from '@/Components/profile/UserDetails'
 import ProfileSkl from '@/Components/Sklls/ProfileSkl'
 import UsersPost from '@/Components/profile/UsersPost'
-import { cookies } from 'next/headers';
+import Router from 'next/router'
 
 const Profile = () => {
   const router = useRouter()
@@ -22,18 +19,23 @@ const Profile = () => {
       dispatch(getUserData(userId))
     }
   }, [dispatch, userId])
-  const { userData, userPosts } = useSelector((val: rootReducertype) => val.userPost)
+  const { userData,userPosts, get_user_data_loading} = useSelector((val: rootReducertype) => val.userPost)
+  const token  = useSelector((val: rootReducertype) => val.user.loggedInUser)
+  useEffect(()=>{
+    if(!token){
+    Router.push("/")
+}        
+},[token])
   return (
     <>
       <Navbar />
       <div className='px-1 md:ml-52 m-auto py-14'>
-       {userData? <UserDetails/>:
-        <ProfileSkl/>
-        }
-        <div className='w-1/2 m-auto my-4'>
-        <h4 className='text-center underline'>Posts</h4>
-        </div>
-        <UsersPost/>
+       {!get_user_data_loading&&userData&&token&&<UserDetails/>}
+        {get_user_data_loading&&<ProfileSkl/>}
+       {!get_user_data_loading&&userPosts&&<div className='w-1/2 m-auto my-4'>
+        <h4 className='text-center text-xl font-semibold'> All Post(s) of {userData?.name} </h4>
+        </div>}
+       {userPosts&&<UsersPost/>}
       </div>
     </>
   )

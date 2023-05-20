@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import PostCard from './PostCard'
 
 const UsersPost = () => {
-  const { userPosts } = useSelector((val: rootReducertype) => val.userPost)
+  const { userPosts} = useSelector((val: rootReducertype) => val.userPost)
   return (
     <div className='my-4 w-5/6 m-auto'>
         <div className='md:grid grid-cols-3 gap-4 grid-rows-auto' >

@@ -94,7 +94,7 @@ const PostCard = (props: PostCardType) => {
             <div className='flex w-full justify-between items-center'>
                 <div className='flex items-center h-12 w-5/6' >
                     <div className='h-10 w-10 rounded-full mx-2'>
-                         <Image src={(el?.author_data[0]?.image) || "/demo_img.png"} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />
+                         <Image src={el.author_data?el.author_data[0].image:user?.image} alt="User's Photo" width={100} height={100} className='rounded-full w-10 h-10' />
                     </div>
                     <div onClick={()=>handleUserProfile(el.author_data[0]._id)} className='mx-2 font-semibold w-3/4 overflow-hidden hover:underline cursor-pointer'> {el.author_data ? <p>{el?.author_data[0]?.username}</p> : <p>{user.username}</p>}
                         <p className='text-sm font-semibold text-gray-400 text-[12px] '> {CalcTime(Number(el?.posted_on))} </p>

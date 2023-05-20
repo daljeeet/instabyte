@@ -19,7 +19,7 @@ const Status = () => {
       className="md:h-[50%] h-full"
       modules={[Autoplay]}
     >
-      {data.map((el,id)=><SwiperSlide key={id} className='rounded-full flex justify-center items-center text-3xl'>{el}</SwiperSlide>)}
+      {data.map((el,id)=><SwiperSlide key={id} className='rounded-full flex justify-center items-center text-4xl'>{el}</SwiperSlide>)}
     </Swiper>
   </div>
   )

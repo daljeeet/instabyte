@@ -2,3 +2,11 @@
 #nprogress .bar {
     background-color: #fff;
 }
+#nprogress .bar::before {
+    content: "Loading...";
+    position: absolute;
+    right: 0;
+    top:0;
+    color: rgb(255, 0, 0);
+    font-weight: 700;
+}

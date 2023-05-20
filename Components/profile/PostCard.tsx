@@ -28,9 +28,9 @@ const PostCard = ({ data }: postdata) => {
     }
     return (
         <>
-            <div onClick={() => showPosts(data)} className='border-2 border-gray-600 rounded-xl overflow-hidden relative group bg-black/50 h-fit md:my-auto my-4'>
+            <div onClick={() => showPosts(data)} className='shadow-xl rounded-xl overflow-hidden relative group bg-black/50 md:my-auto my-4 '>
                 <CardSwiper data={data} />
-                <div className='hidden justify-center items-center absolute z-20 top-0 w-full h-full bottom-0 bg-black/30 group-hover:flex '>
+                <div className='hidden justify-center items-center absolute z-20 top-0 w-full h-full bottom-0 bg-black/30 group-hover:flex hover:cursor-pointer'>
                     <p className='flex justify-center items-center mx-4 text-4xl text-gray-200'>{data.likes && data?.likes.length} <AiFillHeart className='mx-2' /> </p>
                     <p className='flex justify-center items-center text-4xl text-gray-200'>{data.comments_count}<AiFillMessage className='mx-2' /> </p>
                 </div>

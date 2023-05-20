@@ -58,7 +58,7 @@ export default function CardSwiper({ data }: cardSwiperType) {
         disableOnInteraction: true,
       }}>
         {images?.map((el: string, id: number) => <SwiperSlide key={id} onDoubleClick={() => handleDoubleTap(data)}>
-          <Image className="w-full h-fit" src={el} alt="Post Image" width={1000} height={800} placeholder='blur' blurDataURL={"/imgLoader.gif"} />
+          <Image className="w-full h-fit" src={el} alt="Post Image" width={600} height={500} placeholder='blur' blurDataURL={"/imgLoader.gif"} />
         </SwiperSlide>)}
       </Swiper>
       {hide &&

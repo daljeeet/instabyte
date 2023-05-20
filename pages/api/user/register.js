@@ -11,11 +11,11 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-        const { password } = body;
-        const saltRounds = process.env.SALT;
-        const userExist = await User.findOne({ email: body.email });
+        const { password,email} = body;
+        const saltRounds = process.env.SALT_ROUNDS;
+        const userExist = await User.findOne({email});
         if (!userExist) {
-          let hash = await bcrypt.hash(password, saltRounds);
+          let hash = await bcrypt.hash(password, +saltRounds);
           let data = { ...body, password: hash };
           let newUser = new User(data);
           let userData = await newUser.save();
@@ -24,9 +24,9 @@ export default async function handler(req, res) {
             image: userData.image,
             _id: userData._id,
           };
-           // token for storing user data 
+          //  token for storing user data 
            let userToken = await jwt.sign(resData,getJwtSecretKey())
-           // token for authencating user to protect routes
+          //  token for authencating user to protect routes
           const token = await new SignJWT({})
             .setProtectedHeader({ alg: "HS256" })
             .setJti(nanoid())
@@ -36,10 +36,12 @@ export default async function handler(req, res) {
             res.setHeader("Set-Cookie",[`${USER_TOKEN}=${token}; Path=/; Max-Age=2600000;`,`token=${userToken}; Path=/; Max-Age=480000;`]);
           res.status(200).json({msg:"User Registred sussfully"})
         } else {
+          console.log('user exists')
           let error = new Error("user already exist");
           res.status(401).json(error);
         }
       } catch (err) {
+        console.log(err)
         res.status(404).json(err);
       }
       break;

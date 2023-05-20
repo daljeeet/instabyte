@@ -40,7 +40,7 @@ const initialState:allPostType = {
     postData:[],
     page:1
 }
-
+ 
 export const getAllPostsReducer = (state=initialState,actions: { type: string; payload?:any; })=>{
     const {type,payload}= actions;
     switch (type) {
@@ -51,10 +51,8 @@ export const getAllPostsReducer = (state=initialState,actions: { type: string; p
             return {...state, get_post_loading:false,get_post_error:true}
         }
         case GET_SUCCESS:{
-            const mixedArr = [...payload,...state.postData];
-            const concatenatedArray:any = new Set(mixedArr.map((el:postDataType)=>JSON.stringify(el)))
-           const uniqueArr = [...concatenatedArray].map((el:any)=>JSON.parse(el))
-            return {...state,postData:uniqueArr, get_post_loading:false,get_post_error:false,}
+            let newArr = [...new Set([...state.postData, ...payload])]
+            return {...state,postData:newArr, get_post_loading:false,get_post_error:false,}
         }
         case POST_SUCCESS:{
             return {...state,postData:[payload,...state.postData], add_post_error:false,add_post_loading:false,}

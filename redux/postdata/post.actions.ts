@@ -13,9 +13,10 @@ import {GET_LOADING,
     POST_SUCCESS,
     INC_PAGE} from './actions.types'
 import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
+import { Dispatch } from 'redux';
 
  
-export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string; payload?: void }) => void)=>{
+export const getAllPosts = (page:number)=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_LOADING})
     try{
         let res = await getAllPostsApi(page)
@@ -25,7 +26,7 @@ export const getAllPosts = (page:number)=>async(dispatch: (arg0: { type: string;
 }
 }
 
-export const postDetails = (data:postDataType)=>async(dispatch: (arg0: { type: string; payload?:any }) => void)=>{
+export const postDetails = (data:postDataType)=>async(dispatch:Dispatch)=>{
     dispatch({type:POST_LOADING})
 try{
    let res = await postDetailsApi(data)
@@ -34,7 +35,7 @@ try{
   dispatch({type:POST_ERROR})
 }
 }
-export const deletePostt = (id:number|string)=>async(dispatch:(arg0: { type: string; payload?:any }) => void)=>{
+export const deletePostt = (id:number|string)=>async(dispatch:Dispatch)=>{
     dispatch({type:DEL_LOADING})
     try{
         await deletePostApi(id);
@@ -43,7 +44,7 @@ export const deletePostt = (id:number|string)=>async(dispatch:(arg0: { type: str
         dispatch({type:DEL_ERROR})
     }
 }
-export const editPost = (post:any,id:string)=>async(dispatch: (arg0: { type: string; payload?:any; }) => void)=>{
+export const editPost = (post:any,id:string)=>async(dispatch:Dispatch)=>{
     dispatch({type:PATCH_LOADING})
     try{
         await editPostApi(post,id)
@@ -53,10 +54,10 @@ export const editPost = (post:any,id:string)=>async(dispatch: (arg0: { type: str
     }
 }
 
-export const resetAllPosts =()=>(dispatch: (arg0: { type: string; }) => void)=>{
+export const resetAllPosts =()=>(dispatch:Dispatch)=>{
     dispatch({type:RESET_POSTS})
 }
 
-export const nextPage = ()=>(dispatch:(arg0:{type:string})=>void)=>{
+export const nextPage = ()=>(dispatch:Dispatch)=>{
     dispatch({type:INC_PAGE})
 } 
