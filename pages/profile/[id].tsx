@@ -1,12 +1,12 @@
 import React, { Dispatch, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '@/Components/Navbar'
+import Navbar from '@/Components/Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOneUserPost, getUserData } from '@/redux/users_post/uesr.action'
 import { rootReducertype } from '@/redux/store'
-import UserDetails from '@/Components/profile/UserDetails'
-import ProfileSkl from '@/Components/Sklls/ProfileSkl'
-import UsersPost from '@/Components/profile/UsersPost'
+import UserDetails from '@/Components/User/UserDetails'
+import ProfileSkl from '@/Components/Skulls/ProfileSkl'
+import UsersPost from '@/Components/User/UsersPost'
 import Router from 'next/router'
 
 const Profile = () => {
@@ -33,7 +33,7 @@ const Profile = () => {
        {!get_user_data_loading&&userData&&token&&<UserDetails/>}
         {get_user_data_loading&&<ProfileSkl/>}
        {!get_user_data_loading&&userPosts&&<div className='w-1/2 m-auto my-4'>
-        <h4 className='text-center text-xl font-semibold'> All Post(s) of {userData?.name} </h4>
+        <h4 className='text-center md:text-xl font-semibold '> All Post(s) of {userData?.name} </h4>
         </div>}
        {userPosts&&<UsersPost/>}
       </div>

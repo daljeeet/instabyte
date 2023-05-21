@@ -10,9 +10,9 @@ const GetUser = () => {
     getUserFromToken(token)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[token])
-  const getUserFromToken = async(token:string)=>{
+  const getUserFromToken=(token:string)=>{
     if(key){
-      let data = await Jwt.decode(token)
+      let data = Jwt.decode(token)
       setUser(data)
     }else{
     }

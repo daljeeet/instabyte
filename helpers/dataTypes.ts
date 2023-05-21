@@ -1,13 +1,24 @@
 export interface commentType {
-    id?: string,
-    reply_count?: number | string,
-    created_at?: number | string,
-    updated_at?: number | string,
+    _id: string,
+    reply_count: number | string,
+    created_at: number | string,
+    updated_at: number | string,
     author: string,
-    author_data?: commentAuther[],
+    author_data: commentAuther[],
     body: string,
     post_id: string | number,
     parent_id?: string | number
+}
+export interface replyType {
+    _id: string,
+    reply_count: number | string,
+    created_at: number | string,
+    updated_at: number | string,
+    author: string,
+    author_data: commentAuther[],
+    body: string,
+    post_id: string | number,
+    parent_id: string | number
 }
 export interface commentAuther {
     _id: string,

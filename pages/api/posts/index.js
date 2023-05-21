@@ -26,7 +26,6 @@ export default async function handler(req, res) {
             }
           }
         ]).sort({_id:-1}).skip(skip).limit(5);
-        
         res.status(200).json({data:posts})
       } catch (error) {
         console.log(error)

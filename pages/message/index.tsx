@@ -1,4 +1,4 @@
-import Navbar from '@/Components/Navbar'
+import Navbar from '@/Components/Navbar/Navbar'
 import React from 'react'
 
 const index = () => {

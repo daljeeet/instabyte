@@ -5,7 +5,7 @@ import { BiChevronLeft } from "react-icons/bi"
 import { BiChevronRight } from "react-icons/bi"
 import { FiExternalLink } from "react-icons/fi"
 import Link from 'next/link'
-import Navbar from '@/Components/Navbar'
+import Navbar from '@/Components/Navbar/Navbar'
 import { AiFillHeart } from 'react-icons/ai'
 const about = () => {
   return (
@@ -17,8 +17,7 @@ const about = () => {
         </p>
 
         <p className='mt-5'>
-          InstaByte is a Social media app in which you can post images/posts and interact with other users. You can also like posts of other users and comment in their posts.
-          InstaByte is inspired from a popular Social media plateform Instagram.
+          InstaByte is a Social media app where a user can share their Posts and interact with other users
         </p>
 
         <p className='text-2xl  mt-5  underline text-teal-400'>

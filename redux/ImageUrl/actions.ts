@@ -1,11 +1,8 @@
+import { Dispatch } from "redux";
 import { LOADING,ERROR, SUCCESS, RESET } from "./action.type"
 import { postUrlApi } from "./postImgApi";
 
-type reducerAction ={
-    type:string,
-    payload?:string
-}
-export const postUrl = (data:{})=>async(dispatch: ({ type, payload}:reducerAction) => void)=>{
+export const postUrl = (data:any)=>async(dispatch:Dispatch)=>{
     dispatch({type:LOADING})
     try{
         let res = await postUrlApi(data);

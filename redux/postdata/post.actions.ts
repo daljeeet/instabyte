@@ -12,7 +12,7 @@ import {GET_LOADING,
     DEL_ERROR,RESET_POSTS,
     POST_SUCCESS,
     INC_PAGE} from './actions.types'
-import {deletePostApi, editPostApi, getAllPostsApi, postDetailsApi} from './post.api'
+import {deletePostApi, getAllPostsApi, postDetailsApi, updatePostApi} from './post.api'
 import { Dispatch } from 'redux';
 
  
@@ -32,7 +32,7 @@ try{
    let res = await postDetailsApi(data)
     dispatch({type:POST_SUCCESS,payload:res})
 }catch(err){
-  dispatch({type:POST_ERROR})
+  dispatch({type:POST_ERROR}) 
 }
 }
 export const deletePostt = (id:number|string)=>async(dispatch:Dispatch)=>{
@@ -44,11 +44,11 @@ export const deletePostt = (id:number|string)=>async(dispatch:Dispatch)=>{
         dispatch({type:DEL_ERROR})
     }
 }
-export const editPost = (post:any,id:string)=>async(dispatch:Dispatch)=>{
+export const updatePost = (post:any,id:string|number)=>async(dispatch:Dispatch)=>{
     dispatch({type:PATCH_LOADING})
     try{
-        await editPostApi(post,id)
-        dispatch({type:PATCH_SUCCESS})   
+       let res =  await updatePostApi(post,id)
+        dispatch({type:PATCH_SUCCESS,payload:res.data})   
     }catch(err){
         dispatch({type:PATCH_ERROR})
     }

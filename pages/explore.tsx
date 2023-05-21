@@ -1,4 +1,4 @@
-import Navbar from '@/Components/Navbar'
+import Navbar from '@/Components/Navbar/Navbar'
 import React, { useEffect, useState, Dispatch } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducertype } from '@/redux/store';
@@ -13,6 +13,7 @@ const Explore = () => {
     if (postData.length == 0) {
       dispatch(getAllPosts(1))
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

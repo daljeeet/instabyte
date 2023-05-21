@@ -1,7 +1,7 @@
-import Card from "../Components/Card";
+import Card from "../Components/Post/AllPosts";
 import Status from "../Components/Status";
-import Navbar from "../Components/Navbar";
-import CardSkl from "@/Components/Sklls/CardSkl";
+import Navbar from "../Components/Navbar/Navbar";
+import CardSkl from "@/Components/Skulls/CardSkl";
 import { useSelector } from "react-redux";
 import { rootReducertype } from "@/redux/store";
 import { useEffect, useState } from "react";
@@ -17,7 +17,6 @@ export default function Home() {
       setShowPost(true)
     }
   },[postData])
-
     return (
     <>
     <Navbar/>
